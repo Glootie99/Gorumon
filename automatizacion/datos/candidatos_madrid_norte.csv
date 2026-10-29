@@ -1,0 +1,171 @@
+sector,subsector,nombre,direccion,distrito,barrio,telefono,prioridad,maqueta,nota,estado
+Gestorías y asesorías,Gestoría administrativa,AC Gestoría Administrativa,"C. de La Hiruela 1, 1º puerta 15, 28035",Fuencarral-El Pardo,Barrio del Pilar,+34 913 86 65 33,Alta,1 Gestoría,"Nóminas, impuestos, autónomos y pymes",Pendiente
+Gestorías y asesorías,Asesoría,Asesoría Asla,"Pl. de Ribadeo, 28029",Fuencarral-El Pardo,Barrio del Pilar,,Alta,1 Gestoría,Sin teléfono publicado: visita directa,Pendiente
+Gestorías y asesorías,Asesoría integral,Asesoría Gestoría Integral Andrés Jiménez Cuestas,"Pl. de Puerto de la Cruz 7, locales 7 y 8, 28029",Fuencarral-El Pardo,Barrio del Pilar,+34 913 86 26 95,Alta,1 Gestoría,Varios empleados; tráfico y fiscal,Pendiente
+Gestorías y asesorías,Asesoría contable,Asesoría Mirasierra,"C. Isla de Arosa 14, 28035",Fuencarral-El Pardo,Barrio del Pilar,+34 913 78 23 50,Alta,1 Gestoría,Contabilidad; sin web visible,Pendiente
+Gestorías y asesorías,Asesoría,Asesoría Todogestion AR,"Cmo. de Ganapanes 31, local E, 28035",Fuencarral-El Pardo,Barrio del Pilar,+34 913 73 35 14,Alta,1 Gestoría,Pequeña,Pendiente
+Gestorías y asesorías,Asesoría,Asesoría Vaguada - Barrio del Pilar,"C. de La Bañeza 15, 28029",Fuencarral-El Pardo,Barrio del Pilar,+34 622 65 01 88,Alta,1 Gestoría,"Pequeña, poca presencia online",Pendiente
+Gestorías y asesorías,Gestoría,Gestoría Carrera,"C. de Toques 7, 28050",Fuencarral-El Pardo,Las Tablas,+34 915 04 18 88,Alta,1 Gestoría,"Pequeña, trabajo en remoto",Pendiente
+Gestorías y asesorías,"Asesoría fiscal, laboral y contable",Gestoría La Ilustración,"Av. Cardenal Herrera Oria 259, 28035",Fuencarral-El Pardo,Peñagrande,+34 910 05 21 98,Alta,1 Gestoría,Fiscal + laboral + contable; equipo de varias personas,Pendiente
+Gestorías y asesorías,Gestoría,Gestoría Sacristán,"Av. de Betanzos 10 posterior, local 3, 28029",Fuencarral-El Pardo,Barrio del Pilar,+34 620 19 61 45,Alta,1 Gestoría,Gestor individual (Carlos); muy pequeño,Pendiente
+Gestorías y asesorías,Gestoría/asesoría,Soltres Consulting Lawyers - Gestoría,"C. Puerto de Maspalomas 4 (entrada por Av. Monforte de Lemos), 28029",Fuencarral-El Pardo,Barrio del Pilar,+34 913 16 69 01,Alta,1 Gestoría,"Gestoría + abogados; renta, herencias, compraventas",Pendiente
+Gestorías y asesorías,Asesoría (franquicia),"CE Consulting Chamartín, Las Tablas y Sanchinarro","C. Viloria de la Rioja 53, 1ºA, 28050",Fuencarral-El Pardo,Las Tablas,+34 914 15 03 11,Media,1 Gestoría,Franquicia: decisión puede depender de central,Pendiente
+Gestorías y asesorías,Gestoría tráfico/asesoría,Gestiauto Tramitaciones,"Av. Cardenal Herrera Oria 259, 28035",Fuencarral-El Pardo,Peñagrande,+34 917 39 70 90,Media,1 Gestoría,Mismo edificio que La Ilustración; foco en tráfico,Pendiente
+Gestorías y asesorías,Asesoría,Asesores Bravo Murillo,"C. de Bravo Murillo 126, 28020",Tetuán,,+34 910 69 83 82,Alta,1 Gestoría,Clientela de comercio local,Pendiente
+Gestorías y asesorías,Asesoría,Asesoría OAI,"C. de Bravo Murillo 102, 1º dcha, 28020",Tetuán,,+34 642 01 99 21,Alta,1 Gestoría,Pequeña,Pendiente
+Gestorías y asesorías,Gestoría extranjería,Gestoría Barturén,"C. de Bravo Murillo 101, 28020",Tetuán,,,Media,1 Gestoría,Especializada en extranjería,Pendiente
+Gestorías y asesorías,Gestoría tráfico,Gestoría Vehículos,"C. de Bravo Murillo 102, 1º dcha, 28020",Tetuán,,+34 914 15 07 08,Baja,1 Gestoría,Solo tráfico y canjes,Pendiente
+Gestorías y asesorías,Gestoría/abogados extranjería,Tu Gestión España,"C. de Bravo Murillo 360, 1ºA, 28020",Tetuán,,+34 911 74 80 80,Baja,1 Gestoría,"Gran volumen, extranjería; no es el perfil",Pendiente
+Gestorías y asesorías,Asesoría contable,Grupo LC Asesores,"C. de Canillas 57, local dcho, 28002",Chamartín,Prosperidad,+34 915 19 23 91,Alta,1 Gestoría,"Autónomos, empleadas de hogar, herencias",Pendiente
+Gestorías y asesorías,Asesoría,Asesoría Gómez,"C. de Clara del Rey 11, 1ºC, 28002",Chamartín,Prosperidad,+34 641 60 15 28,Media,1 Gestoría,Extranjería y fiscal,Pendiente
+Gestorías y asesorías,Gestoría administrativa,Cabrero Gestoría Administrativa,"C. de López de Hoyos 74, 28002",Chamartín,Prosperidad,+34 915 62 42 83,Media,1 Gestoría,Mucho tráfico; también fiscal,Pendiente
+Gestorías y asesorías,Gestoría,Gestoría Rivera,"C. de Clara del Rey 32, 1ºE, 28002",Chamartín,Prosperidad,+34 915 19 01 00,Media,1 Gestoría,Mucho trabajo de tráfico para aseguradora,Pendiente
+Gestorías y asesorías,Gestoría de empresas,F1Pyme - Gestorías de Empresas,"C. de Santa Hortensia 48, 3º, 28002",Chamartín,Prosperidad,+34 914 96 50 07,Baja,1 Gestoría,Ya ofrecen software propio: competidor más que cliente,Pendiente
+Gestorías y asesorías,Gestoría,Gestoría Peña S.L.,"C. de Manuel Chaves Nogales 11, local posterior, 28033",Hortaleza,Pinar del Rey,+34 913 81 92 66,Alta,1 Gestoría,Ya usan herramientas digitales: receptivos,Pendiente
+Gestorías y asesorías,Asesoría,Linsertec,"C. de Valdetorres de Jarama 31, portal 1, 1ºA, 28043",Hortaleza,,+34 913 81 78 24,Alta,1 Gestoría,Pequeña,Pendiente
+Gestorías y asesorías,"Asesoría fiscal, contable y jurídica",Sabido Asesores,"Av. de Manoteras 38, 28050",Hortaleza,Manoteras,+34 911 61 03 47,Alta,1 Gestoría,Empresas y laboral,Pendiente
+Gestorías y asesorías,Gestoría + abogados,Gestoría y Abogados Parra Delgado,"C. del Mar de Kara 17, 28033",Hortaleza,Pinar del Rey,+34 917 63 76 64,Media,1 Gestoría,Volumen alto,Pendiente
+Gestorías y asesorías,Asesoría,VR Asesoría y Gestoría Administrativa,"C. de Manuel Pombo Angulo 8, planta 2, of. 13, 28050",Hortaleza,Sanchinarro,+34 912 86 48 31,Media,1 Gestoría,Clientela extranjera,Pendiente
+Administradores de fincas,Administración de fincas,Administración de Fincas Heredero,"C. Isla de Tavira 38, 28035",Fuencarral-El Pardo,Barrio del Pilar,+34 667 29 62 76,Alta,1 Gestoría + 3 Academia (recibos),Muchas comunidades en el barrio,Pendiente
+Administradores de fincas,Administración de fincas,Administrador de Fincas Enrique Calafat,"C. de Fermín Caballero 54, 28034",Fuencarral-El Pardo,Barrio del Pilar,+34 609 26 97 39,Alta,1 Gestoría + 3 Academia (recibos),Administrador individual,Pendiente
+Administradores de fincas,Administración de fincas,Cervera y Figueroa Asociados,"C. de Ginzo de Limia 53, 28034",Fuencarral-El Pardo,Barrio del Pilar,+34 914 51 24 67,Alta,1 Gestoría + 3 Academia (recibos),Quejas por comunicación con vecinos,Pendiente
+Administradores de fincas,Administración de fincas,Fincas Óptima,"C. de Fermín Caballero 32, local 3 posterior, 28034",Fuencarral-El Pardo,Barrio del Pilar,+34 628 51 71 43,Alta,1 Gestoría + 3 Academia (recibos),Quejas públicas por retrasos en recibos: dolor claro,Pendiente
+Administradores de fincas,Administración de fincas,Administración de Fincas Ana Romero,"C. de Müller 34, local dcha, 28039",Tetuán,,+34 608 19 95 07,Alta,1 Gestoría + 3 Academia (recibos),Pequeña,Pendiente
+Administradores de fincas,Administración de fincas,Administración de Fincas Herrero Bravo,"C. de Bravo Murillo 307, 28020",Tetuán,,+34 619 23 97 50,Alta,1 Gestoría + 3 Academia (recibos),Ofrecen atención 24 h,Pendiente
+Administradores de fincas,Administración de fincas,Administración de Fincas José Benito,"C. Mártires de la Ventilla 4, 28029",Tetuán,Ventilla,+34 913 15 86 30,Alta,1 Gestoría + 3 Academia (recibos),Pequeña,Pendiente
+Administradores de fincas,Administración de fincas + abogado,Antonio Córdoba Administración de Fincas,"C. de Juan Pantoja 1, 3ºC, 28039",Tetuán,,+34 655 45 90 19,Alta,1 Gestoría + 3 Academia (recibos),Individual,Pendiente
+Administradores de fincas,Administración de fincas,Parsum Administrador de Fincas,"Calle de Castilla 28, 28039",Tetuán,,+34 627 84 82 98,Alta,1 Gestoría + 3 Academia (recibos),Administrador individual (Carlos),Pendiente
+Administradores de fincas,Administración de fincas,Administración de Fincas del Dujo,"C. de Mantuano 18, 28002",Chamartín,Prosperidad,+34 915 19 53 74,Alta,1 Gestoría + 3 Academia (recibos),Quejas por incidencias sin seguimiento: dolor claro,Pendiente
+Administradores de fincas,Administración de fincas,JU Profincas,"C. de Colombia 36, bajo, 28016",Chamartín,Hispanoamérica,,Alta,1 Gestoría + 3 Academia (recibos),Sin teléfono publicado,Pendiente
+Administradores de fincas,Administración de fincas + inmobiliaria,RD Gestión Inmobiliaria y Administración de Fincas,"C. del Padre Xifré, 28002",Chamartín,Prosperidad,+34 623 25 19 28,Media,1 Gestoría + 3 Academia (recibos),Más inmobiliaria que fincas,Pendiente
+Administradores de fincas,Administración de fincas,Calte Administración de Fincas,"Calle de Utrillas 5, 28043",Hortaleza,,+34 919 29 22 28,Alta,1 Gestoría + 3 Academia (recibos),Individual (Carmen),Pendiente
+Administradores de fincas,Administración de fincas,Finclaire Administración de Fincas,"C. del Golfo de Salónica 40, 28033",Hortaleza,Pinar del Rey,+34 656 91 00 95,Alta,1 Gestoría + 3 Academia (recibos),Pequeña,Pendiente
+Administradores de fincas,Administración de fincas,Vicalfincas Administradores,"C. de Andorra 51, local, 28043",Hortaleza,,+34 910 60 64 00,Alta,1 Gestoría + 3 Academia (recibos),Pequeña,Pendiente
+Administradores de fincas,Administración de fincas + seguros,Aga Antonaya,"C. de Pegaso 32, 28043",Hortaleza,,+34 917 59 39 09,Media,1 Gestoría + 3 Academia (recibos),Muchas quejas de cobros y comunicación; tamaño medio,Pendiente
+Clínicas,Psicología,Aire Psicología,"C. Ginzo de Limia 62, bajo, local 3, 28034",Fuencarral-El Pardo,Barrio del Pilar,+34 910 29 36 88,Alta,2 Clínica,Infantil y adultos; horario amplio,Pendiente
+Clínicas,Dental,Centro Odontología Avanzada,"C. Ginzo de Limia 23, local 1, 28029",Fuencarral-El Pardo,Barrio del Pilar,+34 913 14 37 02,Alta,2 Clínica,Dentista individual,Pendiente
+Clínicas,Veterinaria,Centro Veterinario Gufy,"C. Isla de Tabarca 46, 28035",Fuencarral-El Pardo,Peñagrande,+34 917 30 24 89,Alta,2 Clínica,Dos veterinarios dueños,Pendiente
+Clínicas,Fisioterapia,Centro de Fisioterapia Myos,"C. Ginzo de Limia 39, 1º 3, 28029",Fuencarral-El Pardo,Barrio del Pilar,+34 913 78 00 09,Alta,2 Clínica,Fisioterapeuta individual (Celia); bonos y cursos,Pendiente
+Clínicas,Psicología,Centro de psicología (Herrera Oria 167),"Av. Cardenal Herrera Oria 167, local 1-1, 28034",Fuencarral-El Pardo,Barrio del Pilar,+34 628 59 21 92,Alta,2 Clínica,Varias psicólogas; ficha sin nombre comercial,Pendiente
+Clínicas,Fisioterapia,Clínica Avanza Las Tablas,"C. de Portomarín 7, 28050",Fuencarral-El Pardo,Las Tablas,+34 660 39 76 66,Alta,2 Clínica,Fisio + grupos de pilates,Pendiente
+Clínicas,Podología y fisioterapia,Clínica Bañeza,"C. de La Bañeza 9, 28029",Fuencarral-El Pardo,Barrio del Pilar,+34 917 31 95 65,Alta,2 Clínica,Podología + fisio,Pendiente
+Clínicas,Dental,Clínica Dental El Pilar,"C. de Fermín Caballero 89, 28035",Fuencarral-El Pardo,Barrio del Pilar,+34 913 86 33 02,Alta,2 Clínica,"Muy conocida en el barrio, mucha carga",Pendiente
+Clínicas,Dental,Clínica Dental Omaira Álvarez,"Av. de Betanzos 47, 28029",Fuencarral-El Pardo,Barrio del Pilar,+34 912 44 04 81,Alta,2 Clínica,Independiente,Pendiente
+Clínicas,Podología,Clínica Podológica Conchi del Río,"C. de Ponferrada 40, bajo, 28029",Fuencarral-El Pardo,Barrio del Pilar,+34 624 24 56 64,Alta,2 Clínica,"Nueva, individual; pacientes mayores",Pendiente
+Clínicas,Podología,Clínica Podológica Elena Adán,"Av. Monforte de Lemos 105, 1º 2, 28029",Fuencarral-El Pardo,Barrio del Pilar,+34 913 78 41 03,Alta,2 Clínica,Varias podólogas; queja de recepción con retrasos,Pendiente
+Clínicas,Fisioterapia,Clínica RAE Salud,"C. de Finisterre 3, 28029",Fuencarral-El Pardo,Barrio del Pilar,+34 913 14 22 02,Alta,2 Clínica,Equipo grande + pilates: mucha agenda,Pendiente
+Clínicas,Fisioterapia,Clínica Rodem - Fisioterapia Las Tablas,"C. de Furelos 7, 28050",Fuencarral-El Pardo,Las Tablas,+34 660 35 53 61,Alta,2 Clínica,Pequeña,Pendiente
+Clínicas,Fisioterapia,Clínica TuFISIO - Barrio del Pilar,"C. Melchor Fernández Almagro 20, 28029",Fuencarral-El Pardo,Barrio del Pilar,+34 912 24 60 61,Alta,2 Clínica,Fisio + pilates individual; pequeña,Pendiente
+Clínicas,Veterinaria,Clínica Veterinaria Supervet,"C. de Fermín Caballero 56 posterior, 28034",Fuencarral-El Pardo,Barrio del Pilar,+34 917 30 10 96,Alta,2 Clínica,Mucha demanda; queja de esperas,Pendiente
+Clínicas,Veterinaria,Clínica Veterinaria Veterinalia,"Av. de El Ferrol 32, 28029",Fuencarral-El Pardo,Barrio del Pilar,+34 910 09 71 85,Alta,2 Clínica,Recordatorios de vacunas: encaje directo,Pendiente
+Clínicas,Psicología,Dúa Centro Psicología El Pilar - La Vaguada,"Pl. de Mondariz 6, local 6, 28029",Fuencarral-El Pardo,Barrio del Pilar,+34 621 41 22 54,Alta,2 Clínica,Recepcionista gestiona citas a mano,Pendiente
+Clínicas,Fisioterapia,Fisiomon Las Tablas,"C. Puente la Reina 32, 28050",Fuencarral-El Pardo,Las Tablas,+34 639 15 45 06,Alta,2 Clínica,Pequeña,Pendiente
+Clínicas,Fisioterapia,Fisioterapia Sanarum,"C. Santiago de Compostela 64, 28034",Fuencarral-El Pardo,Barrio del Pilar,+34 636 30 03 94,Alta,2 Clínica,Fisio + pilates máquinas + clases: agenda compleja,Pendiente
+Clínicas,Fisioterapia,Fisiovisan - Fisioterapia Las Tablas,"C. de Valcarlos 35, 28050",Fuencarral-El Pardo,Las Tablas,+34 913 07 50 50,Alta,2 Clínica,Horario amplio; queja pública por avisos de retraso,Pendiente
+Clínicas,Podología,Gabinete Blanca Podología,"Av. de El Ferrol 4, 28029",Fuencarral-El Pardo,Barrio del Pilar,+34 628 19 11 19,Alta,2 Clínica,Dos podólogas,Pendiente
+Clínicas,Podología,La Clínica del Pie,"Pl. de Arteijo 6, 28029",Fuencarral-El Pardo,Barrio del Pilar,+34 912 24 35 67,Alta,2 Clínica,Individual (Silvia); abre 3 días,Pendiente
+Clínicas,Fisioterapia,Mc Fisio,"C. de Fermín Caballero 64, 28034",Fuencarral-El Pardo,Barrio del Pilar,+34 623 00 87 12,Alta,2 Clínica,Clínica nueva; venden bonos y promociones,Pendiente
+Clínicas,Fisioterapia,Qualiz Fisio,"Pl. de Puerto de la Cruz 2 posterior, 28029",Fuencarral-El Pardo,Barrio del Pilar,+34 653 67 51 61,Alta,2 Clínica,3 cabinas + sala de pilates y fuerza,Pendiente
+Clínicas,Fisioterapia,Sananova Fisioterapia - Barrio del Pilar,"Av. de El Ferrol 4, 28029",Fuencarral-El Pardo,Barrio del Pilar,+34 913 14 82 16,Alta,2 Clínica,Fisio + clases; varios fisios,Pendiente
+Clínicas,Veterinaria,Clínica Veterinaria Islas Marshall (Grupo Peñagrande),"C. de las Islas Marshall 3, 28035",Fuencarral-El Pardo,Peñagrande,+34 913 73 90 22,Media,2 Clínica,Grupo con varias clínicas,Pendiente
+Clínicas,Nutrición,Eres Lo Que (No) Comes - Nutrición by Miriam,"C. Monasterio de Caaveiro 13, local, 28049",Fuencarral-El Pardo,Montecarmelo,+34 640 98 15 75,Media,2 Clínica,Ya usan app propia,Pendiente
+Clínicas,Fisioterapia,Fisioterapia Las Tablas - Christian Jiménez,"C. de Valcarlos 35, 28050",Fuencarral-El Pardo,Las Tablas,+34 693 75 86 22,Media,2 Clínica,Autónomo; mucho trabajo a domicilio,Pendiente
+Clínicas,Centro de reconocimiento médico,Medical Center El Pilar,"Av. de Betanzos 53, 28029",Fuencarral-El Pardo,Barrio del Pilar,+34 913 86 30 41,Media,2 Clínica,Certificados de conducir y fisio,Pendiente
+Clínicas,Nutrición,Nutrición y Dietética (Betanzos 60),"Av. de Betanzos 60, 28034",Fuencarral-El Pardo,Barrio del Pilar,+34 917 30 42 02,Media,2 Clínica,Sin web ni reseñas; visitar,Pendiente
+Clínicas,Dental,Soy Dentaria - Barrio del Pilar,"C. Puerto de Maspalomas 1 / Av. Monforte de Lemos 164, 28029",Fuencarral-El Pardo,Barrio del Pilar,+34 910 10 58 20,Media,2 Clínica,Marca con varias sedes,Pendiente
+Clínicas,Dental,Clínica Dental Caser Barrio del Pilar,"C. de Fermín Caballero 78, 28034",Fuencarral-El Pardo,Barrio del Pilar,+34 918 28 80 22,Baja,2 Clínica,Marca de aseguradora: sistemas propios,Pendiente
+Clínicas,Veterinaria,Medivet Ginzo de Limia,"C. Ginzo de Limia 33, 28029",Fuencarral-El Pardo,Barrio del Pilar,+34 917 30 90 86,Baja,2 Clínica,Cadena: cambió de dueño,Pendiente
+Clínicas,Dental,Clínica Dental Tetuán,"C. del Marqués de Viana 19, 1º, 28039",Tetuán,,+34 630 26 99 10,Alta,2 Clínica,Independiente,Pendiente
+Clínicas,Fisioterapia,Clínica Fisiokine,"C. de Rosa de Silva 19, 28020",Tetuán,,+34 915 79 96 52,Alta,2 Clínica,Trabaja con aseguradoras de tráfico; no acepta tarjeta,Pendiente
+Clínicas,Fisioterapia,Crosstherapy Cuatro Caminos,"C. de Navarra 30, 28039",Tetuán,,+34 653 43 79 69,Alta,2 Clínica,Pequeña; clientela deportista,Pendiente
+Clínicas,Fisioterapia,Physiology Clínica de Fisioterapia,"C. del Poeta Joan Maragall 26, 28020",Tetuán,,+34 604 95 67 34,Alta,2 Clínica,Varios fisios; horario amplio,Pendiente
+Clínicas,Fisioterapia,Physiotherapy De La Cruz,"C. de Bravo Murillo 250, 1º D, 28020",Tetuán,,+34 915 71 17 49,Alta,2 Clínica,Bonos compartidos; queja de retrasos,Pendiente
+Clínicas,Dental,Tu Dentista Dr. Usón,"C. de Bravo Murillo 327, local 10, 28020",Tetuán,,+34 918 27 71 04,Alta,2 Clínica,Dentista dueño,Pendiente
+Clínicas,Dental,Denty Dent Bravo Murillo,"C. de Bravo Murillo 151, 28020",Tetuán,,+34 915 79 82 13,Media,2 Clínica,Volumen muy alto,Pendiente
+Clínicas,Fisioterapia,Fisiosalud+ Tetuán,"C. de Francos Rodríguez 25, 28039",Tetuán,,+34 914 59 83 52,Media,2 Clínica,Volumen muy alto; posible cadena,Pendiente
+Clínicas,Fisioterapia,ILUNION Clínica de Fisioterapia,"C. del Pensamiento 23, 28020",Tetuán,,+34 624 62 57 50,Baja,2 Clínica,Grupo ILUNION: decisión centralizada,Pendiente
+Clínicas,Dental,Vitaldent Bravo Murillo,"C. de Bravo Murillo 303, 28020",Tetuán,,+34 915 67 01 50,Baja,2 Clínica,Franquicia de cadena,Pendiente
+Clínicas,Psicología,Camina Psicología,"Av. de América 35, 1º 1, 28002",Chamartín,Prosperidad,+34 644 72 27 99,Alta,2 Clínica,Pequeño,Pendiente
+Clínicas,Fisioterapia,Clínica Sampayo,"Pl. Prosperidad 3, 1º A, 28002",Chamartín,Prosperidad,+34 910 33 80 58,Alta,2 Clínica,Fisio + pilates máquinas,Pendiente
+Clínicas,Fisioterapia,Fisioprosperidad,"C. de Puenteareas 1, 28002",Chamartín,Prosperidad,+34 637 26 58 65,Alta,2 Clínica,Pequeña,Pendiente
+Clínicas,Fisioterapia,Fisioterapia Javier Solana,"C. de Alustante 3, 28002",Chamartín,Prosperidad,+34 614 60 38 14,Alta,2 Clínica,Autónomo; clínica nueva,Pendiente
+Clínicas,Fisioterapia,Ocejón Fisioterapia,"C. de Santa Rita 7, 28002",Chamartín,Prosperidad,+34 624 13 82 93,Alta,2 Clínica,Clientela recurrente mensual,Pendiente
+Clínicas,Psicología,Psicólogos Prosperidad,"C. de Canillas 45, 28002",Chamartín,Prosperidad,+34 912 20 55 65,Alta,2 Clínica,Varias psicólogas,Pendiente
+Clínicas,Psicología,Centro Psicológico SMC,"C. de Cartagena 103, 1º D, 28002",Chamartín,Prosperidad,+34 662 01 68 80,Media,2 Clínica,Centro grande con formación,Pendiente
+Clínicas,Fisioterapia y logopedia,Fisiogestion Prosperidad,"C. de Antonio Zapata 3, 28002",Chamartín,Prosperidad,+34 910 82 00 32,Media,2 Clínica,Volumen alto con mutuas; quejas de saturación,Pendiente
+Clínicas,Fisioterapia,Fisioterapia Chamartín,"Estación de Chamartín, ático (acceso por gimnasio Yoofit), 28036",Chamartín,,+34 722 88 03 02,Media,2 Clínica,Dentro de un gimnasio,Pendiente
+Clínicas,Psicología,MICPSY Clínica,"C. Príncipe de Vergara 118, 1º A, 28002",Chamartín,,+34 628 38 78 85,Media,2 Clínica,También centro de formación,Pendiente
+Clínicas,Fisioterapia,Al Fisio Sanchinarro,"C. de María Tudor 16, 28050",Hortaleza,Sanchinarro,+34 917 50 06 10,Alta,2 Clínica,Casi 20 años abierta; suelo pélvico,Pendiente
+Clínicas,Dental,Artidental,"C. Mar Negro 12, 28033",Hortaleza,,+34 913 82 05 63,Alta,2 Clínica,Independiente,Pendiente
+Clínicas,Psicología,CEDSI Psicólogos Hortaleza,"Carr. de Canillas 82, bajo, 28043",Hortaleza,,+34 665 72 04 28,Alta,2 Clínica,Infantil y familias; recepción propia,Pendiente
+Clínicas,Psicología,Centro Psicológico EMDR Ahora Eres Feliz,"C. de Oña 87, 28050",Hortaleza,Sanchinarro,+34 637 82 81 71,Alta,2 Clínica,Psicóloga individual,Pendiente
+Clínicas,Fisioterapia,Clínica Bueno & Sánchez,"C. Chaparral 9, 28033",Hortaleza,,+34 699 22 18 77,Alta,2 Clínica,Trabaja con aseguradoras; queja de citas sin respuesta,Pendiente
+Clínicas,Dental,Clínica Dental Hortaleza,"Calle Boyacá 5, 1º dcha, 28033",Hortaleza,,+34 913 82 08 64,Alta,2 Clínica,Más de 25 años,Pendiente
+Clínicas,Dental,Clínica Dental Jorge del Corral,"C. Mota del Cuervo 2, 1º puerta 5, 28043",Hortaleza,,+34 917 59 90 43,Alta,2 Clínica,Horario 8-21 h: agenda densa,Pendiente
+Clínicas,Dental,Clínica Dental Value,"C. Chiquinquirá 2, local posterior, 28033",Hortaleza,,+34 660 74 12 32,Alta,2 Clínica,Ya mandan recordatorios: preguntar cómo,Pendiente
+Clínicas,Veterinaria,Clínica Veterinaria Hortaleza,"C. de Malagón 2, 28043",Hortaleza,,+34 913 81 43 09,Alta,2 Clínica,Hacen seguimiento por llamada a mano,Pendiente
+Clínicas,Fisioterapia,FisioSanum Sanchinarro,"C. de Oña 185, 28050",Hortaleza,Sanchinarro,+34 640 79 16 88,Alta,2 Clínica,Pediatría y posparto,Pendiente
+Clínicas,Fisioterapia,Fisioquality,"C. de Santa Susana 40, 28033",Hortaleza,Pinar del Rey,+34 605 09 54 02,Alta,2 Clínica,"Equipo amplio, horario hasta las 22 h",Pendiente
+Clínicas,Fisioterapia y osteopatía,Giro Fisioterapia y Osteopatía,"C. de Oña 49, 28050",Hortaleza,Sanchinarro,+34 660 61 03 80,Alta,2 Clínica,Fisioterapeuta individual (María),Pendiente
+Clínicas,Psicología,Global Psicología,"C. Diego Hurtado de Mendoza 8, 1º D, 28050",Hortaleza,Sanchinarro,+34 606 67 65 32,Alta,2 Clínica,Pequeño,Pendiente
+Clínicas,Fisioterapia,Inizio Clinic,"C. del Príncipe Carlos 58, 28050",Hortaleza,Sanchinarro,+34 696 54 95 64,Alta,2 Clínica,Varios fisios,Pendiente
+Clínicas,Psicología y psiquiatría,TAP Center,"Av. de Manoteras 10, 28050",Hortaleza,Manoteras,+34 912 87 63 47,Alta,2 Clínica,Equipo multidisciplinar con logopedia,Pendiente
+Academias y educación,Refuerzo escolar,Academia Aula Tres Monforte,"Av. de Monforte de Lemos 65, 28029",Fuencarral-El Pardo,Barrio del Pilar,+34 628 54 00 29,Alta,3 Academia,Familiar; comunicación con padres como valor,Pendiente
+Academias y educación,Refuerzo escolar,Academia Aula Tres Olivos,"C. de Alonso Quijano 71, local 2A, 28034",Fuencarral-El Pardo,Tres Olivos,+34 650 98 33 93,Alta,3 Academia,Mismo grupo que Aula Tres Monforte,Pendiente
+Academias y educación,Refuerzo escolar,Academia Áurea,"C. del Dr. Juan Bravo 22, 28034",Fuencarral-El Pardo,Valverde,+34 912 82 58 26,Alta,3 Academia,Grupos reducidos; trato con familias,Pendiente
+Academias y educación,Autoescuela,Autoescuela Abril - Barrio del Pilar,"C. Ginzo de Limia 60, 28034",Fuencarral-El Pardo,Barrio del Pilar,+34 917 38 46 76,Alta,3 Academia,Lista de espera de prácticas: agenda saturada,Pendiente
+Academias y educación,Autoescuela,Autoescuela Altamira,"C. de Finisterre 15, 28029",Fuencarral-El Pardo,Barrio del Pilar,+34 910 56 82 66,Alta,3 Academia,Muchos alumnos extranjeros; tarifas claras,Pendiente
+Academias y educación,Autoescuela,Autoescuela Lara Barrio del Pilar,"C. de La Bañeza 32, 28029",Fuencarral-El Pardo,Barrio del Pilar,+34 913 86 40 83,Alta,3 Academia,Oficina saturada según alumnos,Pendiente
+Academias y educación,Escuela infantil,CPEI La Abeja Maya,"C. de las Islas Bahamas 33, 28035",Fuencarral-El Pardo,Peñagrande,+34 913 73 26 52,Alta,3 Academia,Dos patios; familias con varios hijos,Pendiente
+Academias y educación,Academia de inglés,Cambridge House,"C. Santiago de Compostela 62, 28034",Fuencarral-El Pardo,Barrio del Pilar,+34 917 31 36 95,Alta,3 Academia,"Niños y adultos, exámenes Cambridge",Pendiente
+Academias y educación,Refuerzo escolar,Centro de Estudios Ciudad de los Periodistas,"C. de Fermín Caballero 62, local 4, 28034",Fuencarral-El Pardo,Barrio del Pilar,+34 917 40 57 96,Alta,3 Academia,"ESO, Bachillerato, EvAU",Pendiente
+Academias y educación,Refuerzo escolar,Centro de Estudios La Masó,"C. de La Masó 2, local 2, 28034",Fuencarral-El Pardo,Mirasierra,+34 623 56 50 06,Alta,3 Academia,Pequeña,Pendiente
+Academias y educación,Escuela infantil,Escuela Infantil Los Pitufos,"C. de la Villa de Marín 1, 28029",Fuencarral-El Pardo,Barrio del Pilar,+34 913 14 01 46,Alta,3 Academia,Directora presente,Pendiente
+Academias y educación,Escuela infantil,Escuela Infantil Los Renacuajos,"C. Melchor Fernández Almagro 31, 28029",Fuencarral-El Pardo,Barrio del Pilar,+34 913 14 47 22,Alta,3 Academia,Ya mandan fotos y diarios a familias,Pendiente
+Academias y educación,Escuela infantil,Escuela Infantil Tabata,"C. de Celanova 9, 28029",Fuencarral-El Pardo,Barrio del Pilar,+34 917 31 31 28,Alta,3 Academia,Pequeña y familiar,Pendiente
+Academias y educación,Academia de inglés,Impulse English Academy La Vaguada,"Av. de El Ferrol 22, local 1, 28029",Fuencarral-El Pardo,Barrio del Pilar,+34 604 91 06 11,Alta,3 Academia,Grupos + campamentos de verano,Pendiente
+Academias y educación,Academia de idiomas,Newsland Languages,"Av. Cardenal Herrera Oria 173, 28034",Fuencarral-El Pardo,Barrio del Pilar,+34 917 30 32 52,Alta,3 Academia,Muchos años en el barrio; niños y adultos,Pendiente
+Academias y educación,Autoescuela,Autoescuela Cebra,"C. Melchor Fernández Almagro 82, 28029",Fuencarral-El Pardo,Barrio del Pilar,,Media,3 Academia,Sin teléfono publicado; quejas de esperas,Pendiente
+Academias y educación,Autoescuela,Autoescuela Gala - Barrio del Pilar,"C. Melchor Fernández Almagro 50, 28029",Fuencarral-El Pardo,Barrio del Pilar,+34 670 38 21 05,Media,3 Academia,Marca con varias sedes,Pendiente
+Academias y educación,Idiomas/estancias en el extranjero,J.E. 2000,"C. Chantada 2, 28029",Fuencarral-El Pardo,Barrio del Pilar,+34 917 30 45 16,Media,3 Academia,Más agencia de cursos en el extranjero que academia,Pendiente
+Academias y educación,Academia de idiomas,Academia de Idiomas Plaza Castilla,"P.º de la Castellana 93, planta 2, 28046",Tetuán,,+34 626 06 54 82,Alta,3 Academia,Nueva; también traducciones,Pendiente
+Academias y educación,Academia de inglés,EEI English Examination Institute,"Av. de Brasil 17, entreplanta, 28020",Tetuán,,+34 611 66 75 25,Alta,3 Academia,Preparación de exámenes,Pendiente
+Academias y educación,Academia de idiomas,Yes! La Academia,"C. de Lazaga 9, 28020",Tetuán,,+34 692 17 55 78,Alta,3 Academia,"Niños, adolescentes y adultos; dueña presente",Pendiente
+Academias y educación,Autoescuela,Autoescuela Goya - Bravo Murillo,"C. de Bravo Murillo 355, 28020",Tetuán,,+34 915 71 65 20,Media,3 Academia,Red Goya; listas de espera,Pendiente
+Academias y educación,Autoescuela,Autoescuela Palomero,"C. de Bravo Murillo 267, 28020",Tetuán,,+34 665 63 51 50,Media,3 Academia,Muchas quejas por cancelación de clases: dolor de agenda,Pendiente
+Academias y educación,Español para extranjeros,Fénix Academy,"C. Sófora 19, local B, 28020",Tetuán,,+34 621 05 40 24,Media,3 Academia,Alumnos extranjeros adultos,Pendiente
+Academias y educación,Agencia de idiomas,Speak and Go Languages,"C. del Pensamiento 27, 3º 3, 28020",Tetuán,,+34 629 63 82 40,Baja,3 Academia,"Agencia de estancias, no academia",Pendiente
+Academias y educación,Academia de idiomas,Castletown Idiomas,"C. del Corazón de María 64, 28002",Chamartín,Prosperidad,+34 633 12 80 58,Alta,3 Academia,Muchos años en el barrio,Pendiente
+Academias y educación,Escuela infantil,Escuela Infantil Osobuco,"Av. de Alfonso XIII 30, 28002",Chamartín,,+34 914 13 92 86,Alta,3 Academia,Encuestas y escuela de padres,Pendiente
+Academias y educación,Academia de inglés y campamentos,Fast English: The Kelly Method,"C. de Malcampo 11, local, 28002",Chamartín,Prosperidad,+34 627 29 86 81,Alta,3 Academia,Campamentos + academia,Pendiente
+Academias y educación,Academia de idiomas,Lingua Lab,"C. del Cardenal Silíceo 25, 28002",Chamartín,Prosperidad,+34 617 64 88 80,Alta,3 Academia,Niños y traducciones juradas,Pendiente
+Academias y educación,Escuela infantil,Escuela Infantil Casa del Niño,"C. de Mateo Inurria 20, 28036",Chamartín,,+34 913 59 17 86,Media,3 Academia,Ya usan app con familias,Pendiente
+Academias y educación,Refuerzo escolar,Academia Aldea,"C. de López de Hoyos 472, 28043",Hortaleza,,+34 647 81 83 54,Alta,3 Academia,Pequeña,Pendiente
+Academias y educación,Refuerzo e inglés,Academia Maral,"C. Alcalde Henche de la Plata / Alcalde Redondo Aceña, 28050",Hortaleza,,+34 913 92 31 44,Alta,3 Academia,Quejas de familias sobre comunicación,Pendiente
+Academias y educación,Refuerzo y ábaco,Academia educa-T Madrid,"C. de Pablo Serrano 15, 28043",Hortaleza,,+34 657 23 10 63,Alta,3 Academia,Cobro mensual; incidencia pública con reembolso,Pendiente
+Academias y educación,Autoescuela,Autoescuela Autoexito,"C. Manuel Chaves Nogales 5, local, 28033",Hortaleza,Pinar del Rey,+34 620 75 88 18,Alta,3 Academia,Independiente,Pendiente
+Academias y educación,Refuerzo escolar,Centro de Estudios Hortaleza,"C. de la Costa del Sol, 28033",Hortaleza,,+34 649 91 67 96,Alta,3 Academia,"Pequeña, trato con familias",Pendiente
+Academias y educación,Escuela infantil,DOMO Escuela Infantil Hortaleza,"C. de Torregrosa 16, 28043",Hortaleza,,+34 673 90 16 83,Alta,3 Academia,Independiente,Pendiente
+Academias y educación,Escuela infantil,Little Clovers,"C. de Antonio Cavero 91, 28043",Hortaleza,,+34 696 99 15 59,Alta,3 Academia,Bilingüe,Pendiente
+Academias y educación,Academia de idiomas,UpLevel Academy Sanchinarro,"C. de Américo Castro 16, 28050",Hortaleza,Sanchinarro,+34 630 56 51 38,Alta,3 Academia,Inglés y español,Pendiente
+Academias y educación,Autoescuela,Autoescuela Goya - Hortaleza,"Calle Boyacá 6, 28033",Hortaleza,,+34 917 64 16 66,Media,3 Academia,Red Goya: puede decidir la central,Pendiente
+Academias y educación,Autoescuela,Autoescuela Goya Canillas,"Carr. de Canillas 140, 28043",Hortaleza,,+34 913 81 48 82,Media,3 Academia,Red Goya; también CAP profesional,Pendiente
+Talleres,Taller mecánico,Castrol Service Automecánica V. Cano,"C. Melchor Fernández Almagro 38, 28029",Fuencarral-El Pardo,Barrio del Pilar,+34 913 78 10 29,Alta,2 Clínica (citas/avisos) + 1 Gestoría,Negocio familiar,Pendiente
+Talleres,Taller mecánico,O.K. Car,"C. Becerreá 11, 28029",Fuencarral-El Pardo,Barrio del Pilar,+34 917 38 43 98,Alta,2 Clínica (citas/avisos) + 1 Gestoría,Familiar; queja por citas,Pendiente
+Talleres,Taller mecánico,Taller Bel Air 56,"C. Becerreá 3 posterior, 28029",Fuencarral-El Pardo,Barrio del Pilar,+34 917 30 88 85,Alta,2 Clínica (citas/avisos) + 1 Gestoría,Dueño presente (Héctor); presupuestos y citas,Pendiente
+Talleres,Taller mecánico,Talleres 996 Fuencarral,"Calle Xaudaró 32, 28034",Fuencarral-El Pardo,,+34 913 58 05 51,Alta,2 Clínica (citas/avisos) + 1 Gestoría,Oficina con administrativa,Pendiente
+Talleres,Taller mecánico,Automóviles Daneta Barrio del Pilar,"C. Dr. Ramón Castroviejo 25, 28029",Fuencarral-El Pardo,Barrio del Pilar,+34 911 09 19 91,Media,2 Clínica (citas/avisos) + 1 Gestoría,Tiene más de una sede,Pendiente
+Talleres,Taller mecánico (cadena),Midas Madrid - Finisterre,"C. de Finisterre 27, 28029",Fuencarral-El Pardo,Barrio del Pilar,+34 917 39 69 65,Baja,2 Clínica (citas/avisos) + 1 Gestoría,Cadena con sistemas propios,Pendiente
+Talleres,Taller mecánico y chapa,Dávila Auto (también Taller Mecánico Tetuán),"C. de Berruguete 51b-53, 28039",Tetuán,,+34 913 11 41 41,Alta,2 Clínica (citas/avisos) + 1 Gestoría,Trabaja con aseguradoras,Pendiente
+Talleres,Taller y compraventa,Guzauto,"C. de la Guzmania 6, 28039",Tetuán,,+34 913 23 49 62,Alta,2 Clínica (citas/avisos) + 1 Gestoría,Dueño (Toño); también vende coches,Pendiente
+Talleres,Taller mecánico,J & H Taller Multimarca,"C. de Aquilino Domínguez 17, 28020",Tetuán,,+34 609 86 60 10,Alta,2 Clínica (citas/avisos) + 1 Gestoría,"Pequeño, muy organizado por citas",Pendiente
+Talleres,Taller mecánico,Taller Mecánico Lope de Haro,"C. de Lope de Haro 23, 28039",Tetuán,,+34 913 11 92 35,Alta,2 Clínica (citas/avisos) + 1 Gestoría,Dueño (Daniel); presupuestos rápidos,Pendiente
+Talleres,Taller mecánico,Funciona Motor,"C. de Luis Cabrera 67, 28002",Chamartín,Prosperidad,+34 915 19 64 19,Alta,2 Clínica (citas/avisos) + 1 Gestoría,"Dueño (Miguel); siempre lleno, solo con cita",Pendiente
+Talleres,Taller mecánico,Talleres Honorio,"C. de Francisco Giralte 1, bajo, 28002",Chamartín,,+34 915 62 30 04,Alta,2 Clínica (citas/avisos) + 1 Gestoría,Ficha de revisión en papel: encaje directo,Pendiente
+Talleres,Taller mecánico,Talleres Constancia Motor,"C. de la Constancia 40, 28002",Chamartín,Prosperidad,+34 914 15 96 56,Media,2 Clínica (citas/avisos) + 1 Gestoría,Quejas por garantías y seguimiento,Pendiente
+Talleres,Taller mecánico (cadena),Midas López de Hoyos,"C. de López de Hoyos 70, 28002",Chamartín,Prosperidad,+34 910 55 56 42,Baja,2 Clínica (citas/avisos) + 1 Gestoría,Cadena,Pendiente
+Talleres,Taller mecánico,Auto Sanz,"C. del Mar de Aral 5 posterior, 28033",Hortaleza,,+34 623 38 98 65,Alta,2 Clínica (citas/avisos) + 1 Gestoría,Más de 30 años abierto,Pendiente
+Talleres,Taller mecánico,Sánchez Taller Multimarca,"Calle Boyacá 2, 28033",Hortaleza,,+34 917 63 05 46,Alta,2 Clínica (citas/avisos) + 1 Gestoría,Ya avisan por WhatsApp con fotos: receptivos,Pendiente
+Talleres,Taller mecánico,Taller de Luis Martín,"C. de Antonio López Torres 58, 28055",Hortaleza,Valdebebas,+34 913 81 30 59,Alta,2 Clínica (citas/avisos) + 1 Gestoría,Padre e hijo,Pendiente
+Talleres,Taller mecánico,Talleres Palomo,"C. de Tribaldos 6 posterior, 28043",Hortaleza,,+34 666 92 55 20,Alta,2 Clínica (citas/avisos) + 1 Gestoría,Volumen alto; queja de atención en recepción,Pendiente
+Talleres,Neumáticos y mantenimiento,ACR Hortaleza (parking Carrefour),"Gran Vía de Hortaleza, parking -1 Carrefour, 28043",Hortaleza,,+34 633 80 19 49,Media,2 Clínica (citas/avisos) + 1 Gestoría,Posible franquicia,Pendiente
