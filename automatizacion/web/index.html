@@ -3,297 +3,323 @@
 <meta name="description" content="Asiento lee las facturas de los clientes de tu gestoría, propone cada asiento y te lo deja en Excel para tu visto bueno.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=Azeret+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap">
 <style>
-/* Layout: un libro mayor abierto visto desde arriba. Las tapas de tela verde asoman alrededor de un único folio pautado; la cabecera y el pie son los cantos de la tapa. */
+/* Layout: blanco y negro deliberado (un solo aspecto en cualquier tema). Bandas blancas y negras a todo el ancho; el contenido vive en una columna de 1200px. */
 :root {
-  --cloth: #1d382c;
-  --cloth-weave: #24443a;
-  --cloth-ink: #e6efe8;
-  --cloth-ink-2: #a9c2b3;
-  --paper: #f1f6f0;
-  --paper-2: #e5eee5;
-  --rule: #c3d9c9;
-  --rule-strong: #8eb59c;
-  --margin: #c2443c;
-  --ink: #14221a;
-  --ink-2: #485b50;
-  --ink-3: #6b7f73;
-  --ok: #2b7549;
-  --hi: #d9ecb8;
-  --label: #fbfcf8;
-  --btn: #1d382c;
-  --btn-ink: #e6efe8;
-  --shadow: 0 1px 2px rgba(10, 30, 20, .10), 0 18px 40px -22px rgba(10, 30, 20, .45);
-  --display: "Archivo", "Arial Narrow", "Helvetica Neue", sans-serif;
-  --body: "Archivo", "Helvetica Neue", Arial, sans-serif;
-  --mono: "Azeret Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
-  --line: 1.75rem;
+  color-scheme: light;
+  --white: #ffffff;
+  --stage: #f4f4f4;
+  --line: #e4e4e4;
+  --line-2: #cfcfcf;
+  --mute: #8c8c8c;
+  --ink-2: #4f4f4f;
+  --black: #0b0b0b;
+  --b-line: #2a2a2a;
+  --b-line-2: #3d3d3d;
+  --b-mute: #9b9b9b;
+  --sans: "Geist", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --mono: "Geist Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --ease: cubic-bezier(.16, 1, .3, 1);
 }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
-  --cloth: #0a1610; --cloth-weave: #10211a; --cloth-ink: #dbe8df; --cloth-ink-2: #8fa99a;
-  --paper: #12211a; --paper-2: #182a21; --rule: #22372c; --rule-strong: #3a5847;
-  --margin: #ec8d82; --ink: #e3ede6; --ink-2: #aabdb1; --ink-3: #849a8d; --ok: #74c895; --hi: #2f4a22; --label: #1b2d24; --btn: #cfe3d5; --btn-ink: #0a1610;
-  --shadow: 0 1px 2px rgba(0,0,0,.4), 0 18px 40px -22px rgba(0,0,0,.8); color-scheme: dark } }
-:root[data-theme="dark"] {
-  --cloth: #0a1610; --cloth-weave: #10211a; --cloth-ink: #dbe8df; --cloth-ink-2: #8fa99a;
-  --paper: #12211a; --paper-2: #182a21; --rule: #22372c; --rule-strong: #3a5847;
-  --margin: #ec8d82; --ink: #e3ede6; --ink-2: #aabdb1; --ink-3: #849a8d; --ok: #74c895; --hi: #2f4a22; --label: #1b2d24; --btn: #cfe3d5; --btn-ink: #0a1610;
-  --shadow: 0 1px 2px rgba(0,0,0,.4), 0 18px 40px -22px rgba(0,0,0,.8); color-scheme: dark }
-
 * { box-sizing: border-box }
-html { scroll-behavior: smooth; scroll-padding-top: 16px }
-body {
-  background-color: var(--cloth);
-  background-image:
-    repeating-linear-gradient(45deg, transparent 0 3px, var(--cloth-weave) 3px 4px),
-    repeating-linear-gradient(-45deg, transparent 0 3px, var(--cloth-weave) 3px 4px);
-  color: var(--ink); font-family: var(--body); font-size: 17px; line-height: 1.6;
-  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
-  padding-block: 0 24px; -webkit-font-smoothing: antialiased;
-}
-::selection { background: var(--hi); color: var(--ink) }
-:focus-visible { outline: 2px solid var(--margin); outline-offset: 3px; border-radius: 2px }
-a { color: inherit; text-underline-offset: .2em; text-decoration-thickness: 1px }
+html { scroll-behavior: smooth }
+body { margin: 0; background: var(--white); color: var(--black); font-family: var(--sans); font-size: 17px; line-height: 1.6; -webkit-font-smoothing: antialiased }
+::selection { background: var(--black); color: var(--white) }
+.dark ::selection { background: var(--white); color: var(--black) }
+:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; border-radius: 2px }
+a { color: inherit; text-decoration: none }
 button, input, select, textarea { font: inherit; color: inherit }
 p { margin: 0 }
-h1, h2, h3 { margin: 0; font-family: var(--display); text-wrap: balance; font-stretch: 72%; font-weight: 800; letter-spacing: -0.005em; line-height: 1 }
-h2 { font-size: clamp(2rem, 4.6vw, 3.4rem); max-width: 18ch }
-h3 { font-size: 1.35rem; font-stretch: 85%; font-weight: 750; line-height: 1.15 }
-.num { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: .88em; letter-spacing: -0.01em }
-.caps { font-family: var(--display); font-stretch: 85%; font-weight: 650; text-transform: uppercase; letter-spacing: .08em; font-size: .74rem }
-.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap }
+h1, h2, h3 { margin: 0; font-weight: 500; letter-spacing: -0.035em; line-height: 1.02; text-wrap: balance }
+h2 { font-size: clamp(2.2rem, 5vw, 4rem) }
+h3 { font-size: 1.25rem; letter-spacing: -0.015em; line-height: 1.25 }
+.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; letter-spacing: -0.01em }
+.wrap { max-width: 1200px; margin: 0 auto; padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px)) }
+.band { padding-block: clamp(80px, 12vw, 160px) }
+.dark { background: var(--black); color: var(--white) }
+.lede { font-size: clamp(1.08rem, 1.5vw, 1.25rem); color: var(--ink-2); max-width: 54ch; line-height: 1.55 }
+.dark .lede { color: var(--b-mute) }
 svg.i { width: 18px; height: 18px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round }
 
-/* Canto superior de la tapa */
-.board { max-width: 1240px; margin: 0 auto; display: flex; align-items: center; gap: 12px 24px; flex-wrap: wrap; padding-block: 18px; color: var(--cloth-ink) }
-.plate { display: inline-flex; align-items: baseline; gap: 10px; text-decoration: none; background: var(--label); color: var(--ink); padding: 7px 14px 8px; border: 1px solid var(--rule-strong); outline: 1px solid var(--rule-strong); outline-offset: 2px; box-shadow: var(--shadow) }
-.plate b { font-family: var(--display); font-stretch: 70%; font-weight: 850; font-size: 1.5rem; line-height: 1; letter-spacing: .01em; border-bottom: 3px double var(--margin); padding-bottom: 1px }
-.plate span { font-size: .78rem; color: var(--ink-2) }
-.board nav { display: flex; gap: 4px 20px; flex-wrap: wrap; font-size: .95rem; margin-left: auto }
-.board nav a { text-decoration: none; color: var(--cloth-ink-2) }
-.board nav a:hover { color: var(--cloth-ink); text-decoration: underline }
-.lang { display: inline-flex; border: 1px solid var(--cloth-ink-2); border-radius: 3px; overflow: hidden }
-.lang button { all: unset; cursor: pointer; padding: 4px 10px; font-family: var(--mono); font-size: .78rem; color: var(--cloth-ink-2) }
-.lang button[aria-pressed="true"] { background: var(--cloth-ink); color: var(--cloth) }
-.lang button:focus-visible { outline: 2px solid var(--cloth-ink); outline-offset: -2px }
+/* Cursor propio (solo puntero fino) */
+.cur { position: fixed; left: 0; top: 0; width: 10px; height: 10px; margin: -5px 0 0 -5px; border-radius: 50%; background: #fff; mix-blend-mode: difference; pointer-events: none; z-index: 100; display: grid; place-items: center; transition: width .35s var(--ease), height .35s var(--ease), margin .35s var(--ease), opacity .2s; will-change: transform }
+.cur span { font-size: 15px; font-weight: 600; color: #000; opacity: 0; transition: opacity .2s; white-space: nowrap }
+.cur.big { width: 64px; height: 64px; margin: -32px 0 0 -32px }
+.cur.big.lbl span { opacity: 1 }
+.cur.press { width: 6px; height: 6px; margin: -3px 0 0 -3px }
+.cur[hidden] { display: none }
+html.has-cur, html.has-cur * { cursor: none !important }
+html.has-cur input[type="text"], html.has-cur textarea { cursor: text !important }
 
-/* El folio */
-.folio { position: relative; max-width: 1240px; margin: 0 auto; background: var(--paper); box-shadow: var(--shadow), 6px 6px 0 -1px var(--paper-2), 6px 6px 0 0 var(--rule); border-radius: 2px 6px 6px 2px; --gut: clamp(46px, 7vw, 104px); padding-left: var(--gut); padding-right: clamp(20px, 5vw, 72px) }
-.folio::before { content: ""; position: absolute; top: 0; bottom: 0; left: calc(var(--gut) - 22px); width: 5px; border-left: 1px solid var(--margin); border-right: 1px solid var(--margin); opacity: .75; pointer-events: none }
-.sec { padding-block: clamp(56px, 8vw, 104px); display: grid; gap: 28px; border-top: 1px solid var(--rule-strong) }
-.sec:first-child { border-top: 0 }
-.hero > *, .sec > *, .steps > *, .calc > *, .learn > *, .contact > * { min-width: 0 }
-.lede { font-size: 1.12rem; color: var(--ink-2); max-width: 60ch }
+/* Cabecera */
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--white) }
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--white); border-bottom: 1px solid transparent; transition: border-color .3s }
+.top.scrolled { border-bottom-color: var(--line) }
+.top .wrap { display: flex; align-items: center; gap: 28px; height: 68px }
+.logo { font-weight: 600; font-size: 1.15rem; letter-spacing: -0.03em; display: inline-flex; align-items: center; gap: 10px }
+.logo i { width: 18px; height: 18px; border: 1.5px solid var(--black); display: grid; place-items: center }
+.logo i::after { content: ""; width: 8px; height: 1.5px; background: var(--black); box-shadow: 0 3px 0 var(--black) }
+.top nav { display: flex; gap: 28px; margin-left: auto; font-size: .95rem; color: var(--ink-2) }
+.top nav a { position: relative }
+.top nav a::after { content: ""; position: absolute; left: 0; right: 0; bottom: -3px; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: right; transition: transform .4s var(--ease) }
+.top nav a:hover { color: var(--black) }
+.top nav a:hover::after { transform: scaleX(1); transform-origin: left }
+.lang { display: inline-flex; gap: 2px; font-family: var(--mono); font-size: .8rem }
+.lang button { all: unset; padding: 4px 6px; color: var(--ink-2); border-radius: 2px }
+.lang button[aria-pressed="true"] { color: var(--black); text-decoration: underline; text-underline-offset: 4px }
+.lang button:focus-visible { outline: 2px solid var(--black) }
+
+/* Botones */
+.btn { all: unset; box-sizing: border-box; position: relative; overflow: hidden; isolation: isolate; display: inline-flex; align-items: center; gap: 10px; height: 52px; padding: 0 26px; border-radius: 999px; background: var(--black); color: var(--white); font-weight: 500; font-size: 1rem; white-space: nowrap; transition: transform .45s var(--ease) }
+.btn::before { content: ""; position: absolute; inset: 0; z-index: -1; background: #2b2b2b; border-radius: inherit; transform: translateY(101%); transition: transform .5s var(--ease) }
+.btn:hover::before { transform: translateY(0) }
+.btn svg { transition: transform .45s var(--ease) }
+.btn:hover svg { transform: translateX(4px) }
+.btn:focus-visible { outline: 2px solid var(--black); outline-offset: 3px }
+.btn.sm { height: 40px; padding: 0 18px; font-size: .92rem }
+.btn.line { background: transparent; color: var(--black); box-shadow: inset 0 0 0 1px var(--line-2) }
+.btn.line::before { background: var(--stage) }
+.dark .btn { background: var(--white); color: var(--black) }
+.dark .btn::before { background: #d9d9d9 }
+.dark .btn:focus-visible { outline-color: var(--white) }
 
 /* Portada */
-.hero { padding-block: clamp(36px, 6vw, 72px) clamp(48px, 7vw, 88px); display: grid; gap: clamp(24px, 4vw, 40px) }
-.hero h1 { font-size: clamp(2.7rem, 7.4vw, 5.9rem); max-width: 17ch; line-height: .94; font-stretch: 66% }
-.hero h1 em { font-style: normal; color: var(--margin) }
-.hero .lede { font-size: clamp(1.08rem, 1.6vw, 1.25rem); max-width: 56ch }
+.hero { padding-block: clamp(48px, 9vw, 120px) clamp(48px, 6vw, 80px) }
+.hero h1 { font-size: clamp(2.9rem, 8.6vw, 7.4rem); letter-spacing: -0.045em; line-height: .98; max-width: 14ch }
+.hero h1 .l { display: block; overflow: hidden; padding-bottom: .06em }
+.hero h1 .l > span { display: block; animation: up 1.1s var(--ease) both }
+.hero h1 .l:nth-child(2) > span { animation-delay: .1s; color: var(--mute) }
+@keyframes up { from { transform: translateY(105%) } }
+.hero .row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 28px; margin-top: clamp(28px, 4vw, 48px) }
+.acts { display: flex; gap: 12px; flex-wrap: wrap }
 
-.ledger { overflow-x: auto; border: 1px solid var(--rule-strong); background: var(--paper); border-radius: 2px }
-.ledger table { width: 100%; min-width: 620px; border-collapse: collapse }
-.ledger caption { caption-side: top; text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--rule-strong); color: var(--ink-2); font-size: .88rem; background: var(--paper-2) }
-.ledger caption b { color: var(--ink) }
-.ledger th { text-align: left; padding: 8px 14px; border-bottom: 2px solid var(--rule-strong); color: var(--ink-3); font-weight: 600 }
-.ledger td { padding: 0 14px; height: 3rem; border-bottom: 1px solid var(--rule); vertical-align: middle }
-.ledger th + th, .ledger td + td { border-left: 1px solid var(--rule) }
-.ledger .r { text-align: right; white-space: nowrap }
-.ledger .acc { font-family: var(--mono); font-weight: 600; white-space: nowrap }
-.ledger tr.cp td { background: color-mix(in srgb, var(--hi) 55%, transparent) }
-.ledger .tot td { border-bottom: 0; height: 2.6rem; font-weight: 600 }
-.ledger .tot .r span { border-bottom: 3px double var(--margin); padding-bottom: 2px }
-.ledger .tot .ok { color: var(--ok); display: inline-flex; align-items: center; gap: 6px }
-.chip { display: inline-flex; align-items: center; gap: 5px; font-size: .74rem; padding: 1px 7px; border: 1px solid currentColor; border-radius: 99px; margin-left: 8px; color: var(--margin); white-space: nowrap; font-weight: 600 }
-.ledger tbody tr { animation: enter .5s cubic-bezier(.16, 1, .3, 1) both }
-.ledger tbody tr:nth-child(2) { animation-delay: .12s } .ledger tbody tr:nth-child(3) { animation-delay: .24s } .ledger tbody tr:nth-child(4) { animation-delay: .36s }
-@keyframes enter { from { background: var(--hi) } }
-.ledger tr.cp .chip { animation: pulse 2.4s ease-in-out .8s 2 }
-@keyframes pulse { 50% { background: color-mix(in srgb, var(--margin) 14%, transparent) } }
+/* Escenario: factura → asiento */
+.stage { margin-top: clamp(48px, 6vw, 80px); background: var(--stage); border-radius: 20px; padding: clamp(44px, 5vw, 64px) clamp(18px, 4vw, 56px); display: grid; grid-template-columns: minmax(0, .85fr) auto minmax(0, 1.15fr); gap: clamp(16px, 3vw, 40px); align-items: center; position: relative; overflow: hidden }
+.stage .tagline { position: absolute; top: 16px; left: 20px; font-size: .78rem; color: var(--ink-2); display: inline-flex; align-items: center; gap: 8px }
+.stage .tagline i { width: 7px; height: 7px; border-radius: 50%; background: var(--black); animation: blink 1.4s ease-in-out infinite }
+.paper { background: var(--white); border-radius: 6px; box-shadow: 0 1px 2px rgba(0,0,0,.06), 0 24px 48px -28px rgba(0,0,0,.35); padding: clamp(18px, 2.4vw, 30px); display: grid; gap: 10px; position: relative; overflow: hidden; font-size: .9rem; transform: perspective(1200px) rotateY(var(--ry, 0deg)) rotateX(var(--rx, 0deg)); transition: transform .6s var(--ease) }
+.paper .hd { display: flex; justify-content: space-between; gap: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--line); font-size: .82rem; color: var(--ink-2) }
+.paper .hd b { color: var(--black); font-weight: 600; display: block; font-size: .92rem }
+.paper .ln { display: flex; justify-content: space-between; gap: 12px }
+.paper .ln > span:last-child { font-family: var(--mono); font-size: .86rem }
+.paper .tt { padding-top: 10px; border-top: 1px solid var(--black); font-weight: 600 }
+.fld { position: relative; border-radius: 2px; transition: box-shadow .4s var(--ease) }
+.s1 .fld { box-shadow: 0 0 0 1.5px var(--black), 0 0 0 4px var(--white) }
+.scan { position: absolute; left: 0; right: 0; top: 0; height: 40%; background: linear-gradient(to bottom, transparent, rgba(0,0,0,.07) 85%, var(--black) 100%); transform: translateY(-110%); pointer-events: none }
+.stage.scanning .scan { animation: scan 1.4s var(--ease) both }
+@keyframes scan { to { transform: translateY(260%) } }
+.arrow { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; border: 1px solid var(--line-2); background: var(--white); transition: background .4s, color .4s }
+.s2 .arrow { background: var(--black); color: var(--white); border-color: var(--black) }
+.entry { background: var(--white); border-radius: 6px; box-shadow: 0 1px 2px rgba(0,0,0,.06), 0 24px 48px -28px rgba(0,0,0,.35); overflow: hidden; font-size: .9rem; min-width: 0 }
+.entry .tw { overflow-x: auto }
+.entry table { width: 100%; border-collapse: collapse; min-width: 340px }
+.entry th { text-align: left; font-weight: 500; font-size: .74rem; color: var(--ink-2); text-transform: uppercase; letter-spacing: .06em; padding: 14px 16px 10px; border-bottom: 1px solid var(--line) }
+.entry td { padding: 12px 16px; border-bottom: 1px solid var(--line) }
+.entry .r { text-align: right; white-space: nowrap }
+.entry .acc { font-family: var(--mono); font-weight: 500 }
+.entry tbody tr, .entry tfoot tr { opacity: .18; transition: opacity .5s var(--ease) }
+.s2 .entry tbody tr { opacity: 1 }
+.s2 .entry tbody tr:nth-child(2) { transition-delay: .12s } .s2 .entry tbody tr:nth-child(3) { transition-delay: .24s }
+.s3 .entry tfoot tr { opacity: 1 }
+.entry .prop { display: inline-block; margin-left: 8px; font-size: .7rem; padding: 1px 7px; border: 1px solid var(--black); border-radius: 99px; vertical-align: 1px }
+.entry tfoot td { border-bottom: 0; font-weight: 600 }
+.entry tfoot .r span { border-bottom: 3px double var(--black); padding-bottom: 1px }
+.status { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 14px 16px; min-height: 58px; background: var(--stage); border-top: 1px solid var(--line) }
+.status .wait { font-size: .85rem; color: var(--ink-2); display: inline-flex; gap: 8px; align-items: center }
+.status .wait i { width: 7px; height: 7px; border-radius: 50%; background: var(--black); animation: blink 1.4s ease-in-out infinite }
+.s4 .status .wait { display: none }
+@keyframes blink { 50% { opacity: .2 } }
+.ok { display: none; align-items: center; gap: 10px; flex-wrap: wrap }
+.s4 .ok { display: inline-flex }
+.vb { display: inline-flex; align-items: center; gap: 6px; background: var(--black); color: var(--white); border-radius: 99px; padding: 5px 12px 5px 9px; font-size: .82rem; font-weight: 500; animation: pop .6s var(--ease) }
+.file { display: inline-flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: .76rem; color: var(--ink-2) }
+@keyframes pop { from { transform: scale(.6); opacity: 0 } }
+.stage .synth { position: absolute; bottom: 14px; right: 20px; font-size: .74rem; color: var(--ink-2) }
 
-.entry { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 0; border: 1px solid var(--rule-strong); border-top: 0; background: var(--paper) }
-.entry label { display: flex; align-items: center; padding: 0 14px; color: var(--ink-3); border-right: 1px solid var(--rule) }
-.entry input { min-width: 0; border: 0; background: transparent; padding: 0 14px; height: 3.4rem; font-size: 1.05rem; outline: none }
-.entry input::placeholder { color: var(--ink-3) }
-.entry:focus-within { box-shadow: inset 0 -2px 0 var(--margin) }
-.btn { all: unset; box-sizing: border-box; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: var(--btn); color: var(--btn-ink); font-family: var(--display); font-stretch: 85%; font-weight: 700; font-size: 1.02rem; padding: 0 22px; min-height: 3.4rem; letter-spacing: .01em; transition: background .2s }
-.btn:hover { background: color-mix(in srgb, var(--btn) 84%, var(--ink)) }
-.btn:focus-visible { outline: 2px solid var(--margin); outline-offset: 2px }
-.btn[disabled] { opacity: .55; cursor: not-allowed }
-.hint { font-size: .9rem; color: var(--ink-3); display: flex; flex-wrap: wrap; gap: 4px 18px; align-items: center }
-.hint .msg { color: var(--margin); font-weight: 600 }
-.hint .msg.good { color: var(--ok) }
-.works { display: flex; flex-wrap: wrap; gap: 6px 22px; align-items: center; color: var(--ink-2); font-size: .95rem }
-.works b { font-weight: 650; color: var(--ink) }
+.trust { display: flex; flex-wrap: wrap; gap: 10px 40px; padding-top: 28px; color: var(--ink-2); font-size: .92rem }
+.trust b { color: var(--black); font-weight: 500 }
 
-/* Cinco pasos */
-.steps { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0; align-items: stretch }
-.sheet { background: var(--label); border: 1px solid var(--rule-strong); box-shadow: var(--shadow); display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); min-height: 460px; position: relative; z-index: 1 }
-.sheet .txt { padding: clamp(22px, 3.5vw, 40px); display: flex; flex-direction: column; gap: 16px; border-right: 1px solid var(--rule) }
-.sheet .count { color: var(--ink-3) }
-.sheet h3 { font-size: clamp(1.7rem, 3vw, 2.4rem); font-stretch: 70%; font-weight: 800 }
-.sheet .txt > p { color: var(--ink-2); max-width: 46ch }
-.sheet ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; font-size: .95rem }
-.sheet li { display: grid; grid-template-columns: 18px minmax(0, 1fr); gap: 10px; align-items: start }
-.sheet li svg { margin-top: 4px; color: var(--ok) }
-.nav2 { margin-top: auto; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; padding-top: 8px }
-.ghost { all: unset; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; padding: 8px 12px; border: 1px solid var(--rule-strong); font-size: .92rem; border-radius: 2px }
-.ghost:hover { background: var(--paper-2) }
-.ghost:focus-visible { outline: 2px solid var(--margin); outline-offset: 2px }
-.ghost[disabled] { opacity: .4; cursor: default; background: none }
-.viz { padding: clamp(18px, 3vw, 32px); background-color: var(--paper); background-image: repeating-linear-gradient(to bottom, transparent 0 calc(var(--line) - 1px), var(--rule) calc(var(--line) - 1px) var(--line)); display: flex; flex-direction: column; justify-content: center; gap: 12px; min-width: 0 }
-.tabs { display: flex; flex-direction: column; gap: 4px; padding-top: 24px }
-.tab { all: unset; cursor: pointer; box-sizing: border-box; display: flex; align-items: center; gap: 10px; padding: 12px 18px 12px 14px; margin-left: -1px; background: var(--paper-2); border: 1px solid var(--rule-strong); border-left: 0; border-radius: 0 8px 8px 0; color: var(--ink-2); font-family: var(--display); font-stretch: 80%; font-weight: 650; font-size: 1rem; white-space: nowrap; transition: background .2s, transform .25s cubic-bezier(.16, 1, .3, 1) }
-.tab b { font-family: var(--mono); font-weight: 500; font-size: .8rem; color: var(--ink-3) }
-.tab:hover { background: var(--paper); transform: translateX(3px) }
-.tab[aria-selected="true"] { background: var(--label); color: var(--ink); transform: translateX(6px); box-shadow: var(--shadow) }
-.tab[aria-selected="true"] b { color: var(--margin) }
-.tab:focus-visible { outline: 2px solid var(--margin); outline-offset: -3px }
-.panel-in { animation: turn .45s cubic-bezier(.16, 1, .3, 1) }
-@keyframes turn { from { clip-path: inset(0 0 0 100%); } to { clip-path: inset(0 0 0 0) } }
+/* Cinco pasos (banda negra, escenario fijo) */
+.steps-h { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; margin-bottom: clamp(48px, 7vw, 96px) }
+.flow { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: clamp(32px, 6vw, 96px); align-items: start }
+.blocks { display: grid; min-width: 0 }
+.blk { min-height: 62vh; display: flex; flex-direction: column; justify-content: center; gap: 18px; padding-block: 32px; border-top: 1px solid var(--b-line); opacity: .32; transition: opacity .5s var(--ease) }
+.blk:last-child { min-height: 50vh }
+.blk.on { opacity: 1 }
+.blk .n { font-family: var(--mono); font-size: .85rem; color: var(--b-mute) }
+.blk h3 { font-size: clamp(1.7rem, 3vw, 2.5rem); letter-spacing: -0.035em; line-height: 1.05 }
+.blk p { color: var(--b-mute); max-width: 44ch }
+.blk ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; font-size: .95rem }
+.blk li { display: grid; grid-template-columns: 18px minmax(0, 1fr); gap: 12px; align-items: start }
+.blk li svg { margin-top: 4px }
+.blk .mviz { display: none; min-width: 0 }
+.sticky { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 100px); min-width: 0 }
+.screen { border: 1px solid var(--b-line); border-radius: 20px; background: #121212; padding: clamp(20px, 3vw, 40px); min-height: 480px; display: flex; flex-direction: column; justify-content: center; gap: 14px; position: relative; overflow: hidden }
+.screen .ix { position: absolute; top: 18px; right: 22px; font-family: var(--mono); font-size: .8rem; color: var(--b-mute) }
+.prog { display: flex; gap: 6px; margin-top: 18px }
+.prog button { all: unset; flex: 1; height: 28px; display: flex; align-items: center }
+.prog button::before { content: ""; display: block; width: 100%; height: 2px; background: var(--b-line-2); transition: background .4s }
+.prog button[aria-current="true"]::before { background: var(--white) }
+.swap { animation: swap .6s var(--ease) }
+@keyframes swap { from { clip-path: inset(0 0 100% 0); transform: translateY(12px) } }
 
-/* Piezas de las ilustraciones de cada paso */
-.card { background: var(--label); border: 1px solid var(--rule-strong); border-radius: 2px; box-shadow: var(--shadow) }
-.files { padding: 6px 0 }
-.files .hd { display: flex; align-items: center; gap: 10px; padding: 10px 16px; border-bottom: 1px solid var(--rule); font-family: var(--mono); font-size: .86rem; font-weight: 600 }
-.files .row { display: grid; grid-template-columns: 18px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 9px 16px; font-size: .9rem; border-bottom: 1px solid var(--rule) }
-.files .row:last-child { border-bottom: 0 }
-.files .row span:nth-child(2) { font-family: var(--mono); font-size: .82rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
-.tag { font-size: .72rem; color: var(--ink-2); border: 1px solid var(--rule-strong); border-radius: 99px; padding: 0 8px; white-space: nowrap }
-.inv { padding: 16px 18px; display: grid; gap: 6px; font-size: .88rem }
-.inv .who { display: flex; justify-content: space-between; gap: 10px; color: var(--ink-2); font-size: .8rem; padding-bottom: 8px; border-bottom: 1px dashed var(--rule-strong) }
-.inv .l { display: flex; justify-content: space-between; gap: 10px }
-.inv .l span:last-child { font-family: var(--mono); font-size: .84rem }
-.mark { background: var(--hi); box-shadow: 0 0 0 2px var(--hi); border-radius: 1px }
-.tiers { display: grid; gap: 6px }
-.tier { display: grid; grid-template-columns: 22px minmax(0, 1fr) auto; gap: 10px; align-items: center; font-size: .88rem; padding: 6px 10px; border: 1px solid var(--rule); background: var(--paper); border-radius: 2px }
-.tier.on { border-color: var(--ok); background: var(--label) }
-.tier .k { font-family: var(--mono); font-size: .76rem; color: var(--ink-3) }
+/* Piezas de los pasos, en negro */
+.k { border: 1px solid var(--b-line-2); border-radius: 10px; background: var(--black) }
+.files .hd { display: flex; gap: 10px; align-items: center; padding: 12px 16px; border-bottom: 1px solid var(--b-line); font-family: var(--mono); font-size: .84rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
+.files .rw { display: grid; grid-template-columns: 18px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 11px 16px; border-bottom: 1px solid var(--b-line); font-size: .88rem }
+.files .rw:last-child { border-bottom: 0 }
+.files .rw span:nth-child(2) { font-family: var(--mono); font-size: .8rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
+.pill { font-size: .72rem; color: var(--b-mute); border: 1px solid var(--b-line-2); border-radius: 99px; padding: 1px 9px; white-space: nowrap }
+.inv { padding: 18px; display: grid; gap: 7px; font-size: .88rem }
+.inv .hh { display: flex; justify-content: space-between; gap: 10px; color: var(--b-mute); font-size: .8rem; padding-bottom: 10px; border-bottom: 1px dashed var(--b-line-2) }
+.inv .ln { display: flex; justify-content: space-between; gap: 10px }
+.inv .ln > span:last-child { font-family: var(--mono); font-size: .84rem }
+.hl { box-shadow: 0 0 0 1.5px var(--white), 0 0 0 4px var(--black); border-radius: 2px }
+.tiers { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px }
+.tier { border: 1px solid var(--b-line-2); border-radius: 8px; padding: 10px; font-size: .78rem; color: var(--b-mute); display: grid; gap: 4px; min-width: 0 }
+.tier b { font-family: var(--mono); font-weight: 400; font-size: .72rem }
+.tier.on { background: var(--white); color: var(--black); border-color: var(--white) }
 .checks { display: grid; gap: 8px }
-.check { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 10px; padding: 10px 12px; background: var(--label); border: 1px solid var(--rule-strong); border-radius: 2px; font-size: .9rem }
-.check b { display: block; font-weight: 650 }
-.check span { color: var(--ink-2); font-size: .84rem }
-.check .ic { width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; color: var(--ok); border: 1.5px solid currentColor }
-.check.flag { border-color: var(--margin) }
-.check.flag .ic { color: var(--margin) }
-.check .ic svg { width: 14px; height: 14px; stroke-width: 2.2 }
-.mini table { min-width: 0 }
-.mini td { height: 2.5rem; font-size: .88rem }
-.grid { overflow-x: auto }
-.grid table { border-collapse: collapse; width: 100%; min-width: 360px; font-size: .85rem; background: var(--label) }
-.grid th { background: var(--paper-2); font-weight: 600; color: var(--ink-3); text-align: left }
-.grid th, .grid td { border: 1px solid var(--rule-strong); padding: 6px 9px; white-space: nowrap }
-.grid .fix s { color: var(--ink-3) }
-.grid .fix b { color: var(--margin); font-family: var(--mono); margin-left: 6px }
-.okline { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: .9rem }
-.okline .stamp { display: inline-flex; align-items: center; gap: 6px; color: var(--ok); border: 2px solid currentColor; padding: 3px 10px; font-family: var(--display); font-stretch: 75%; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; transform: rotate(-2deg) }
-.file { display: inline-flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: .8rem; padding: 6px 10px; border: 1px solid var(--rule-strong); background: var(--label) }
-.rule-l { font-size: .86rem; color: var(--ink-2); border-top: 1px dashed var(--rule-strong); padding-top: 10px }
-.rule-l b { color: var(--ink) }
-.synth { font-size: .76rem; color: var(--ink-3); text-align: right }
+.ck { display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 12px; align-items: center; padding: 12px 14px; border: 1px solid var(--b-line-2); border-radius: 10px; font-size: .9rem }
+.ck b { display: block; font-weight: 500 }
+.ck span span { color: var(--b-mute); font-size: .82rem }
+.ck .ic { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; background: var(--white); color: var(--black) }
+.ck .ic svg { width: 14px; height: 14px; stroke-width: 2.4 }
+.ck.flag { border-style: dashed; border-color: var(--white) }
+.ck.flag .ic { background: transparent; color: var(--white); box-shadow: inset 0 0 0 1.5px var(--white) }
+.tbl { overflow-x: auto }
+.tbl table { width: 100%; border-collapse: collapse; font-size: .86rem; min-width: 320px }
+.tbl th { text-align: left; font-weight: 500; font-size: .72rem; color: var(--b-mute); text-transform: uppercase; letter-spacing: .06em; padding: 12px 14px; border-bottom: 1px solid var(--b-line-2) }
+.tbl td { padding: 11px 14px; border-bottom: 1px solid var(--b-line) }
+.tbl .r { text-align: right; white-space: nowrap; font-family: var(--mono) }
+.tbl .acc { font-family: var(--mono) }
+.tbl .prop { margin-left: 8px; font-size: .68rem; padding: 1px 7px; border: 1px solid var(--white); border-radius: 99px }
+.tbl tfoot td { border-bottom: 0; font-weight: 600 }
+.tbl tfoot .r span { border-bottom: 3px double var(--white) }
+.tbl s { color: var(--b-mute) }
+.tbl .fx b { margin-left: 8px; background: var(--white); color: var(--black); padding: 0 6px; border-radius: 3px; font-family: var(--mono); font-weight: 500 }
+.res { display: flex; flex-wrap: wrap; gap: 10px; align-items: center }
+.res .vb { background: var(--white); color: var(--black); animation: none }
+.res .file { color: var(--b-mute) }
+.rule { font-size: .86rem; color: var(--b-mute); padding-top: 12px; border-top: 1px dashed var(--b-line-2) }
+.rule b { color: var(--white); font-weight: 500 }
+.sy { font-size: .74rem; color: var(--b-mute) }
+
+/* Garantías */
+.gh { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px clamp(32px, 6vw, 96px); align-items: end; margin-bottom: clamp(40px, 6vw, 72px) }
+.nev { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid var(--black) }
+.nev > div { padding: 32px 32px 40px 0; border-bottom: 1px solid var(--line); display: grid; gap: 10px; align-content: start; min-width: 0 }
+.nev > div:nth-child(2n) { padding-left: 32px; border-left: 1px solid var(--line) }
+.nev .x { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--black); display: grid; place-items: center; margin-bottom: 6px }
+.nev h3 { font-size: clamp(1.25rem, 2vw, 1.55rem) }
+.nev p { color: var(--ink-2); max-width: 46ch }
 
 /* Calculadora */
-.calc { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(24px, 5vw, 64px); align-items: start }
-.sliders { display: grid; gap: 22px }
-.sl { display: grid; gap: 6px }
-.sl .top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px }
-.sl label { font-weight: 600 }
-.sl output { font-family: var(--mono); font-size: 1.1rem; font-weight: 600 }
-.sl small { color: var(--ink-3); font-size: .84rem }
-input[type="range"] { -webkit-appearance: none; appearance: none; width: 100%; height: 28px; background: transparent; cursor: pointer }
-input[type="range"]::-webkit-slider-runnable-track { height: 2px; background: var(--rule-strong) }
-input[type="range"]::-moz-range-track { height: 2px; background: var(--rule-strong) }
-input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 26px; margin-top: -12px; background: var(--cloth); border: 2px solid var(--paper); box-shadow: 0 0 0 1px var(--cloth); border-radius: 2px }
-input[type="range"]::-moz-range-thumb { width: 16px; height: 24px; background: var(--cloth); border: 2px solid var(--paper); box-shadow: 0 0 0 1px var(--cloth); border-radius: 2px }
-input[type="range"]:focus-visible { outline: 2px solid var(--margin); outline-offset: 4px }
-.sum { display: grid; border-top: 2px solid var(--rule-strong) }
-.sum .l { display: flex; justify-content: space-between; gap: 16px; align-items: baseline; padding: 12px 0; border-bottom: 1px solid var(--rule) }
-.sum .l span:first-child { color: var(--ink-2) }
-.sum .l span:last-child { font-family: var(--mono); font-variant-numeric: tabular-nums; font-weight: 500 }
-.sum .big { border-bottom: 0; padding-top: 18px }
-.sum .big span:first-child { color: var(--ink); font-weight: 650 }
-.sum .big span:last-child { font-family: var(--display); font-stretch: 66%; font-weight: 850; font-size: clamp(2.8rem, 6vw, 4.2rem); line-height: 1; border-bottom: 4px double var(--margin); padding-bottom: 4px }
-.sum p { padding-top: 14px; color: var(--ink-3); font-size: .9rem; max-width: 48ch }
+.calc { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(40px, 7vw, 120px); align-items: center; margin-top: clamp(40px, 6vw, 72px) }
+.sliders { display: grid; gap: 34px; min-width: 0 }
+.sl { display: grid; gap: 10px }
+.sl .t { display: flex; justify-content: space-between; align-items: baseline; gap: 16px }
+.sl label { color: var(--ink-2); font-size: .98rem }
+.sl output { font-family: var(--mono); font-size: 1.1rem }
+input[type="range"] { -webkit-appearance: none; appearance: none; width: 100%; height: 24px; background: transparent; margin: 0; --p: 50% }
+input[type="range"]::-webkit-slider-runnable-track { height: 2px; background: linear-gradient(to right, var(--black) var(--p), var(--line-2) var(--p)) }
+input[type="range"]::-moz-range-track { height: 2px; background: var(--line-2) }
+input[type="range"]::-moz-range-progress { height: 2px; background: var(--black) }
+input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; margin-top: -9px; border-radius: 50%; background: var(--black); border: 4px solid var(--stage); box-shadow: 0 0 0 1px var(--black); transition: transform .3s var(--ease) }
+input[type="range"]::-moz-range-thumb { width: 14px; height: 14px; border-radius: 50%; background: var(--black); border: 4px solid var(--stage); box-shadow: 0 0 0 1px var(--black) }
+input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.25) }
+input[type="range"]:focus-visible { outline: 2px solid var(--black); outline-offset: 6px }
+.small { font-size: .86rem; color: var(--ink-2) }
+.out { display: grid; gap: 22px; min-width: 0 }
+.out .big { font-size: clamp(5rem, 13vw, 10.5rem); font-weight: 300; letter-spacing: -0.06em; line-height: .85; font-variant-numeric: tabular-nums }
+.out .big small { font-size: .32em; letter-spacing: -0.02em; margin-left: .15em; color: var(--ink-2); font-weight: 400 }
+.out .cap { font-size: 1.1rem }
+.out dl { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 0; border-top: 1px solid var(--line-2) }
+.out dl div { padding: 14px 14px 0 0 }
+.out dt { font-size: .82rem; color: var(--ink-2) }
+.out dd { margin: 4px 0 0; font-family: var(--mono); font-size: 1.05rem }
 
-/* Nunca */
-.never { display: grid; border-top: 2px solid var(--rule-strong) }
-.never .r { display: grid; grid-template-columns: 7.5rem minmax(0, 1fr); gap: 20px; padding: 18px 0; border-bottom: 1px solid var(--rule) }
-.never .r > span { font-family: var(--display); font-stretch: 70%; font-weight: 850; color: var(--margin); text-transform: uppercase; letter-spacing: .05em; font-size: 1.05rem; padding-top: 2px }
-.never .r h3 { margin-bottom: 4px }
-.never .r p { color: var(--ink-2); max-width: 60ch }
-
-.learn { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(24px, 5vw, 64px); align-items: center }
-.learn .flow { display: grid; gap: 10px }
-.learn .step { display: grid; grid-template-columns: 2.2rem minmax(0, 1fr); gap: 12px; align-items: start; padding: 12px 14px; background: var(--label); border: 1px solid var(--rule-strong) }
-.learn .step b { font-family: var(--mono); font-size: .8rem; color: var(--ink-3); padding-top: 3px }
-.learn .step p { font-size: .95rem }
-.learn .step p small { display: block; color: var(--ink-2); font-size: .85rem }
-
-/* Índice */
-.index { display: grid; border-top: 2px solid var(--rule-strong); max-width: 860px }
-.index .r { display: grid; grid-template-columns: minmax(0, auto) 1fr auto; gap: 12px; align-items: baseline; padding: 16px 0; border-bottom: 1px solid var(--rule) }
-.index .r b { font-family: var(--display); font-stretch: 80%; font-weight: 750; font-size: 1.2rem }
-.index .r i { border-bottom: 2px dotted var(--rule-strong); transform: translateY(-4px) }
-.index .r span { color: var(--ink-2); text-align: right; font-size: .95rem }
-.index .r p { grid-column: 1 / -1; color: var(--ink-3); font-size: .92rem; margin-top: -6px }
+/* Cómo empezamos */
+.start { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: clamp(40px, 6vw, 72px) }
+.start > div { padding: 28px 24px 0 0; display: grid; gap: 10px; align-content: start; position: relative; min-width: 0 }
+.start > div::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: var(--line-2) }
+.start > div::after { content: ""; position: absolute; top: -5px; left: 0; width: 11px; height: 11px; border-radius: 50%; background: var(--white); border: 1.5px solid var(--black) }
+.start > div:first-child::after { background: var(--black) }
+.start .n { font-family: var(--mono); font-size: .8rem; color: var(--ink-2) }
+.start h3 { font-size: 1.5rem; letter-spacing: -0.03em }
+.start .d { font-size: .92rem; font-weight: 500 }
+.start p { color: var(--ink-2); font-size: .95rem }
 
 /* Preguntas */
-.faq { display: grid; border-top: 2px solid var(--rule-strong); max-width: 860px }
-.faq details { border-bottom: 1px solid var(--rule) }
-.faq summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; gap: 16px; align-items: center; padding: 18px 0; font-family: var(--display); font-stretch: 85%; font-weight: 700; font-size: 1.15rem }
+.faqw { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: clamp(32px, 6vw, 96px); align-items: start }
+.faq { border-top: 1px solid var(--black); min-width: 0 }
+.faq details { border-bottom: 1px solid var(--line) }
+.faq summary { list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 22px 0; font-size: 1.12rem; font-weight: 500; letter-spacing: -0.015em }
 .faq summary::-webkit-details-marker { display: none }
-.faq summary svg { transition: transform .25s }
-.faq details[open] summary svg { transform: rotate(45deg) }
-.faq summary:focus-visible { outline: 2px solid var(--margin); outline-offset: 2px }
-.faq details p { padding: 0 0 20px; color: var(--ink-2); max-width: 64ch }
+.faq summary .pm { position: relative; width: 14px; height: 14px; flex: none }
+.faq summary .pm::before, .faq summary .pm::after { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 1.5px; background: currentColor; transition: transform .4s var(--ease) }
+.faq summary .pm::after { transform: rotate(90deg) }
+.faq details[open] .pm::after { transform: rotate(0) }
+.faq details p { padding: 0 0 24px; color: var(--ink-2); max-width: 60ch }
+.faq details[open] p { animation: drop .5s var(--ease) }
+@keyframes drop { from { transform: translateY(-8px); opacity: 0 } }
 
 /* Contacto */
-.contact { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: clamp(24px, 5vw, 64px); align-items: start }
-form.req { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 1px solid var(--rule-strong); background: var(--label) }
-.f { display: grid; gap: 2px; padding: 10px 14px; border-bottom: 1px solid var(--rule); border-right: 1px solid var(--rule); min-width: 0 }
-.f:nth-child(2n) { border-right: 0 }
-.f.wide { grid-column: 1 / -1; border-right: 0 }
-.f label { font-size: .78rem; color: var(--ink-3); font-weight: 600 }
-.f input, .f select, .f textarea { border: 0; background: transparent; padding: 4px 0; font-size: 1rem; outline: none; min-width: 0; width: 100% }
-.f textarea { resize: vertical; min-height: 4.5rem }
-.f:focus-within { background: var(--paper) }
-.f:focus-within label { color: var(--margin) }
-.f.bad label { color: var(--margin) }
-.f.bad { box-shadow: inset 0 -2px 0 var(--margin) }
-.f .err { color: var(--margin); font-size: .8rem }
-.formfoot { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; align-items: center; padding: 14px }
-.formfoot small { color: var(--ink-3); max-width: 40ch; font-size: .82rem }
-.done { grid-column: 1 / -1; padding: 22px; display: grid; gap: 8px }
-.done h3 { color: var(--ok) }
-.done p { color: var(--ink-2) }
+.ct { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(40px, 7vw, 120px); align-items: start }
+.ct h2 { font-size: clamp(2.6rem, 6.4vw, 5.6rem) }
+form.req { display: grid; grid-template-columns: 1fr 1fr; gap: 26px 24px; min-width: 0 }
+.f { display: grid; gap: 6px; min-width: 0 }
+.f.w { grid-column: 1 / -1 }
+.f label { font-size: .84rem; color: var(--b-mute) }
+.f input, .f select, .f textarea { background: transparent; border: 0; border-bottom: 1px solid var(--b-line-2); padding: 8px 0 10px; font-size: 1.05rem; color: var(--white); outline: none; border-radius: 0; width: 100%; min-width: 0; transition: border-color .3s }
+.f select { appearance: none; background-image: linear-gradient(45deg, transparent 50%, var(--white) 50%), linear-gradient(135deg, var(--white) 50%, transparent 50%); background-position: right 6px top 55%, right 0 top 55%; background-size: 6px 6px; background-repeat: no-repeat }
+.f select option { color: var(--black); background: var(--white) }
+.f textarea { resize: vertical; min-height: 3.4rem }
+.f input:focus, .f select:focus, .f textarea:focus { border-bottom-color: var(--white) }
+.f.bad input { border-bottom-color: var(--white); border-bottom-style: dashed }
+.f .err { font-size: .82rem; color: var(--white) }
+.f .err:empty { display: none }
+.ff { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; padding-top: 8px }
+.ff small { color: var(--b-mute); font-size: .82rem; max-width: 34ch }
+.done { grid-column: 1 / -1; display: grid; gap: 14px; padding-top: 8px }
+.done h3 { font-size: 2rem; letter-spacing: -0.035em }
+.done p { color: var(--b-mute); max-width: 44ch }
+.lnk { all: unset; text-decoration: underline; text-underline-offset: 4px; font-size: .95rem }
+.lnk:focus-visible { outline: 2px solid var(--white); outline-offset: 3px }
 
-/* Canto inferior de la tapa */
-.foot { max-width: 1240px; margin: 0 auto; padding-block: 22px 8px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; color: var(--cloth-ink-2); font-size: .86rem }
-.foot b { color: var(--cloth-ink); font-weight: 600 }
+.foot { border-top: 1px solid var(--b-line); padding-block: 28px max(28px, env(safe-area-inset-bottom, 0px)) }
+.foot .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px 32px; font-size: .86rem; color: var(--b-mute) }
+.foot b { color: var(--white); font-weight: 500 }
 
-@media (max-width: 900px) {
-  .steps { grid-template-columns: minmax(0, 1fr) }
-  .tabs { order: -1; flex-direction: row; padding-top: 0; overflow-x: auto; gap: 4px; padding-bottom: 0 }
-  .tab { border: 1px solid var(--rule-strong); border-bottom: 0; border-radius: 8px 8px 0 0; margin: 0; padding: 10px 14px }
-  .tab:hover, .tab[aria-selected="true"] { transform: none }
-  .sheet { grid-template-columns: minmax(0, 1fr); min-height: 0 }
-  .sheet .txt { border-right: 0; border-bottom: 1px solid var(--rule) }
-  .calc, .learn, .contact { grid-template-columns: minmax(0, 1fr) }
+/* Aparición al hacer scroll: solo movimiento, el contenido siempre es visible */
+@supports (animation-timeline: view()) {
+  .rv { animation: rise linear both; animation-timeline: view(); animation-range: entry 0% entry 70% }
+  @keyframes rise { from { transform: translateY(32px) } }
 }
-@media (max-width: 600px) {
+
+@media (max-width: 960px) {
+  .top nav { display: none }
+  .lang { margin-left: auto }
+  .stage { grid-template-columns: minmax(0, 1fr) }
+  .arrow { transform: rotate(90deg); justify-self: center }
+  .flow { grid-template-columns: minmax(0, 1fr) }
+  .sticky { display: none }
+  .blk { min-height: 0; opacity: 1; padding-block: 40px }
+  .blk .mviz { display: grid; gap: 12px; margin-top: 8px }
+  .gh, .calc, .faqw, .ct { grid-template-columns: minmax(0, 1fr) }
+  .start { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 40px }
+}
+@media (max-width: 620px) {
   body { font-size: 16px }
-  .board nav { order: 3; margin-left: 0; width: 100% }
-  .board .btn { display: none }
-  .folio { --gut: 34px; padding-right: 16px }
-  .folio::before { left: 12px }
-  .entry { grid-template-columns: minmax(0, 1fr) }
-  .entry label { border-right: 0; border-bottom: 1px solid var(--rule); padding: 8px 14px }
-  .never .r { grid-template-columns: minmax(0, 1fr); gap: 4px }
+  .top .btn { display: none }
+  .top .wrap { gap: 16px }
+  .nev { grid-template-columns: minmax(0, 1fr) }
+  .nev > div, .nev > div:nth-child(2n) { padding: 28px 0 32px; border-left: 0 }
+  .start { grid-template-columns: minmax(0, 1fr) }
   form.req { grid-template-columns: minmax(0, 1fr) }
-  .f { border-right: 0 }
-  .index .r { grid-template-columns: minmax(0, 1fr) auto }
-  .index .r i { display: none }
+  .tiers { grid-template-columns: repeat(2, minmax(0, 1fr)) }
+  .out dl { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important }
@@ -301,276 +327,267 @@ form.req { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 1px so
 }
 </style>
 
-<header class="board">
-  <a class="plate" href="#top" aria-label="Asiento"><b>Asiento</b><span data-i18n="tagline">para gestorías</span></a>
-  <nav aria-label="Secciones">
-    <a href="#como" data-i18n="nav1">Cómo funciona</a>
-    <a href="#calcula" data-i18n="nav2">Calcula tus horas</a>
-    <a href="#nunca" data-i18n="nav3">Garantías</a>
-    <a href="#preguntas" data-i18n="nav4">Preguntas</a>
-  </nav>
-  <div class="lang" role="group" aria-label="Idioma / Language">
-    <button type="button" data-lang="es" aria-pressed="true">ES</button>
-    <button type="button" data-lang="en" aria-pressed="false">EN</button>
+<div class="cur" id="cur" aria-hidden="true" hidden><span></span></div>
+
+<header class="top" id="top">
+  <div class="wrap">
+    <a class="logo" href="#inicio" aria-label="Asiento"><i></i>Asiento</a>
+    <nav aria-label="Secciones">
+      <a href="#como" data-i18n="nav1">Cómo funciona</a>
+      <a href="#garantias" data-i18n="nav3">Garantías</a>
+      <a href="#calcula" data-i18n="nav2">Calcula tus horas</a>
+      <a href="#preguntas" data-i18n="nav4">Preguntas</a>
+    </nav>
+    <div class="lang" role="group" aria-label="Idioma / Language">
+      <button type="button" data-lang="es" aria-pressed="true">ES</button>
+      <button type="button" data-lang="en" aria-pressed="false">EN</button>
+    </div>
+    <a class="btn sm" href="#contacto" data-i18n="navcta" data-mag>Pedir diagnóstico</a>
   </div>
-  <a class="btn" href="#contacto" style="min-height:2.4rem;padding:0 16px;font-size:.95rem;background:var(--cloth-ink);color:var(--cloth)" data-i18n="navcta">Pedir diagnóstico</a>
 </header>
 
-<main class="folio" id="top">
+<main id="inicio">
 
-  <section class="hero" aria-labelledby="h1">
-    <h1 id="h1" data-i18n-html="h1">Las facturas llegan. <em>El asiento ya está hecho.</em></h1>
-    <p class="lede" data-i18n="lede">Asiento lee las facturas que te entregan tus clientes, propone cada apunte y te lo deja en Excel. Tú revisas, das el visto bueno y se genera el fichero para importar en Sage.</p>
-
-    <div>
-      <div class="ledger">
-        <table>
-          <caption><span data-i18n="cap1">Ejemplo ficticio</span> · <b data-i18n="cap2">Factura A-1042 de Ferretería Ejemplo, S.L.</b> · <span class="num" data-i18n="capdate">14/08/2026</span></caption>
-          <thead><tr>
-            <th class="caps" data-i18n="th1">Cuenta</th><th class="caps" data-i18n="th2">Concepto</th><th class="caps r" data-i18n="th3">Debe</th><th class="caps r" data-i18n="th4">Haber</th>
-          </tr></thead>
-          <tbody>
-            <tr class="cp"><td class="acc">602</td><td><span data-i18n="r1">Compras de materiales</span><span class="chip" data-i18n="chip">propuesta · revísala</span></td><td class="r num" data-amt="100">100,00</td><td></td></tr>
-            <tr><td class="acc">472</td><td data-i18n="r2">IVA soportado 21 %</td><td class="r num" data-amt="21">21,00</td><td></td></tr>
-            <tr><td class="acc">400</td><td><span data-i18n="r3">Ferretería Ejemplo, S.L.</span> · <span class="num">B00000000</span></td><td></td><td class="r num" data-amt="121">121,00</td></tr>
-            <tr class="tot"><td></td><td><span class="ok"><svg class="i" viewBox="0 0 24 24"><path d="M5 12.5 10 17l9-10"/></svg><span data-i18n="r4">Cuadra. Pendiente de tu visto bueno</span></span></td><td class="r num"><span data-amt="121">121,00</span></td><td class="r num"><span data-amt="121">121,00</span></td></tr>
-          </tbody>
-        </table>
+  <section class="hero">
+    <div class="wrap">
+      <h1><span class="l"><span data-i18n="h1a">Las facturas llegan.</span></span> <span class="l"><span data-i18n="h1b">El asiento ya está hecho.</span></span></h1>
+      <div class="row">
+        <p class="lede" data-i18n="lede">Asiento lee las facturas que te entregan tus clientes, propone cada apunte y te lo deja en Excel. Tú revisas, das el visto bueno y se genera el fichero para importar en tu programa contable.</p>
+        <div class="acts">
+          <a class="btn" href="#contacto" data-mag data-cursor-label="→"><span data-i18n="cta1">Pedir diagnóstico</span><svg class="i" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <a class="btn line" href="#como" data-mag data-cursor-label="↓"><span data-i18n="cta2">Ver cómo funciona</span></a>
+        </div>
       </div>
-      <form class="entry" id="quick" novalidate>
-        <label class="caps" for="qcontact" data-i18n="qlabel">Tu turno</label>
-        <input id="qcontact" name="contact" type="text" autocomplete="email" data-i18n-ph="qph" placeholder="Tu email o teléfono">
-        <button class="btn" type="submit" data-i18n="qbtn">Pedir diagnóstico</button>
-      </form>
-    </div>
-    <p class="hint"><span data-i18n="qhint">Diagnóstico de una hora en tu despacho, con facturas reales de un cliente. Sin compromiso.</span><span class="msg" id="qmsg" role="status" aria-live="polite"></span></p>
-    <p class="works"><span data-i18n="works">Trabaja con lo que ya usas:</span> <b>Sage</b> <b>Excel</b> <b data-i18n="works3">tus carpetas y tu correo</b></p>
-  </section>
 
-  <section class="sec" id="como" aria-labelledby="h-como">
-    <h2 id="h-como" data-i18n="h2steps">De la caja de facturas al fichero de importación, en cinco pasos</h2>
-    <p class="lede" data-i18n="stepslede">Sigue una misma factura de principio a fin. Pulsa cada pestaña o usa las flechas.</p>
-    <div class="steps">
-      <div class="sheet" id="panel" role="tabpanel" aria-live="polite"></div>
-      <div class="tabs" role="tablist" aria-label="Pasos" id="tabs"></div>
-    </div>
-  </section>
-
-  <section class="sec" id="calcula" aria-labelledby="h-calc">
-    <h2 id="h-calc" data-i18n="h2calc">¿Cuántas horas te lleva hoy grabar facturas?</h2>
-    <div class="calc">
-      <div class="sliders">
-        <div class="sl"><div class="top"><label for="c1" data-i18n="c1">Clientes a los que llevas la contabilidad</label><output id="o1" for="c1"></output></div><input type="range" id="c1" min="5" max="300" step="5" value="40"></div>
-        <div class="sl"><div class="top"><label for="c2" data-i18n="c2">Facturas por cliente al trimestre</label><output id="o2" for="c2"></output></div><input type="range" id="c2" min="5" max="200" step="5" value="30"></div>
-        <div class="sl"><div class="top"><label for="c3" data-i18n="c3">Minutos por factura (abrir, leer, teclear, comprobar)</label><output id="o3" for="c3"></output></div><input type="range" id="c3" min="1" max="10" step="0.5" value="3"></div>
-        <small class="hint" data-i18n="cnote">Valores de partida orientativos. Pon los tuyos.</small>
+      <div class="stage s1 s2 s3 s4" id="stage" role="img" aria-label="Ejemplo animado: una factura se convierte en asiento">
+        <span class="tagline"><i></i><span data-i18n="stagetag">Ejemplo en directo</span></span>
+        <div class="paper" id="paper">
+          <div class="scan"></div>
+          <div class="hd"><span><b>Ferretería Ejemplo, S.L.</b>NIF <span class="fld mono">B00000000</span></span><span style="text-align:right"><span data-i18n="invno">Factura A-1042</span><br><span class="fld mono">14/08/2026</span></span></div>
+          <div class="ln"><span data-i18n="item">40 sacos de cemento</span><span data-amt="100">100,00</span></div>
+          <div class="ln"><span data-i18n="base">Base imponible</span><span class="fld" data-amt="100">100,00</span></div>
+          <div class="ln"><span data-i18n="vat">IVA 21 %</span><span class="fld" data-amt="21">21,00</span></div>
+          <div class="ln tt"><span>Total</span><span class="fld"><span data-amt="121">121,00</span> €</span></div>
+        </div>
+        <div class="arrow"><svg class="i" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+        <div class="entry">
+          <div class="tw"><table>
+            <thead><tr><th data-i18n="th1">Cuenta</th><th data-i18n="th2">Concepto</th><th class="r" data-i18n="th3">Debe</th><th class="r" data-i18n="th4">Haber</th></tr></thead>
+            <tbody>
+              <tr><td class="acc">602</td><td><span data-i18n="r1">Compras</span><span class="prop" data-i18n="prop">propuesta</span></td><td class="r mono" data-amt="100">100,00</td><td></td></tr>
+              <tr><td class="acc">472</td><td data-i18n="r2">IVA soportado</td><td class="r mono" data-amt="21">21,00</td><td></td></tr>
+              <tr><td class="acc">400</td><td data-i18n="r3">Proveedor</td><td></td><td class="r mono" data-amt="121">121,00</td></tr>
+            </tbody>
+            <tfoot><tr><td></td><td data-i18n="r4">Cuadra</td><td class="r mono"><span data-amt="121">121,00</span></td><td class="r mono"><span data-amt="121">121,00</span></td></tr></tfoot>
+          </table></div>
+          <div class="status">
+            <span class="wait"><i></i><span data-i18n="wait">Pendiente de tu visto bueno</span></span>
+            <span class="ok"><span class="vb"><svg class="i" viewBox="0 0 24 24"><path d="M5 12.5 10 17l9-10"/></svg><span data-i18n="vb">Visto bueno</span></span><span class="file"><svg class="i" viewBox="0 0 24 24"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg>importacion_sage.xml</span></span>
+          </div>
+        </div>
+        <span class="synth" data-i18n="synth">Datos de ejemplo, ficticios</span>
       </div>
-      <div class="sum" aria-live="polite">
-        <div class="l"><span data-i18n="s1">Facturas al trimestre</span><span id="s1"></span></div>
-        <div class="l"><span data-i18n="s2">Minutos de grabación</span><span id="s2"></span></div>
-        <div class="l"><span data-i18n="s3">Jornadas de 8 horas</span><span id="s3"></span></div>
-        <div class="l big"><span data-i18n="s4">Horas al trimestre</span><span id="s4"></span></div>
-        <p data-i18n="snote">Son tus números, no una promesa de ahorro. En el diagnóstico medimos cuánto de este tiempo se puede quitar con tus facturas reales.</p>
-      </div>
+
+      <div class="trust"><span data-i18n="works">Trabaja con lo que ya usas</span><b>Sage</b><b>Excel</b><b data-i18n="w3">PDF, fotos y escaneos</b><b data-i18n="w4">Tu correo</b></div>
     </div>
   </section>
 
-  <section class="sec" id="nunca" aria-labelledby="h-nunca">
-    <h2 id="h-nunca" data-i18n="h2never">Lo que Asiento no hace nunca</h2>
-    <div class="never">
-      <div class="r"><span data-i18n="never">Nunca</span><div><h3 data-i18n="n1t">Importa en tu contabilidad por su cuenta</h3><p data-i18n="n1p">Genera los ficheros de importación. Quien los importa eres tú, cuando has dado el visto bueno.</p></div></div>
-      <div class="r"><span data-i18n="never">Nunca</span><div><h3 data-i18n="n2t">Inventa ni redondea un importe</h3><p data-i18n="n2p">Si la base, el IVA y la retención no cuadran con el total, la factura se aparta a tu cola de revisión con el motivo escrito.</p></div></div>
-      <div class="r"><span data-i18n="never">Nunca</span><div><h3 data-i18n="n3t">Pisa tu maestro de clientes y proveedores</h3><p data-i18n="n3p">Los terceros que compartes entre empresas pasan por una salvaguarda antes de tocar nada.</p></div></div>
-      <div class="r"><span data-i18n="never">Nunca</span><div><h3 data-i18n="n4t">Saca los datos de tus clientes del despacho</h3><p data-i18n="n4p">Las facturas originales y la base de trabajo se quedan en un equipo de tu despacho, con copia diaria.</p></div></div>
-    </div>
-  </section>
-
-  <section class="sec" aria-labelledby="h-learn">
-    <div class="learn">
-      <div style="display:grid;gap:18px">
-        <h2 id="h-learn" data-i18n="h2learn">Cada corrección tuya se convierte en una regla</h2>
-        <p class="lede" data-i18n="learnlede">Asiento no decide a qué cuenta va un gasto: eso depende de a qué se dedica cada empresa y de tu criterio. Lo que hace es aprenderlo. Cuando corriges algo en el Excel, o nos lo explicas en un audio, deja de ser un arreglo puntual y pasa a aplicarse el trimestre siguiente.</p>
+  <section class="band dark" id="como" aria-labelledby="h-como">
+    <div class="wrap">
+      <div class="steps-h rv">
+        <h2 id="h-como" data-i18n="h2steps">Cómo funciona, en cinco pasos.</h2>
+        <p class="lede" data-i18n="stepslede">Sigue una misma factura desde que tu cliente la entrega hasta que la importas.</p>
       </div>
       <div class="flow">
-        <div class="step"><b>1T</b><p><span data-i18n="l1">Corriges «602» por «629» en una factura de la ferretería.</span><small data-i18n="l1s">En tu Excel, como siempre.</small></p></div>
-        <div class="step"><b>→</b><p><span data-i18n="l2">Queda escrita una regla para esa empresa y ese proveedor.</span><small data-i18n="l2s">Con una prueba que vigila que no se rompa.</small></p></div>
-        <div class="step"><b>2T</b><p><span data-i18n="l3">El trimestre siguiente, la propuesta ya sale con tu cuenta.</span><small data-i18n="l3s">Menos correcciones cada cierre.</small></p></div>
+        <div class="blocks" id="blocks"></div>
+        <div class="sticky" aria-hidden="true">
+          <div class="screen" id="screen"></div>
+          <div class="prog" id="prog"></div>
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="sec" id="empezar" aria-labelledby="h-start">
-    <h2 id="h-start" data-i18n="h2start">Cómo empezamos contigo</h2>
-    <div class="index">
-      <div class="r"><b data-i18n="i1">Visita</b><i></i><span data-i18n="i1d">30 minutos, en tu despacho</span><p data-i18n="i1p">Nos cuentas cómo os llegan las facturas, qué programa usáis y dónde se va el tiempo.</p></div>
-      <div class="r"><b data-i18n="i2">Diagnóstico</b><i></i><span data-i18n="i2d">1 hora, con facturas reales</span><p data-i18n="i2p">Pasamos las facturas de un cliente tuyo y te dejamos una propuesta escrita: qué se automatiza y cuánto tiempo recuperas.</p></div>
-      <div class="r"><b data-i18n="i3">Prueba</b><i></i><span data-i18n="i3d">Un cliente, pocos días</span><p data-i18n="i3p">Lo ves funcionando con tu criterio antes de ampliar al resto.</p></div>
-      <div class="r"><b data-i18n="i4">Instalación y cuidado</b><i></i><span data-i18n="i4d">Alta y cuota mensual</span><p data-i18n="i4p">Instalación en tu equipo, soporte, actualizaciones y copias de seguridad. Gente de Madrid Norte que responde.</p></div>
+  <section class="band" id="garantias" aria-labelledby="h-nev">
+    <div class="wrap">
+      <div class="gh rv">
+        <h2 id="h-nev" data-i18n="h2never">Lo que Asiento no hace nunca.</h2>
+        <p class="lede" data-i18n="neverlede">La máquina prepara. El criterio es tuyo. Estas cuatro reglas no se negocian.</p>
+      </div>
+      <div class="nev rv">
+        <div><span class="x"><svg class="i" viewBox="0 0 24 24"><path d="M7 7l10 10M17 7 7 17"/></svg></span><h3 data-i18n="n1t">Importar en tu contabilidad por su cuenta</h3><p data-i18n="n1p">Genera los ficheros de importación. Quien los importa eres tú, cuando has dado el visto bueno.</p></div>
+        <div><span class="x"><svg class="i" viewBox="0 0 24 24"><path d="M7 7l10 10M17 7 7 17"/></svg></span><h3 data-i18n="n2t">Inventar o redondear un importe</h3><p data-i18n="n2p">Si la base, el IVA y la retención no cuadran con el total, la factura se aparta a tu cola de revisión con el motivo escrito.</p></div>
+        <div><span class="x"><svg class="i" viewBox="0 0 24 24"><path d="M7 7l10 10M17 7 7 17"/></svg></span><h3 data-i18n="n3t">Pisar tu maestro de clientes y proveedores</h3><p data-i18n="n3p">Los terceros que compartes entre empresas pasan por una salvaguarda antes de tocar nada.</p></div>
+        <div><span class="x"><svg class="i" viewBox="0 0 24 24"><path d="M7 7l10 10M17 7 7 17"/></svg></span><h3 data-i18n="n4t">Sacar los datos de tus clientes del despacho</h3><p data-i18n="n4p">Las facturas originales y la base de trabajo se quedan en un equipo de tu despacho, con copia diaria.</p></div>
+      </div>
     </div>
   </section>
 
-  <section class="sec" id="preguntas" aria-labelledby="h-faq">
-    <h2 id="h-faq" data-i18n="h2faq">Preguntas que nos hacen las gestorías</h2>
-    <div class="faq" id="faq"></div>
+  <section class="band" id="calcula" aria-labelledby="h-calc" style="background:var(--stage)">
+    <div class="wrap">
+      <h2 id="h-calc" style="max-width:16ch" data-i18n="h2calc">¿Cuántas horas te lleva hoy grabar facturas?</h2>
+      <div class="calc rv">
+        <div class="sliders">
+          <div class="sl"><div class="t"><label for="c1" data-i18n="c1">Clientes a los que llevas la contabilidad</label><output id="o1" for="c1"></output></div><input type="range" id="c1" min="5" max="300" step="5" value="40"></div>
+          <div class="sl"><div class="t"><label for="c2" data-i18n="c2">Facturas por cliente al trimestre</label><output id="o2" for="c2"></output></div><input type="range" id="c2" min="5" max="200" step="5" value="30"></div>
+          <div class="sl"><div class="t"><label for="c3" data-i18n="c3">Minutos por factura</label><output id="o3" for="c3"></output></div><input type="range" id="c3" min="1" max="10" step="0.5" value="3"></div>
+          <p class="small" data-i18n="cnote">Valores de partida orientativos. Pon los tuyos.</p>
+        </div>
+        <div class="out" aria-live="polite">
+          <div class="big"><span id="hrs">60</span><small data-i18n="unitlong">horas</small></div>
+          <p class="cap" data-i18n="s4">al trimestre grabando facturas a mano.</p>
+          <dl>
+            <div><dt data-i18n="s1">Facturas</dt><dd id="s1"></dd></div>
+            <div><dt data-i18n="s2">Minutos</dt><dd id="s2"></dd></div>
+            <div><dt data-i18n="s3">Jornadas de 8 h</dt><dd id="s3"></dd></div>
+          </dl>
+          <p class="small" data-i18n="snote">Son tus números, no una promesa de ahorro. En el diagnóstico medimos cuánto de este tiempo se puede quitar con tus facturas reales.</p>
+        </div>
+      </div>
+    </div>
   </section>
 
-  <section class="sec" id="contacto" aria-labelledby="h-contact">
-    <div class="contact">
-      <div style="display:grid;gap:18px;align-content:start">
-        <h2 id="h-contact" data-i18n="h2contact">Pide un diagnóstico de una hora</h2>
-        <p class="lede" data-i18n="contactlede">Vamos a tu despacho, pasamos las facturas de uno de tus clientes y te dejamos por escrito qué se puede automatizar y cuánto tiempo te ahorra. Sin compromiso.</p>
+  <section class="band" id="empezar" aria-labelledby="h-start">
+    <div class="wrap">
+      <h2 id="h-start" data-i18n="h2start">Cómo empezamos contigo.</h2>
+      <div class="start rv">
+        <div><span class="n">01</span><h3 data-i18n="i1">Visita</h3><span class="d" data-i18n="i1d">30 minutos, en tu despacho</span><p data-i18n="i1p">Nos cuentas cómo os llegan las facturas, qué programa usáis y dónde se va el tiempo.</p></div>
+        <div><span class="n">02</span><h3 data-i18n="i2">Diagnóstico</h3><span class="d" data-i18n="i2d">1 hora, con facturas reales</span><p data-i18n="i2p">Pasamos las facturas de un cliente tuyo y te dejamos una propuesta escrita.</p></div>
+        <div><span class="n">03</span><h3 data-i18n="i3">Prueba</h3><span class="d" data-i18n="i3d">Un cliente, pocos días</span><p data-i18n="i3p">Lo ves funcionando con tu criterio antes de ampliar al resto.</p></div>
+        <div><span class="n">04</span><h3 data-i18n="i4">Instalación</h3><span class="d" data-i18n="i4d">Alta y cuota mensual</span><p data-i18n="i4p">En tu equipo, con soporte, actualizaciones y copias. Gente de Madrid Norte que responde.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="preguntas" aria-labelledby="h-faq" style="padding-top:0">
+    <div class="wrap faqw rv">
+      <h2 id="h-faq" data-i18n="h2faq">Preguntas frecuentes.</h2>
+      <div class="faq" id="faq"></div>
+    </div>
+  </section>
+
+  <section class="band dark" id="contacto" aria-labelledby="h-ct">
+    <div class="wrap ct rv">
+      <div style="display:grid;gap:24px;align-content:start">
+        <h2 id="h-ct" data-i18n="h2contact">Pide un diagnóstico de una hora.</h2>
+        <p class="lede" data-i18n="contactlede">Vamos a tu despacho, pasamos las facturas de uno de tus clientes y te dejamos por escrito qué se puede automatizar. Sin compromiso.</p>
       </div>
       <form class="req" id="req" novalidate>
-        <div class="f"><label for="fname" data-i18n="fname">Nombre</label><input id="fname" name="name" autocomplete="name"></div>
-        <div class="f"><label for="ffirm" data-i18n="ffirm">Gestoría o asesoría</label><input id="ffirm" name="firm" autocomplete="organization"></div>
-        <div class="f wide"><label for="fcontact" data-i18n="fcontact">Email o teléfono *</label><input id="fcontact" name="contact" autocomplete="email" aria-describedby="fcontact-err"><span class="err" id="fcontact-err" aria-live="polite"></span></div>
+        <div class="f"><label for="fname" data-i18n="fname">Nombre</label><input id="fname" name="name" type="text" autocomplete="name"></div>
+        <div class="f"><label for="ffirm" data-i18n="ffirm">Gestoría o asesoría</label><input id="ffirm" name="firm" type="text" autocomplete="organization"></div>
+        <div class="f w"><label for="fcontact" data-i18n="fcontact">Email o teléfono *</label><input id="fcontact" name="contact" type="text" autocomplete="email" aria-describedby="fcontact-err"><span class="err" id="fcontact-err" aria-live="polite"></span></div>
         <div class="f"><label for="fclients" data-i18n="fclients">Clientes con contabilidad</label>
           <select id="fclients" name="clients"><option value="" data-i18n="opt0">Elige</option><option>1–20</option><option>21–60</option><option>61–150</option><option>150+</option></select></div>
         <div class="f"><label for="fsoft" data-i18n="fsoft">Programa contable</label>
           <select id="fsoft" name="software"><option value="" data-i18n="opt0">Elige</option><option>Sage</option><option>A3</option><option>Contasol</option><option data-i18n="optother">Otro</option></select></div>
-        <div class="f wide"><label for="fmsg" data-i18n="fmsg">¿Algo que debamos saber? (opcional)</label><textarea id="fmsg" name="msg"></textarea></div>
-        <div class="formfoot"><small data-i18n="fnote">Formulario de muestra: todavía no envía datos a ningún sitio.</small><button class="btn" type="submit" data-i18n="fbtn">Pedir diagnóstico</button></div>
+        <div class="f w"><label for="fmsg" data-i18n="fmsg">¿Algo que debamos saber? (opcional)</label><textarea id="fmsg" name="msg"></textarea></div>
+        <div class="ff"><small data-i18n="fnote">Formulario de muestra: todavía no envía datos.</small><button class="btn" type="submit" data-mag><span data-i18n="fbtn">Enviar solicitud</span><svg class="i" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
       </form>
     </div>
   </section>
-
 </main>
 
-<footer class="foot">
-  <span><b>Asiento</b> · <span data-i18n="foot1">automatización contable para gestorías · Madrid Norte</span></span>
-  <span data-i18n="foot2">Los nombres, NIF e importes de esta página son ficticios.</span>
+<footer class="foot dark">
+  <div class="wrap"><span><b>Asiento</b> · <span data-i18n="foot1">automatización contable para gestorías · Madrid Norte</span></span><span data-i18n="foot2">Los nombres, NIF e importes de esta página son ficticios.</span></div>
 </footer>
 
 <script>
 (() => {
-const ICON = {
+const IC = {
   check: '<svg class="i" viewBox="0 0 24 24"><path d="M5 12.5 10 17l9-10"/></svg>',
   alert: '<svg class="i" viewBox="0 0 24 24"><path d="M12 7v6"/><path d="M12 17h.01"/></svg>',
   file: '<svg class="i" viewBox="0 0 24 24"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4"/></svg>',
   image: '<svg class="i" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="1"/><path d="m4 16 5-5 4 4 2-2 5 5"/></svg>',
   mail: '<svg class="i" viewBox="0 0 24 24"><rect x="3.5" y="6" width="17" height="12" rx="1"/><path d="m4 7 8 6 8-6"/></svg>',
   zip: '<svg class="i" viewBox="0 0 24 24"><path d="M5 4h14v16H5z"/><path d="M11 4v2h2v2h-2v2h2v2h-2"/></svg>',
-  prev: '<svg class="i" viewBox="0 0 24 24"><path d="m14 6-6 6 6 6"/></svg>',
-  next: '<svg class="i" viewBox="0 0 24 24"><path d="m10 6 6 6-6 6"/></svg>',
-  plus: '<svg class="i" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>',
   out: '<svg class="i" viewBox="0 0 24 24"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg>'
 };
 
 const T = {
 es: {
-  tagline: 'para gestorías', nav1: 'Cómo funciona', nav2: 'Calcula tus horas', nav3: 'Garantías', nav4: 'Preguntas', navcta: 'Pedir diagnóstico',
-  h1: 'Las facturas llegan. <em>El asiento ya está hecho.</em>',
-  lede: 'Asiento lee las facturas que te entregan tus clientes, propone cada apunte y te lo deja en Excel. Tú revisas, das el visto bueno y se genera el fichero para importar en Sage.',
-  cap1: 'Ejemplo ficticio', cap2: 'Factura A-1042 de Ferretería Ejemplo, S.L.', capdate: '14/08/2026',
-  th1: 'Cuenta', th2: 'Concepto', th3: 'Debe', th4: 'Haber',
-  r1: 'Compras de materiales', chip: 'propuesta · revísala', r2: 'IVA soportado 21 %', r3: 'Ferretería Ejemplo, S.L.', r4: 'Cuadra. Pendiente de tu visto bueno',
-  qlabel: 'Tu turno', qph: 'Tu email o teléfono', qbtn: 'Pedir diagnóstico',
-  qhint: 'Diagnóstico de una hora en tu despacho, con facturas reales de un cliente. Sin compromiso.',
-  qempty: 'Escribe un email o un teléfono para que te llamemos.', qok: 'Apuntado. Completa dos datos más abajo y listo.',
-  works: 'Trabaja con lo que ya usas:', works3: 'tus carpetas y tu correo',
-  h2steps: 'De la caja de facturas al fichero de importación, en cinco pasos',
-  stepslede: 'Sigue una misma factura de principio a fin. Pulsa cada pestaña o usa las flechas.',
-  step: 'Paso', of: 'de', prev: 'Anterior', next: 'Siguiente', synth: 'Datos de ejemplo, ficticios',
+  nav1: 'Cómo funciona', nav2: 'Calcula tus horas', nav3: 'Garantías', nav4: 'Preguntas', navcta: 'Pedir diagnóstico',
+  h1a: 'Las facturas llegan.', h1b: 'El asiento ya está hecho.',
+  lede: 'Asiento lee las facturas que te entregan tus clientes, propone cada apunte y te lo deja en Excel. Tú revisas, das el visto bueno y se genera el fichero para importar en tu programa contable.',
+  cta1: 'Pedir diagnóstico', cta2: 'Ver cómo funciona', stagetag: 'Ejemplo en directo', stagelabel: 'Ejemplo animado: una factura se convierte en asiento',
+  invno: 'Factura A-1042', item: '40 sacos de cemento', base: 'Base imponible', vat: 'IVA 21 %',
+  th1: 'Cuenta', th2: 'Concepto', th3: 'Debe', th4: 'Haber', r1: 'Compras', prop: 'propuesta', r2: 'IVA soportado', r3: 'Proveedor', r4: 'Cuadra',
+  wait: 'Pendiente de tu visto bueno', vb: 'Visto bueno', synth: 'Datos de ejemplo, ficticios',
+  works: 'Trabaja con lo que ya usas', w3: 'PDF, fotos y escaneos', w4: 'Tu correo',
+  h2steps: 'Cómo funciona, en cinco pasos.', stepslede: 'Sigue una misma factura desde que tu cliente la entrega hasta que la importas.',
+  goto: 'Ir al paso',
+  h2never: 'Lo que Asiento no hace nunca.', neverlede: 'La máquina prepara. El criterio es tuyo. Estas cuatro reglas no se negocian.',
+  n1t: 'Importar en tu contabilidad por su cuenta', n1p: 'Genera los ficheros de importación. Quien los importa eres tú, cuando has dado el visto bueno.',
+  n2t: 'Inventar o redondear un importe', n2p: 'Si la base, el IVA y la retención no cuadran con el total, la factura se aparta a tu cola de revisión con el motivo escrito.',
+  n3t: 'Pisar tu maestro de clientes y proveedores', n3p: 'Los terceros que compartes entre empresas pasan por una salvaguarda antes de tocar nada.',
+  n4t: 'Sacar los datos de tus clientes del despacho', n4p: 'Las facturas originales y la base de trabajo se quedan en un equipo de tu despacho, con copia diaria.',
   h2calc: '¿Cuántas horas te lleva hoy grabar facturas?',
-  c1: 'Clientes a los que llevas la contabilidad', c2: 'Facturas por cliente al trimestre', c3: 'Minutos por factura (abrir, leer, teclear, comprobar)',
-  cnote: 'Valores de partida orientativos. Pon los tuyos.',
-  s1: 'Facturas al trimestre', s2: 'Minutos de grabación', s3: 'Jornadas de 8 horas', s4: 'Horas al trimestre', unitmin: 'min', unith: 'h',
+  c1: 'Clientes a los que llevas la contabilidad', c2: 'Facturas por cliente al trimestre', c3: 'Minutos por factura', cnote: 'Valores de partida orientativos. Pon los tuyos.',
+  unitlong: 'horas', s4: 'al trimestre grabando facturas a mano.', s1: 'Facturas', s2: 'Minutos', s3: 'Jornadas de 8 h', unitmin: 'min',
   snote: 'Son tus números, no una promesa de ahorro. En el diagnóstico medimos cuánto de este tiempo se puede quitar con tus facturas reales.',
-  h2never: 'Lo que Asiento no hace nunca', never: 'Nunca',
-  n1t: 'Importa en tu contabilidad por su cuenta', n1p: 'Genera los ficheros de importación. Quien los importa eres tú, cuando has dado el visto bueno.',
-  n2t: 'Inventa ni redondea un importe', n2p: 'Si la base, el IVA y la retención no cuadran con el total, la factura se aparta a tu cola de revisión con el motivo escrito.',
-  n3t: 'Pisa tu maestro de clientes y proveedores', n3p: 'Los terceros que compartes entre empresas pasan por una salvaguarda antes de tocar nada.',
-  n4t: 'Saca los datos de tus clientes del despacho', n4p: 'Las facturas originales y la base de trabajo se quedan en un equipo de tu despacho, con copia diaria.',
-  h2learn: 'Cada corrección tuya se convierte en una regla',
-  learnlede: 'Asiento no decide a qué cuenta va un gasto: eso depende de a qué se dedica cada empresa y de tu criterio. Lo que hace es aprenderlo. Cuando corriges algo en el Excel, o nos lo explicas en un audio, deja de ser un arreglo puntual y pasa a aplicarse el trimestre siguiente.',
-  l1: 'Corriges «602» por «629» en una factura de la ferretería.', l1s: 'En tu Excel, como siempre.',
-  l2: 'Queda escrita una regla para esa empresa y ese proveedor.', l2s: 'Con una prueba que vigila que no se rompa.',
-  l3: 'El trimestre siguiente, la propuesta ya sale con tu cuenta.', l3s: 'Menos correcciones cada cierre.',
-  h2start: 'Cómo empezamos contigo',
+  h2start: 'Cómo empezamos contigo.',
   i1: 'Visita', i1d: '30 minutos, en tu despacho', i1p: 'Nos cuentas cómo os llegan las facturas, qué programa usáis y dónde se va el tiempo.',
-  i2: 'Diagnóstico', i2d: '1 hora, con facturas reales', i2p: 'Pasamos las facturas de un cliente tuyo y te dejamos una propuesta escrita: qué se automatiza y cuánto tiempo recuperas.',
+  i2: 'Diagnóstico', i2d: '1 hora, con facturas reales', i2p: 'Pasamos las facturas de un cliente tuyo y te dejamos una propuesta escrita.',
   i3: 'Prueba', i3d: 'Un cliente, pocos días', i3p: 'Lo ves funcionando con tu criterio antes de ampliar al resto.',
-  i4: 'Instalación y cuidado', i4d: 'Alta y cuota mensual', i4p: 'Instalación en tu equipo, soporte, actualizaciones y copias de seguridad. Gente de Madrid Norte que responde.',
-  h2faq: 'Preguntas que nos hacen las gestorías',
+  i4: 'Instalación', i4d: 'Alta y cuota mensual', i4p: 'En tu equipo, con soporte, actualizaciones y copias. Gente de Madrid Norte que responde.',
+  h2faq: 'Preguntas frecuentes.',
   faq: [
     ['¿Sustituye a mi programa contable?', 'No. Asiento prepara los ficheros de importación y tu programa sigue siendo el mismo. Hoy trabajamos con Sage; si usas A3, Contasol u otro, lo vemos en el diagnóstico.'],
     ['¿Dónde quedan los datos de mis clientes?', 'En un equipo de tu despacho. Las facturas originales y la base de trabajo no salen de ahí, y se hace una copia completa cada día.'],
-    ['¿Y si una factura está escaneada torcida o en papel?', 'Se lee con dos motores de OCR y un dato solo se acepta si las dos lecturas coinciden. Si no, la factura va a tu cola de revisión marcada, nunca pasa en silencio.'],
+    ['¿Y si una factura está escaneada torcida o en papel?', 'Se lee con dos motores de OCR y un dato solo se acepta si las dos lecturas coinciden. Si no, la factura va a tu cola de revisión marcada. Nunca pasa en silencio.'],
     ['¿Me afecta Verifactu?', 'Asiento lee las facturas que tus clientes reciben y prepara los asientos; no emite facturas. Verifactu regula los programas que emiten facturas, así que esta parte no entra.'],
     ['¿Tengo que cambiar mi forma de trabajar?', 'No. Revisas en Excel, como ahora, y puedes dictar las correcciones en un audio. El sistema se adapta a tu plan de cuentas y a tu criterio.'],
     ['¿Quién lo mantiene?', 'Nosotros. Somos de Madrid Norte: instalación, soporte, actualizaciones y copias de seguridad, en una cuota mensual.']
   ],
-  h2contact: 'Pide un diagnóstico de una hora',
-  contactlede: 'Vamos a tu despacho, pasamos las facturas de uno de tus clientes y te dejamos por escrito qué se puede automatizar y cuánto tiempo te ahorra. Sin compromiso.',
+  h2contact: 'Pide un diagnóstico de una hora.', contactlede: 'Vamos a tu despacho, pasamos las facturas de uno de tus clientes y te dejamos por escrito qué se puede automatizar. Sin compromiso.',
   fname: 'Nombre', ffirm: 'Gestoría o asesoría', fcontact: 'Email o teléfono *', fclients: 'Clientes con contabilidad', fsoft: 'Programa contable', opt0: 'Elige', optother: 'Otro',
-  fmsg: '¿Algo que debamos saber? (opcional)', fnote: 'Formulario de muestra: todavía no envía datos a ningún sitio.', fbtn: 'Pedir diagnóstico',
+  fmsg: '¿Algo que debamos saber? (opcional)', fnote: 'Formulario de muestra: todavía no envía datos.', fbtn: 'Enviar solicitud',
   ferr: 'Necesitamos un email o un teléfono para contactarte.', ferr2: 'Revisa el formato: un email (nombre@dominio.es) o un teléfono de 9 cifras.',
-  doneT: 'Solicitud preparada', doneP: 'Esta página es una muestra y aún no envía datos. Cuando esté conectada, os llamaremos en un día laborable para fijar la visita.', doneB: 'Editar la solicitud',
+  doneT: 'Solicitud preparada.', doneP: 'Esta página es una muestra y aún no envía datos. Cuando esté conectada, te llamaremos en un día laborable para fijar la visita.', doneB: 'Editar la solicitud',
   foot1: 'automatización contable para gestorías · Madrid Norte', foot2: 'Los nombres, NIF e importes de esta página son ficticios.',
   steps: [
-    { tab: 'Entrega', title: 'Tu cliente entrega como siempre',
-      p: 'Un zip, una carpeta compartida o un correo con adjuntos. No hay que pedirle a nadie que cambie nada.',
-      li: ['PDF de proveedores, fotos de tickets y escaneos en el mismo lote', 'Cada documento se separa en páginas y se registra', 'Repetir la entrega da el mismo resultado: nada se duplica'] },
-    { tab: 'Lectura', title: 'Se lee de lo más barato a lo más caro',
-      p: 'Cada factura baja por una cascada hasta que algo la lee con seguridad. La IA solo entra para lo que queda.',
+    { t: 'Tu cliente entrega como siempre', p: 'Un zip, una carpeta compartida o un correo con adjuntos. Nadie tiene que cambiar nada.',
+      li: ['PDF, fotos de tickets y escaneos en el mismo lote', 'Cada documento se separa en páginas y se registra', 'Repetir la entrega no duplica nada'] },
+    { t: 'Se lee de lo más barato a lo más caro', p: 'Cada factura baja por una cascada hasta que algo la lee con seguridad. La IA solo entra para lo que queda.',
       li: ['Si el PDF ya trae texto, se usa tal cual', 'Si no, dos motores de OCR que tienen que coincidir', 'Plantillas por proveedor para los habituales'] },
-    { tab: 'Comprobación', title: 'Nada se inventa ni se redondea',
-      p: 'Cuatro filtros antes de proponerte nada. Lo que no los supera se aparta con su motivo.',
+    { t: 'Nada se inventa ni se redondea', p: 'Cuatro filtros antes de proponerte nada. Lo que no los supera se aparta con su motivo.',
       li: ['Base + IVA − retención = total', 'Cada importe aparece impreso en el papel', 'Lo dudoso pasa a tu cola, marcado'] },
-    { tab: 'Asiento', title: 'Se propone el asiento completo',
-      p: 'Tercero identificado por su NIF, IVA y retención en sus cuentas y una contrapartida propuesta que tú confirmas.',
+    { t: 'Se propone el asiento completo', p: 'Tercero identificado por su NIF, IVA y retención en sus cuentas, y una contrapartida propuesta que tú confirmas.',
       li: ['Busca el proveedor en tu maestro de terceros', 'Aplica el plan de cuentas de cada empresa', 'Marca la contrapartida para que la revises'] },
-    { tab: 'Visto bueno', title: 'Revisas en Excel y das el visto bueno',
-      p: 'Corriges lo que haga falta. Con tu visto bueno se genera el fichero para importar, y cada corrección queda como regla.',
-      li: ['Excel con avisos, en tu idioma de trabajo', 'El fichero para Sage se genera solo después de tu sí', 'Tu corrección se aplica el trimestre siguiente'] }
+    { t: 'Revisas en Excel y das el visto bueno', p: 'Corriges lo que haga falta. Con tu visto bueno se genera el fichero para importar, y cada corrección queda como regla.',
+      li: ['Excel con avisos, en tu idioma de trabajo', 'El fichero se genera solo después de tu sí', 'Tu corrección se aplica el trimestre siguiente'] }
   ],
-  viz: {
-    zip: 'cliente_ferreteria_3T.zip', pdf: 'PDF', photo: 'Foto', scan: 'Escaneo', mail: 'Email',
-    f1: 'factura_A-1042.pdf', f2: 'ticket_gasolinera.jpg', f3: 'luz_julio_escaneada.pdf', f4: 'proveedor_agosto.eml',
-    invWho: 'Ferretería Ejemplo, S.L.', invNum: 'Factura A-1042', base: 'Base imponible', vat: 'IVA 21 %', total: 'Total',
-    t1: 'Texto del PDF', t2: 'OCR doble', t3: 'Plantilla del proveedor', t4: 'IA, solo lo que queda', used: 'leída aquí',
-    k1: 'Cuadres', k1s: 'Base, IVA, retención y total cuadran', k2: 'Está impreso', k2s: 'Cada importe aparece en el papel',
-    k3: 'Segunda lectura', k3s: 'Lo dudoso se revisa por otra vía', k4: 'A tu cola', k4s: 'ticket_gasolinera.jpg · el IVA no cuadra con el total',
-    a1: 'Compras de materiales', a2: 'IVA soportado 21 %', a3: 'Proveedor · NIF encontrado', prop: 'propuesta',
-    g1: 'Factura', g2: 'Cuenta', g3: 'Estado', gs1: 'corregida', gs2: 'correcta', vb: 'Visto bueno', out: 'importacion_sage.xml generado',
-    rule: '<b>Regla nueva:</b> Ferretería Ejemplo → 629 en esta empresa'
-  }
+  v: { zip: 'cliente_ferreteria_3T.zip', pdf: 'PDF', photo: 'Foto', scan: 'Escaneo', mail: 'Email', f1: 'factura_A-1042.pdf', f2: 'ticket_gasolinera.jpg', f3: 'luz_julio_escaneada.pdf', f4: 'proveedor_agosto.eml',
+    t1: 'Texto del PDF', t2: 'OCR doble', t3: 'Plantilla', t4: 'IA', base: 'Base imponible', vat: 'IVA 21 %',
+    k1: 'Cuadres', k1s: 'Base, IVA, retención y total cuadran', k2: 'Está impreso', k2s: 'Cada importe aparece en el papel', k3: 'Segunda lectura', k3s: 'Lo dudoso se revisa por otra vía', k4: 'A tu cola', k4s: 'ticket_gasolinera.jpg · el IVA no cuadra',
+    a1: 'Compras de materiales', a2: 'IVA soportado 21 %', a3: 'Proveedor · NIF encontrado',
+    g1: 'Factura', g2: 'Cuenta', g3: 'Estado', gs1: 'corregida', gs2: 'correcta', out: 'importacion_sage.xml', rule: '<b>Regla nueva:</b> Ferretería Ejemplo → 629 en esta empresa' }
 },
 en: {
-  tagline: 'for accounting firms', nav1: 'How it works', nav2: 'Count your hours', nav3: 'Guarantees', nav4: 'Questions', navcta: 'Book an assessment',
-  h1: 'The invoices arrive. <em>The entries are already made.</em>',
-  lede: 'Asiento reads the invoices your clients hand over, proposes every entry and lays it out in Excel. You review, approve, and the import file for Sage is generated.',
-  cap1: 'Fictional example', cap2: 'Invoice A-1042 from Ferretería Ejemplo, S.L.', capdate: '14/08/2026',
-  th1: 'Account', th2: 'Description', th3: 'Debit', th4: 'Credit',
-  r1: 'Purchases of materials', chip: 'proposed · check it', r2: 'Input VAT 21%', r3: 'Ferretería Ejemplo, S.L.', r4: 'Balanced. Waiting for your approval',
-  qlabel: 'Your turn', qph: 'Your email or phone', qbtn: 'Book an assessment',
-  qhint: 'A one-hour assessment at your office, with one client’s real invoices. No commitment.',
-  qempty: 'Enter an email or phone number so we can call you.', qok: 'Noted. Fill in two more details below and you’re done.',
-  works: 'Works with what you already use:', works3: 'your folders and email',
-  h2steps: 'From a box of invoices to the import file, in five steps',
-  stepslede: 'Follow one invoice from start to finish. Click each tab or use the arrow keys.',
-  step: 'Step', of: 'of', prev: 'Previous', next: 'Next', synth: 'Fictional sample data',
+  nav1: 'How it works', nav2: 'Count your hours', nav3: 'Guarantees', nav4: 'Questions', navcta: 'Book an assessment',
+  h1a: 'The invoices arrive.', h1b: 'The entries are already made.',
+  lede: 'Asiento reads the invoices your clients hand over, proposes every entry and lays it out in Excel. You review, approve, and the import file for your accounting software is generated.',
+  cta1: 'Book an assessment', cta2: 'See how it works', stagetag: 'Live example', stagelabel: 'Animated example: an invoice becomes an accounting entry',
+  invno: 'Invoice A-1042', item: '40 bags of cement', base: 'Taxable base', vat: 'VAT 21%',
+  th1: 'Account', th2: 'Description', th3: 'Debit', th4: 'Credit', r1: 'Purchases', prop: 'proposed', r2: 'Input VAT', r3: 'Supplier', r4: 'Balanced',
+  wait: 'Waiting for your approval', vb: 'Approved', synth: 'Fictional sample data',
+  works: 'Works with what you already use', w3: 'PDFs, photos and scans', w4: 'Your email',
+  h2steps: 'How it works, in five steps.', stepslede: 'Follow one invoice from the moment your client hands it over until you import it.',
+  goto: 'Go to step',
+  h2never: 'What Asiento never does.', neverlede: 'The machine prepares. The judgement is yours. These four rules are not negotiable.',
+  n1t: 'Import into your books on its own', n1p: 'It generates the import files. You import them, once you have approved them.',
+  n2t: 'Make up or round an amount', n2p: 'If base, VAT and withholding don’t add up to the total, the invoice goes to your review queue with the reason written down.',
+  n3t: 'Overwrite your client and supplier master', n3p: 'Third parties shared across companies go through a safeguard before anything is touched.',
+  n4t: 'Take your clients’ data out of the office', n4p: 'Original invoices and the working database stay on a computer in your office, backed up daily.',
   h2calc: 'How many hours does invoice entry take you today?',
-  c1: 'Clients whose books you keep', c2: 'Invoices per client per quarter', c3: 'Minutes per invoice (open, read, type, check)',
-  cnote: 'Starting values are only a guide. Enter your own.',
-  s1: 'Invoices per quarter', s2: 'Minutes of data entry', s3: '8-hour working days', s4: 'Hours per quarter', unitmin: 'min', unith: 'h',
+  c1: 'Clients whose books you keep', c2: 'Invoices per client per quarter', c3: 'Minutes per invoice', cnote: 'Starting values are only a guide. Enter your own.',
+  unitlong: 'hours', s4: 'per quarter keying in invoices by hand.', s1: 'Invoices', s2: 'Minutes', s3: '8-hour days', unitmin: 'min',
   snote: 'These are your numbers, not a promise of savings. In the assessment we measure how much of this time can go, using your real invoices.',
-  h2never: 'What Asiento never does', never: 'Never',
-  n1t: 'Imports into your books on its own', n1p: 'It generates the import files. You import them, once you have approved them.',
-  n2t: 'Makes up or rounds an amount', n2p: 'If base, VAT and withholding don’t add up to the total, the invoice goes to your review queue with the reason written down.',
-  n3t: 'Overwrites your client and supplier master', n3p: 'Third parties shared across companies go through a safeguard before anything is touched.',
-  n4t: 'Takes your clients’ data out of the office', n4p: 'Original invoices and the working database stay on a computer in your office, backed up daily.',
-  h2learn: 'Every correction you make becomes a rule',
-  learnlede: 'Asiento doesn’t decide which account an expense goes to: that depends on each company’s business and on your judgement. What it does is learn it. When you correct something in Excel, or explain it to us in a voice note, it stops being a one-off fix and applies from next quarter.',
-  l1: 'You change “602” to “629” on an invoice from the hardware store.', l1s: 'In your Excel, as usual.',
-  l2: 'A rule is written for that company and that supplier.', l2s: 'With a test that makes sure it doesn’t break.',
-  l3: 'Next quarter, the proposal already uses your account.', l3s: 'Fewer corrections at every close.',
-  h2start: 'How we get started with you',
+  h2start: 'How we get started with you.',
   i1: 'Visit', i1d: '30 minutes, at your office', i1p: 'You tell us how invoices reach you, which software you use and where the time goes.',
-  i2: 'Assessment', i2d: '1 hour, with real invoices', i2p: 'We run one client’s invoices and leave you a written proposal: what gets automated and how much time you get back.',
-  i3: 'Trial', i3d: 'One client, a few days', i3p: 'You see it working with your judgement before rolling it out to the rest.',
-  i4: 'Installation and care', i4d: 'Setup fee and monthly plan', i4p: 'Installed on your computer, with support, updates and backups. People from North Madrid who pick up the phone.',
-  h2faq: 'Questions accounting firms ask us',
+  i2: 'Assessment', i2d: '1 hour, with real invoices', i2p: 'We run one client’s invoices and leave you a written proposal.',
+  i3: 'Trial', i3d: 'One client, a few days', i3p: 'You see it working with your judgement before rolling it out.',
+  i4: 'Installation', i4d: 'Setup fee and monthly plan', i4p: 'On your computer, with support, updates and backups. People from North Madrid who pick up the phone.',
+  h2faq: 'Questions.',
   faq: [
     ['Does it replace my accounting software?', 'No. Asiento prepares the import files and your software stays the same. Today we work with Sage; if you use A3, Contasol or something else, we look at it in the assessment.'],
     ['Where does my clients’ data live?', 'On a computer in your office. Original invoices and the working database never leave it, and a full backup runs every day.'],
@@ -579,187 +596,184 @@ en: {
     ['Do I have to change how I work?', 'No. You review in Excel, as you do now, and you can dictate corrections in a voice note. The system adapts to your chart of accounts and your judgement.'],
     ['Who maintains it?', 'We do. We’re based in North Madrid: installation, support, updates and backups, for a monthly fee.']
   ],
-  h2contact: 'Book a one-hour assessment',
-  contactlede: 'We come to your office, run one client’s invoices and leave you a written summary of what can be automated and how much time it saves. No commitment.',
+  h2contact: 'Book a one-hour assessment.', contactlede: 'We come to your office, run one client’s invoices and leave you a written summary of what can be automated. No commitment.',
   fname: 'Name', ffirm: 'Firm', fcontact: 'Email or phone *', fclients: 'Clients whose books you keep', fsoft: 'Accounting software', opt0: 'Choose', optother: 'Other',
-  fmsg: 'Anything we should know? (optional)', fnote: 'Sample form: it doesn’t send data anywhere yet.', fbtn: 'Book an assessment',
+  fmsg: 'Anything we should know? (optional)', fnote: 'Sample form: it doesn’t send data yet.', fbtn: 'Send request',
   ferr: 'We need an email or phone number to reach you.', ferr2: 'Check the format: an email (name@domain.com) or a 9-digit phone number.',
-  doneT: 'Request ready', doneP: 'This page is a sample and doesn’t send data yet. Once it’s connected, we’ll call you within one working day to set up the visit.', doneB: 'Edit the request',
+  doneT: 'Request ready.', doneP: 'This page is a sample and doesn’t send data yet. Once it’s connected, we’ll call you within one working day to set up the visit.', doneB: 'Edit the request',
   foot1: 'accounting automation for firms · North Madrid', foot2: 'Names, tax IDs and amounts on this page are fictional.',
   steps: [
-    { tab: 'Hand-over', title: 'Your client hands over as usual',
-      p: 'A zip file, a shared folder or an email with attachments. Nobody has to change anything.',
-      li: ['Supplier PDFs, receipt photos and scans in the same batch', 'Each document is split into pages and logged', 'Running the same batch twice gives the same result: nothing is duplicated'] },
-    { tab: 'Reading', title: 'Read from cheapest to most expensive',
-      p: 'Each invoice goes down a cascade until something reads it reliably. AI only handles what is left.',
+    { t: 'Your client hands over as usual', p: 'A zip file, a shared folder or an email with attachments. Nobody has to change anything.',
+      li: ['PDFs, receipt photos and scans in one batch', 'Each document is split into pages and logged', 'Sending the same batch twice duplicates nothing'] },
+    { t: 'Read from cheapest to most expensive', p: 'Each invoice goes down a cascade until something reads it reliably. AI only handles what is left.',
       li: ['If the PDF already has text, it is used as is', 'If not, two OCR engines that must agree', 'Per-supplier templates for regular ones'] },
-    { tab: 'Checks', title: 'Nothing is made up or rounded',
-      p: 'Four filters before anything is proposed to you. Whatever fails is set aside with its reason.',
+    { t: 'Nothing is made up or rounded', p: 'Four filters before anything is proposed to you. Whatever fails is set aside with its reason.',
       li: ['Base + VAT − withholding = total', 'Every amount is printed on the paper', 'Anything doubtful goes to your queue, flagged'] },
-    { tab: 'Entry', title: 'The full entry is proposed',
-      p: 'Supplier identified by tax ID, VAT and withholding in their accounts, and a proposed expense account for you to confirm.',
+    { t: 'The full entry is proposed', p: 'Supplier identified by tax ID, VAT and withholding in their accounts, and a proposed expense account for you to confirm.',
       li: ['Looks up the supplier in your third-party master', 'Applies each company’s chart of accounts', 'Flags the expense account for your review'] },
-    { tab: 'Approval', title: 'You review in Excel and approve',
-      p: 'Correct whatever needs it. Your approval generates the import file, and every correction becomes a rule.',
-      li: ['Excel with flags, in the format you work in', 'The Sage file is generated only after your yes', 'Your correction applies from next quarter'] }
+    { t: 'You review in Excel and approve', p: 'Correct whatever needs it. Your approval generates the import file, and every correction becomes a rule.',
+      li: ['Excel with flags, in the format you work in', 'The file is generated only after your yes', 'Your correction applies from next quarter'] }
   ],
-  viz: {
-    zip: 'client_hardware_Q3.zip', pdf: 'PDF', photo: 'Photo', scan: 'Scan', mail: 'Email',
-    f1: 'invoice_A-1042.pdf', f2: 'fuel_receipt.jpg', f3: 'power_july_scanned.pdf', f4: 'supplier_august.eml',
-    invWho: 'Ferretería Ejemplo, S.L.', invNum: 'Invoice A-1042', base: 'Taxable base', vat: 'VAT 21%', total: 'Total',
-    t1: 'PDF text', t2: 'Double OCR', t3: 'Supplier template', t4: 'AI, only what’s left', used: 'read here',
-    k1: 'Totals', k1s: 'Base, VAT, withholding and total add up', k2: 'It’s printed', k2s: 'Every amount appears on the paper',
-    k3: 'Second reading', k3s: 'Doubtful values are checked another way', k4: 'To your queue', k4s: 'fuel_receipt.jpg · VAT doesn’t match the total',
-    a1: 'Purchases of materials', a2: 'Input VAT 21%', a3: 'Supplier · tax ID found', prop: 'proposed',
-    g1: 'Invoice', g2: 'Account', g3: 'Status', gs1: 'corrected', gs2: 'correct', vb: 'Approved', out: 'importacion_sage.xml generated',
-    rule: '<b>New rule:</b> Ferretería Ejemplo → 629 for this company'
-  }
+  v: { zip: 'client_hardware_Q3.zip', pdf: 'PDF', photo: 'Photo', scan: 'Scan', mail: 'Email', f1: 'invoice_A-1042.pdf', f2: 'fuel_receipt.jpg', f3: 'power_july_scanned.pdf', f4: 'supplier_august.eml',
+    t1: 'PDF text', t2: 'Double OCR', t3: 'Template', t4: 'AI', base: 'Taxable base', vat: 'VAT 21%',
+    k1: 'Totals', k1s: 'Base, VAT, withholding and total add up', k2: 'It’s printed', k2s: 'Every amount appears on the paper', k3: 'Second reading', k3s: 'Doubtful values are checked another way', k4: 'To your queue', k4s: 'fuel_receipt.jpg · VAT doesn’t match',
+    a1: 'Purchases of materials', a2: 'Input VAT 21%', a3: 'Supplier · tax ID found',
+    g1: 'Invoice', g2: 'Account', g3: 'Status', gs1: 'corrected', gs2: 'correct', out: 'importacion_sage.xml', rule: '<b>New rule:</b> Ferretería Ejemplo → 629 for this company' }
 }
 };
 
-let lang = 'es', step = 0;
+let lang = 'es', active = 0, doneShown = false;
 try { const s = localStorage.getItem('asiento-lang'); if (s === 'es' || s === 'en') lang = s; } catch (e) {}
-
-const $ = (s, r = document) => r.querySelector(s);
-const $$ = (s, r = document) => [...r.querySelectorAll(s)];
-const fmtInt = n => new Intl.NumberFormat(lang === 'es' ? 'es-ES' : 'en-GB', { maximumFractionDigits: 0 }).format(n);
-const fmtDec = (n, d = 1) => new Intl.NumberFormat(lang === 'es' ? 'es-ES' : 'en-GB', { minimumFractionDigits: d, maximumFractionDigits: d }).format(n);
-const money = n => fmtDec(n, 2);
+const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const loc = () => lang === 'es' ? 'es-ES' : 'en-GB';
+const fInt = n => new Intl.NumberFormat(loc(), { maximumFractionDigits: 0 }).format(n);
+const fDec = (n, d) => new Intl.NumberFormat(loc(), { minimumFractionDigits: d, maximumFractionDigits: d }).format(n);
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 function viz(i) {
-  const v = T[lang].viz, sy = `<p class="synth">${T[lang].synth}</p>`;
-  if (i === 0) return `<div class="card files"><div class="hd">${ICON.zip}<span>${v.zip}</span></div>
-    <div class="row">${ICON.file}<span>${v.f1}</span><span class="tag">${v.pdf}</span></div>
-    <div class="row">${ICON.image}<span>${v.f2}</span><span class="tag">${v.photo}</span></div>
-    <div class="row">${ICON.file}<span>${v.f3}</span><span class="tag">${v.scan}</span></div>
-    <div class="row">${ICON.mail}<span>${v.f4}</span><span class="tag">${v.mail}</span></div></div>${sy}`;
-  if (i === 1) return `<div class="card inv"><div class="who"><span><b>${v.invWho}</b><br>NIF <span class="mark">B00000000</span></span><span>${v.invNum}<br><span class="mark">14/08/2026</span></span></div>
-    <div class="l"><span>${v.base}</span><span class="mark">${money(100)}</span></div>
-    <div class="l"><span>${v.vat}</span><span class="mark">${money(21)}</span></div>
-    <div class="l"><b>${v.total}</b><span class="mark">${money(121)} €</span></div></div>
-    <div class="tiers">
-      <div class="tier on"><span style="color:var(--ok)">${ICON.check}</span><span>${v.t1}</span><span class="k">${v.used}</span></div>
-      <div class="tier"><span class="k">2</span><span>${v.t2}</span><span></span></div>
-      <div class="tier"><span class="k">3</span><span>${v.t3}</span><span></span></div>
-      <div class="tier"><span class="k">4</span><span>${v.t4}</span><span></span></div></div>${sy}`;
+  const t = T[lang], v = t.v, m = n => fDec(n, 2), sy = `<p class="sy">${t.synth}</p>`;
+  if (i === 0) return `<div class="k files"><div class="hd">${IC.zip}${v.zip}</div>
+    <div class="rw">${IC.file}<span>${v.f1}</span><span class="pill">${v.pdf}</span></div>
+    <div class="rw">${IC.image}<span>${v.f2}</span><span class="pill">${v.photo}</span></div>
+    <div class="rw">${IC.file}<span>${v.f3}</span><span class="pill">${v.scan}</span></div>
+    <div class="rw">${IC.mail}<span>${v.f4}</span><span class="pill">${v.mail}</span></div></div>${sy}`;
+  if (i === 1) return `<div class="k inv"><div class="hh"><span>Ferretería Ejemplo, S.L.<br>NIF <span class="hl mono">B00000000</span></span><span style="text-align:right">A-1042<br><span class="hl mono">14/08/2026</span></span></div>
+    <div class="ln"><span>${v.base}</span><span class="hl">${m(100)}</span></div><div class="ln"><span>${v.vat}</span><span class="hl">${m(21)}</span></div><div class="ln"><b>Total</b><span class="hl">${m(121)} €</span></div></div>
+    <div class="tiers"><div class="tier on"><b>1</b>${v.t1}</div><div class="tier"><b>2</b>${v.t2}</div><div class="tier"><b>3</b>${v.t3}</div><div class="tier"><b>4</b>${v.t4}</div></div>${sy}`;
   if (i === 2) return `<div class="checks">
-      <div class="check"><span class="ic">${ICON.check}</span><span><b>${v.k1}</b><span>${v.k1s}</span></span></div>
-      <div class="check"><span class="ic">${ICON.check}</span><span><b>${v.k2}</b><span>${v.k2s}</span></span></div>
-      <div class="check"><span class="ic">${ICON.check}</span><span><b>${v.k3}</b><span>${v.k3s}</span></span></div>
-      <div class="check flag"><span class="ic">${ICON.alert}</span><span><b>${v.k4}</b><span>${v.k4s}</span></span></div></div>${sy}`;
-  if (i === 3) return `<div class="ledger mini"><table>
-      <tr class="cp"><td class="acc">602</td><td>${v.a1}<span class="chip">${v.prop}</span></td><td class="r num">${money(100)}</td><td></td></tr>
-      <tr><td class="acc">472</td><td>${v.a2}</td><td class="r num">${money(21)}</td><td></td></tr>
-      <tr><td class="acc">400</td><td>${v.a3}</td><td></td><td class="r num">${money(121)}</td></tr>
-      <tr class="tot"><td></td><td></td><td class="r num"><span>${money(121)}</span></td><td class="r num"><span>${money(121)}</span></td></tr></table></div>${sy}`;
-  return `<div class="grid"><table><tr><th>${v.g1}</th><th>${v.g2}</th><th>${v.g3}</th></tr>
-      <tr><td>A-1042</td><td class="fix"><s>602</s><b>629</b></td><td>${v.gs1}</td></tr>
-      <tr><td>A-1043</td><td>629</td><td>${v.gs2}</td></tr>
-      <tr><td>F-2219</td><td>628</td><td>${v.gs2}</td></tr></table></div>
-    <div class="okline"><span class="stamp">${ICON.check}${v.vb}</span><span class="file">${ICON.out}${v.out}</span></div>
-    <p class="rule-l">${v.rule}</p>${sy}`;
+    <div class="ck"><span class="ic">${IC.check}</span><span><b>${v.k1}</b><span>${v.k1s}</span></span></div>
+    <div class="ck"><span class="ic">${IC.check}</span><span><b>${v.k2}</b><span>${v.k2s}</span></span></div>
+    <div class="ck"><span class="ic">${IC.check}</span><span><b>${v.k3}</b><span>${v.k3s}</span></span></div>
+    <div class="ck flag"><span class="ic">${IC.alert}</span><span><b>${v.k4}</b><span>${v.k4s}</span></span></div></div>${sy}`;
+  if (i === 3) return `<div class="k tbl"><table><thead><tr><th>${t.th1}</th><th>${t.th2}</th><th class="r">${t.th3}</th><th class="r">${t.th4}</th></tr></thead><tbody>
+    <tr><td class="acc">602</td><td>${v.a1}<span class="prop">${t.prop}</span></td><td class="r">${m(100)}</td><td></td></tr>
+    <tr><td class="acc">472</td><td>${v.a2}</td><td class="r">${m(21)}</td><td></td></tr>
+    <tr><td class="acc">400</td><td>${v.a3}</td><td></td><td class="r">${m(121)}</td></tr></tbody>
+    <tfoot><tr><td></td><td>${t.r4}</td><td class="r"><span>${m(121)}</span></td><td class="r"><span>${m(121)}</span></td></tr></tfoot></table></div>${sy}`;
+  return `<div class="k tbl"><table><thead><tr><th>${v.g1}</th><th>${v.g2}</th><th>${v.g3}</th></tr></thead><tbody>
+    <tr><td>A-1042</td><td class="fx acc"><s>602</s><b>629</b></td><td>${v.gs1}</td></tr>
+    <tr><td>A-1043</td><td class="acc">629</td><td>${v.gs2}</td></tr><tr><td>F-2219</td><td class="acc">628</td><td>${v.gs2}</td></tr></tbody></table></div>
+    <div class="res"><span class="vb">${IC.check}${t.vb}</span><span class="file">${IC.out}${v.out}</span></div><p class="rule">${v.rule}</p>${sy}`;
 }
 
-function renderTabs() {
-  const tabs = $('#tabs'); tabs.innerHTML = '';
-  T[lang].steps.forEach((s, i) => {
-    const b = document.createElement('button');
-    b.type = 'button'; b.className = 'tab'; b.setAttribute('role', 'tab'); b.id = 'tab' + i;
-    b.setAttribute('aria-selected', i === step); b.setAttribute('aria-controls', 'panel'); b.tabIndex = i === step ? 0 : -1;
-    b.innerHTML = `<b>${i + 1}</b>${s.tab}`;
-    b.addEventListener('click', () => go(i));
-    tabs.append(b);
-  });
+function renderSteps() {
+  const t = T[lang];
+  $('#blocks').innerHTML = t.steps.map((s, i) => `<article class="blk${i === active ? ' on' : ''}" data-i="${i}">
+    <span class="n">0${i + 1} / 05</span><h3>${s.t}</h3><p>${s.p}</p>
+    <ul>${s.li.map(x => `<li>${IC.check}<span>${x}</span></li>`).join('')}</ul>
+    <div class="mviz">${viz(i)}</div></article>`).join('');
+  $('#prog').innerHTML = t.steps.map((s, i) => `<button type="button" tabindex="-1" aria-label="${t.goto} ${i + 1}" data-i="${i}"></button>`).join('');
+  $$('#prog button').forEach(b => b.addEventListener('click', () => $$('.blk')[+b.dataset.i].scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' })));
+  paintScreen(false);
+  observe();
 }
-function renderPanel(anim) {
-  const s = T[lang].steps[step], t = T[lang], p = $('#panel');
-  p.setAttribute('aria-labelledby', 'tab' + step);
-  p.innerHTML = `<div class="txt"><span class="count caps">${t.step} ${step + 1} ${t.of} 5</span><h3>${s.title}</h3><p>${s.p}</p>
-    <ul>${s.li.map(x => `<li>${ICON.check}<span>${x}</span></li>`).join('')}</ul>
-    <div class="nav2"><button type="button" class="ghost" id="pv" ${step === 0 ? 'disabled' : ''}>${ICON.prev}${t.prev}</button>
-    <button type="button" class="ghost" id="nx" ${step === 4 ? 'disabled' : ''}>${t.next}${ICON.next}</button></div></div>
-    <div class="viz">${viz(step)}</div>`;
-  $('#pv').addEventListener('click', () => go(step - 1));
-  $('#nx').addEventListener('click', () => go(step + 1));
-  if (anim) { const v = $('.viz', p); v.classList.remove('panel-in'); void v.offsetWidth; v.classList.add('panel-in'); }
+function paintScreen(anim) {
+  const sc = $('#screen');
+  sc.innerHTML = `<span class="ix">0${active + 1} / 05</span><div style="display:grid;gap:14px">${viz(active)}</div>`;
+  if (anim && !reduce) sc.lastElementChild.classList.add('swap');
+  $$('#prog button').forEach((b, i) => b.setAttribute('aria-current', i === active ? 'true' : 'false'));
+  $$('.blk').forEach((b, i) => b.classList.toggle('on', i === active));
 }
-function go(i, focus) {
-  if (i < 0 || i > 4) return;
-  step = i; renderTabs(); renderPanel(true);
-  if (focus) $('#tab' + i).focus();
-}
-$('#tabs').addEventListener('keydown', e => {
-  const k = e.key; let n = null;
-  if (k === 'ArrowRight' || k === 'ArrowDown') n = (step + 1) % 5;
-  if (k === 'ArrowLeft' || k === 'ArrowUp') n = (step + 4) % 5;
-  if (k === 'Home') n = 0; if (k === 'End') n = 4;
-  if (n !== null) { e.preventDefault(); go(n, true); }
-});
-
-function renderFaq() {
-  $('#faq').innerHTML = T[lang].faq.map(([q, a]) => `<details><summary>${q}${ICON.plus}</summary><p>${a}</p></details>`).join('');
+let io;
+function observe() {
+  if (io) io.disconnect();
+  io = new IntersectionObserver(es => {
+    es.forEach(e => { if (e.isIntersecting) { const i = +e.target.dataset.i; if (i !== active) { active = i; paintScreen(true); } } });
+  }, { rootMargin: '-45% 0px -45% 0px' });
+  $$('.blk').forEach(b => io.observe(b));
 }
 
+function renderFaq() { $('#faq').innerHTML = T[lang].faq.map(([q, a]) => `<details><summary>${q}<span class="pm" aria-hidden="true"></span></summary><p>${a}</p></details>`).join(''); }
+
+let shown = 60, raf;
 function calc() {
-  const c = +$('#c1').value, f = +$('#c2').value, m = +$('#c3').value, t = T[lang];
-  const inv = c * f, mins = inv * m, hours = mins / 60;
-  $('#o1').textContent = fmtInt(c); $('#o2').textContent = fmtInt(f); $('#o3').textContent = fmtDec(m, 1) + ' ' + t.unitmin;
-  $('#s1').textContent = fmtInt(inv); $('#s2').textContent = fmtInt(mins) + ' ' + t.unitmin;
-  $('#s3').textContent = fmtDec(hours / 8, 1); $('#s4').textContent = fmtInt(hours) + ' ' + t.unith;
+  const t = T[lang], c = +$('#c1').value, f = +$('#c2').value, m = +$('#c3').value;
+  $$('input[type=range]').forEach(r => r.style.setProperty('--p', ((r.value - r.min) / (r.max - r.min) * 100) + '%'));
+  const inv = c * f, mins = inv * m, hrs = Math.round(mins / 60);
+  $('#o1').textContent = fInt(c); $('#o2').textContent = fInt(f); $('#o3').textContent = fDec(m, 1) + ' ' + t.unitmin;
+  $('#s1').textContent = fInt(inv); $('#s2').textContent = fInt(mins); $('#s3').textContent = fDec(mins / 480, 1);
+  cancelAnimationFrame(raf);
+  if (reduce) { shown = hrs; $('#hrs').textContent = fInt(hrs); return; }
+  const from = shown, t0 = performance.now();
+  const tick = now => { const k = Math.min(1, (now - t0) / 500), e = 1 - Math.pow(1 - k, 4); shown = from + (hrs - from) * e; $('#hrs').textContent = fInt(shown); if (k < 1) raf = requestAnimationFrame(tick); };
+  raf = requestAnimationFrame(tick);
 }
 ['#c1', '#c2', '#c3'].forEach(id => $(id).addEventListener('input', calc));
 
 function apply() {
   const t = T[lang];
   document.documentElement.lang = lang;
-  $$('[data-i18n]').forEach(el => { const k = el.dataset.i18n; if (typeof t[k] === 'string') el.textContent = t[k]; });
-  $$('[data-i18n-html]').forEach(el => { el.innerHTML = t[el.dataset.i18nHtml]; });
-  $$('[data-i18n-ph]').forEach(el => { el.placeholder = t[el.dataset.i18nPh]; });
-  $$('[data-amt]').forEach(el => { el.textContent = money(+el.dataset.amt); });
-  $$('.lang button').forEach(b => b.setAttribute('aria-pressed', b.dataset.lang === lang));
   document.title = lang === 'es' ? 'Asiento para gestorías' : 'Asiento for accounting firms';
-  $('#qmsg').textContent = ''; clearErr();
-  if (!$('#req').hidden) {}
-  renderTabs(); renderPanel(false); renderFaq(); calc();
+  $$('[data-i18n]').forEach(el => { const v = t[el.dataset.i18n]; if (typeof v === 'string') el.textContent = v; });
+  $$('[data-amt]').forEach(el => el.textContent = fDec(+el.dataset.amt, 2));
+  $$('.lang button').forEach(b => b.setAttribute('aria-pressed', b.dataset.lang === lang));
+  $('#stage').setAttribute('aria-label', t.stagelabel);
+  clearErr(); renderSteps(); renderFaq(); calc();
   if (doneShown) showDone();
 }
-$$('.lang button').forEach(b => b.addEventListener('click', () => {
-  lang = b.dataset.lang; try { localStorage.setItem('asiento-lang', lang); } catch (e) {} apply();
-}));
+$$('.lang button').forEach(b => b.addEventListener('click', () => { lang = b.dataset.lang; try { localStorage.setItem('asiento-lang', lang); } catch (e) {} apply(); }));
 
-const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/, PHONE = /^(\+?\d[\d\s]{7,15})$/;
+/* Escenario en bucle: arranca y termina en el estado completo */
+const stage = $('#stage');
+if (!reduce) {
+  const seq = [[0, ''], [700, 'scanning s1'], [2300, 'scanning s1 s2'], [3300, 's1 s2 s3'], [4300, 's1 s2 s3 s4']];
+  let visible = true;
+  new IntersectionObserver(e => { visible = e[0].isIntersecting; }).observe(stage);
+  const loop = () => { if (visible && !document.hidden) seq.forEach(([d, c]) => setTimeout(() => { stage.className = 'stage ' + c; }, d)); setTimeout(loop, 8500); };
+  setTimeout(loop, 1800);
+  const paper = $('#paper');
+  stage.addEventListener('pointermove', e => {
+    const r = stage.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+    paper.style.setProperty('--ry', (x * 8).toFixed(2) + 'deg'); paper.style.setProperty('--rx', (-y * 6).toFixed(2) + 'deg');
+  });
+  stage.addEventListener('pointerleave', () => { paper.style.setProperty('--ry', '0deg'); paper.style.setProperty('--rx', '0deg'); });
+}
+
+const header = $('#top');
+addEventListener('scroll', () => header.classList.toggle('scrolled', scrollY > 8), { passive: true });
+
+/* Cursor y botones magnéticos (solo ratón, sin movimiento reducido) */
+if (matchMedia('(pointer: fine)').matches && !reduce) {
+  const cur = $('#cur'), lbl = $('span', cur);
+  let x = 0, y = 0, cx = 0, cy = 0, on = false;
+  document.documentElement.classList.add('has-cur');
+  addEventListener('pointermove', e => { x = e.clientX; y = e.clientY; if (!on) { on = true; cur.hidden = false; cx = x; cy = y; } }, { passive: true });
+  document.documentElement.addEventListener('pointerleave', () => { cur.hidden = true; on = false; });
+  addEventListener('pointerdown', () => cur.classList.add('press'));
+  addEventListener('pointerup', () => cur.classList.remove('press'));
+  const frame = () => { cx += (x - cx) * .22; cy += (y - cy) * .22; cur.style.transform = `translate3d(${cx}px, ${cy}px, 0)`; requestAnimationFrame(frame); };
+  frame();
+  document.addEventListener('pointerover', e => {
+    const el = e.target.closest('a, button, summary, select, input[type=range], label[for]');
+    const txt = e.target.closest('input[type=text], textarea');
+    cur.classList.toggle('big', !!el && !txt);
+    const l = el && el.dataset.cursorLabel; lbl.textContent = l || ''; cur.classList.toggle('lbl', !!l);
+    cur.style.opacity = txt ? '0' : '1';
+  });
+  $$('[data-mag]').forEach(b => {
+    b.addEventListener('pointermove', e => { const r = b.getBoundingClientRect(); b.style.transform = `translate(${(e.clientX - r.left - r.width / 2) * .18}px, ${(e.clientY - r.top - r.height / 2) * .3}px)`; });
+    b.addEventListener('pointerleave', () => { b.style.transform = ''; });
+  });
+}
+
+/* Formulario */
+const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/, PHONE = /^\+?\d[\d\s]{7,15}$/;
 const valid = v => EMAIL.test(v) || (PHONE.test(v) && v.replace(/\D/g, '').length >= 9);
-
-$('#quick').addEventListener('submit', e => {
-  e.preventDefault();
-  const v = $('#qcontact').value.trim(), m = $('#qmsg'), t = T[lang];
-  if (!v) { m.className = 'msg'; m.textContent = t.qempty; $('#qcontact').focus(); return; }
-  if (!valid(v)) { m.className = 'msg'; m.textContent = t.ferr2; $('#qcontact').focus(); return; }
-  m.className = 'msg good'; m.textContent = t.qok;
-  $('#fcontact').value = v;
-  $('#contacto').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
-  setTimeout(() => $('#fname').focus({ preventScroll: true }), 450);
-});
-
-let doneShown = false;
 const form = $('#req');
-function clearErr() { const f = $('#fcontact').closest('.f'); f.classList.remove('bad'); $('#fcontact-err').textContent = ''; $('#fcontact').removeAttribute('aria-invalid'); }
+function clearErr() { $('#fcontact').closest('.f').classList.remove('bad'); $('#fcontact-err').textContent = ''; $('#fcontact').removeAttribute('aria-invalid'); }
 $('#fcontact').addEventListener('input', clearErr);
 function showDone() {
   const t = T[lang]; let d = $('#done');
-  if (!d) { d = document.createElement('div'); d.id = 'done'; d.className = 'done'; d.setAttribute('role', 'status'); form.append(d); }
-  d.innerHTML = `<h3>${t.doneT}</h3><p>${t.doneP}</p><div><button type="button" class="ghost" id="edit">${t.doneB}</button></div>`;
-  $$('.f, .formfoot', form).forEach(x => x.hidden = true);
-  $('#edit').addEventListener('click', () => { doneShown = false; d.remove(); $$('.f, .formfoot', form).forEach(x => x.hidden = false); $('#fname').focus(); });
+  if (!d) { d = document.createElement('div'); d.id = 'done'; d.className = 'done'; d.setAttribute('role', 'status'); d.tabIndex = -1; form.append(d); }
+  d.innerHTML = `<h3>${t.doneT}</h3><p>${t.doneP}</p><div><button type="button" class="lnk" id="edit">${t.doneB}</button></div>`;
+  $$('.f, .ff', form).forEach(x => x.hidden = true);
+  $('#edit').addEventListener('click', () => { doneShown = false; d.remove(); $$('.f, .ff', form).forEach(x => x.hidden = false); $('#fname').focus(); });
 }
 form.addEventListener('submit', e => {
   e.preventDefault();
   const v = $('#fcontact').value.trim(), t = T[lang];
-  if (!v || !valid(v)) {
-    const f = $('#fcontact').closest('.f'); f.classList.add('bad');
-    $('#fcontact-err').textContent = v ? t.ferr2 : t.ferr; $('#fcontact').setAttribute('aria-invalid', 'true'); $('#fcontact').focus(); return;
-  }
-  doneShown = true; showDone(); $('#done').focus?.();
+  if (!valid(v)) { $('#fcontact').closest('.f').classList.add('bad'); $('#fcontact-err').textContent = v ? t.ferr2 : t.ferr; $('#fcontact').setAttribute('aria-invalid', 'true'); $('#fcontact').focus(); return; }
+  doneShown = true; showDone(); $('#done').focus();
 });
 
 apply();
