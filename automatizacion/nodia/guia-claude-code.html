@@ -41,7 +41,16 @@ section { display: grid; gap: 16px; min-width: 0 }
 .piece { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px; display: grid; gap: 6px; align-content: start }
 .piece .tag { font-family: var(--mono); font-size: .74rem; color: var(--gold); text-transform: uppercase; letter-spacing: .06em }
 .piece p { color: var(--ink-2); font-size: .94rem }
-.diagram { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px; overflow-x: auto }
+.flow { display: grid; gap: 22px; justify-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 22px 16px }
+.node { position: relative; width: min(100%, 520px); text-align: center; padding: 10px 14px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg); font-size: .95rem; display: grid; gap: 4px; justify-items: center }
+.node:not(:last-child)::after { content: ""; position: absolute; left: 50%; bottom: -19px; width: 1px; height: 16px; background: var(--ink-2) }
+.node:not(:last-child)::before { content: ""; position: absolute; left: calc(50% - 4px); bottom: -21px; border: 4px solid transparent; border-top-color: var(--ink-2) }
+.node.h { background: var(--gold-soft); border-color: var(--gold) }
+.node .m { font-family: var(--mono); font-size: .74rem; color: var(--gold) }
+.node small { color: var(--ink-2); font-size: .8rem }
+.rules li span { min-width: 0 }
+.steps > li > span { color: inherit; font-size: inherit; min-width: 0 }
+.steps div > span:not(.who) { display: block; margin-top: 2px }
 .steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; counter-reset: s }
 .steps li { display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 12px; align-items: start; counter-increment: s }
 .steps li::before { content: counter(s); width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: var(--night); color: #d9b45a; font-family: var(--mono); font-size: .82rem }
@@ -77,7 +86,7 @@ details p { color: var(--ink-2); margin-top: 8px }
 
 <header class="hero"><div class="in">
   <h1>Cómo trabajamos con Claude Code</h1>
-  <p>Guía para Adrián, Alex y el tercer socio. Explica para qué sirve cada pieza, el camino que sigue cualquier cambio y los comandos que vais a usar. <b>Idea clave: primero se acuerda qué hacer (OpenSpec), luego los agentes lo construyen y revisan (Factory), y al final siempre decide una persona.</b></p>
+  <p>Guía para Adrián, Alex y Toto. Explica para qué sirve cada pieza, el camino que sigue cualquier cambio y los comandos que vais a usar. <b>Idea clave: primero se acuerda qué hacer (OpenSpec), luego los agentes lo construyen y revisan (Factory), y al final siempre decide una persona.</b></p>
 </div></header>
 
 <div class="wrap">
@@ -86,6 +95,7 @@ details p { color: var(--ink-2); margin-top: 8px }
     <a href="#flujo">El camino de un cambio</a>
     <a href="#ejemplo">Ejemplo completo</a>
     <a href="#riesgo">Revisión según riesgo</a>
+    <a href="#modelos">Modelos de los agentes</a>
     <a href="#comandos">Comandos</a>
     <a href="#carpetas">Dónde está cada cosa</a>
     <a href="#reglas">Reglas de oro</a>
@@ -112,34 +122,27 @@ details p { color: var(--ink-2); margin-top: 8px }
   <section id="flujo">
     <h2>El camino de un cambio</h2>
     <p class="lead">Cualquier mejora, por pequeña que sea, sigue este recorrido. Las cajas doradas son las únicas donde actuáis vosotros; el resto lo hacen los agentes.</p>
-    <div class="diagram">
-<pre class="mermaid">
-flowchart TD
-  A[Idea] --> B["/opsx:explore<br/>pensarla con Claude"]
-  B --> C["/opsx:propose nombre<br/>propuesta + requisitos + tareas + riesgo"]
-  C --> D{{"Leéis y aprobáis la propuesta<br/>y hacéis commit"}}
-  D --> E["/factory nombre<br/>valida y crea una copia aparte"]
-  E --> F[Builder construye<br/>y marca las tareas]
-  F --> G[Revisores según el riesgo<br/>código · UI · UX · seguridad]
-  G -->|piden cambios| F
-  G -->|todo bien| H[Approver: último filtro]
-  H --> I{{"Esperando humano<br/>revisáis el resultado"}}
-  I -->|vale| J["/factory approve nombre<br/>se une al proyecto en local"]
-  I -->|no| K["/factory rework nombre nota<br/>vuelve al builder"]
-  K --> F
-  J --> L["/opsx:archive nombre<br/>queda documentado"]
-  L --> M{{"Si toca deploys/:<br/>Adrián lo sube a Cloudflare"}}
-  classDef h fill:#f3e8cf,stroke:#a9781f,color:#0b1222
-  class D,I,M h
-</pre>
+    <div class="flow" role="list">
+      <div class="node" role="listitem">Idea</div>
+      <div class="node" role="listitem"><code>/opsx:explore</code> pensarla con Claude</div>
+      <div class="node" role="listitem"><code>/opsx:propose nombre</code> propuesta, requisitos, tareas y riesgo</div>
+      <div class="node h" role="listitem">Leéis y aprobáis la propuesta y hacéis commit</div>
+      <div class="node" role="listitem"><code>/factory nombre</code> valida y crea una copia aparte</div>
+      <div class="node" role="listitem">Builder construye y marca las tareas <span class="m">Opus · Sonnet si el riesgo es bajo</span></div>
+      <div class="node" role="listitem">Revisores según el riesgo <span class="m">código, UI y UX: Sonnet · seguridad: Opus</span><small>Si piden cambios, vuelve al builder (máximo 2 veces)</small></div>
+      <div class="node" role="listitem">Approver, último filtro <span class="m">Opus</span></div>
+      <div class="node h" role="listitem">Esperando humano: revisáis el resultado<small>Si no vale: <code>/factory rework id nota</code> y vuelve al builder</small></div>
+      <div class="node" role="listitem"><code>/factory approve id</code> se une al proyecto en local</div>
+      <div class="node" role="listitem"><code>/opsx:archive nombre</code> queda documentado</div>
+      <div class="node h" role="listitem">Si toca deploys/: Adrián lo sube a mano a Cloudflare</div>
     </div>
     <ol class="steps">
-      <li><div><b>Explorar</b> <span class="who h">vosotros + Claude</span><span>Habláis la idea con <code>/opsx:explore</code>. No escribe nada todavía.</span></div></li>
-      <li><div><b>Proponer</b> <span class="who">Claude</span><span><code>/opsx:propose</code> crea la carpeta del cambio en <code>openspec/changes/</code>: por qué, requisitos con escenarios, diseño y lista de tareas.</span></div></li>
-      <li><div><b>Aprobar la propuesta</b> <span class="who h">vosotros</span><span>La leéis, la corregís si hace falta y hacéis commit. Sin esto no empieza nada.</span></div></li>
-      <li><div><b>Construir y revisar</b> <span class="who">agentes</span><span><code>/factory</code> trabaja en una copia aparte, así vuestro proyecto no se toca mientras tanto. Se puede seguir en <code>factory/dashboard.html</code>.</span></div></li>
-      <li><div><b>Decidir</b> <span class="who h">vosotros</span><span>Al acabar, el trabajo queda «esperando humano». Lo aprobáis o lo devolvéis con una nota.</span></div></li>
-      <li><div><b>Archivar y, si toca, publicar</b> <span class="who h">vosotros</span><span><code>/opsx:archive</code> guarda los requisitos como documentación. Publicar en Cloudflare es siempre a mano.</span></div></li>
+      <li><span><div><b>Explorar</b> <span class="who h">vosotros + Claude</span><span>Habláis la idea con <code>/opsx:explore</code>. No escribe nada todavía.</span></div></span></li>
+      <li><span><div><b>Proponer</b> <span class="who">Claude</span><span><code>/opsx:propose</code> crea la carpeta del cambio en <code>openspec/changes/</code>: por qué, requisitos con escenarios, diseño y lista de tareas.</span></div></span></li>
+      <li><span><div><b>Aprobar la propuesta</b> <span class="who h">vosotros</span><span>La leéis, la corregís si hace falta y hacéis commit. Sin esto no empieza nada.</span></div></span></li>
+      <li><span><div><b>Construir y revisar</b> <span class="who">agentes</span><span><code>/factory</code> trabaja en una copia aparte, así vuestro proyecto no se toca mientras tanto. Se puede seguir en <code>factory/dashboard.html</code>.</span></div></span></li>
+      <li><span><div><b>Decidir</b> <span class="who h">vosotros</span><span>Al acabar, el trabajo queda «esperando humano». Lo aprobáis o lo devolvéis con una nota.</span></div></span></li>
+      <li><span><div><b>Archivar y, si toca, publicar</b> <span class="who h">vosotros</span><span><code>/opsx:archive</code> guarda los requisitos como documentación. Publicar en Cloudflare es siempre a mano.</span></div></span></li>
     </ol>
   </section>
 
@@ -166,6 +169,28 @@ flowchart TD
         <tr><td><span class="risk r3">alto</span></td><td>Formularios, datos personales, pagos, librerías nuevas, publicación, seguridad</td><td>Los cuatro, más Semgrep, Gitleaks y Trivy</td><td>Alto: modelos potentes</td></tr>
       </tbody>
     </table></div>
+  </section>
+
+  <section id="modelos">
+    <h2>Qué modelo usa cada agente</h2>
+    <p class="lead">Opus es el más potente y el que más gasta; Sonnet es más barato y suficiente para revisar; Haiku es el más barato, para tareas muy simples.</p>
+    <div class="tw"><table>
+      <thead><tr><th>Agente</th><th>Qué hace</th><th>Modelo</th></tr></thead>
+      <tbody>
+        <tr><td><code>builder</code></td><td>Construye el cambio y marca las tareas</td><td>Opus (Sonnet si el riesgo es bajo)</td></tr>
+        <tr><td><code>reviewer-code</code></td><td>Revisa que el código sea correcto y sencillo</td><td>Sonnet</td></tr>
+        <tr><td><code>reviewer-ui</code></td><td>Revisa cómo se ve</td><td>Sonnet</td></tr>
+        <tr><td><code>reviewer-ux</code></td><td>Revisa que se entienda y se use bien</td><td>Sonnet</td></tr>
+        <tr><td><code>reviewer-security</code></td><td>Revisa la seguridad y pasa Semgrep, Gitleaks y Trivy</td><td>Opus</td></tr>
+        <tr><td><code>approver</code></td><td>Último filtro antes de pasaros el trabajo</td><td>Opus</td></tr>
+        <tr><td><code>spec-writer</code></td><td>Fuera del flujo: las propuestas las hace OpenSpec</td><td>Opus</td></tr>
+      </tbody>
+    </table></div>
+    <h3>Cómo cambiarlo</h3>
+    <p class="lead">Cada agente tiene su archivo en <code>.claude/agents/</code>, con una línea <code>model:</code> al principio (<code>opus</code>, <code>sonnet</code>, <code>haiku</code> o <code>inherit</code> para usar el de la sesión). La regla de «Sonnet si el riesgo es bajo» está en <code>.claude/skills/factory/SKILL.md</code>. Lo más cómodo es pedírselo a Claude:</p>
+    <div class="cmd"><span>Cambia el modelo de reviewer-ui a haiku y enséñame el diff antes de guardar</span><button type="button">Copiar</button></div>
+    <div class="cmd"><span>Que el builder use sonnet también en riesgo medio</span><button type="button">Copiar</button></div>
+    <p class="lead">El modelo de tu propia conversación con Claude se cambia aparte, con <code>/model</code>.</p>
   </section>
 
   <section id="comandos">
@@ -223,12 +248,12 @@ flowchart TD
   <section id="reglas">
     <h2>Reglas de oro</h2>
     <ul class="rules">
-      <li>Abrir Claude siempre en la raíz de <code>~/Desktop/automatization</code>; desde una subcarpeta algunas herramientas no se activan.</li>
-      <li>Sin propuesta aprobada por los tres, no se construye nada.</li>
-      <li>Cada fin de sesión: «actualiza ESTADO.md y haz commit».</li>
-      <li class="no">Nadie publica automáticamente: Cloudflare solo a mano.</li>
-      <li class="no">Nada de cifras, clientes ni testimonios inventados.</li>
-      <li class="no">No usar <code>/opsx:apply</code> ni fusionar sin <code>/factory approve</code>.</li>
+      <li><span>Abrir Claude siempre en la raíz de <code>~/Desktop/automatization</code>; desde una subcarpeta algunas herramientas no se activan.</span></li>
+      <li><span>Sin propuesta aprobada por los tres, no se construye nada.</span></li>
+      <li><span>Cada fin de sesión: «actualiza ESTADO.md y haz commit».</span></li>
+      <li class="no"><span>Nadie publica automáticamente: Cloudflare solo a mano.</span></li>
+      <li class="no"><span>Nada de cifras, clientes ni testimonios inventados.</span></li>
+      <li class="no"><span>No usar <code>/opsx:apply</code> ni fusionar sin <code>/factory approve</code>.</span></li>
     </ul>
   </section>
 
