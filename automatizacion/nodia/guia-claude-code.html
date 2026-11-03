@@ -1,0 +1,265 @@
+<title>Guía de la fábrica Nodia</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: guía de lectura en una columna con índice lateral fijo en escritorio; bloques de comandos copiables y un esquema del flujo. Paleta de Nodia: azul noche y dorado. */
+:root {
+  --bg: #f7f7f4; --surface: #ffffff; --ink: #0b1222; --ink-2: #4a5164; --line: #e2e3e6;
+  --night: #0b1222; --gold: #a9781f; --gold-soft: #f3e8cf; --ok: #2f6b4f; --warn: #9a3b2a;
+  --sans: "Geist", "Helvetica Neue", Arial, sans-serif; --mono: "Geist Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0b1222; --surface: #121a2e; --ink: #ecebe6; --ink-2: #a7adbd; --line: #26304a;
+  --night: #060b16; --gold: #d9b45a; --gold-soft: #2b2614; --ok: #7cc6a1; --warn: #ef9a86; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #0b1222; --surface: #121a2e; --ink: #ecebe6; --ink-2: #a7adbd; --line: #26304a;
+  --night: #060b16; --gold: #d9b45a; --gold-soft: #2b2614; --ok: #7cc6a1; --warn: #ef9a86; color-scheme: dark }
+* { box-sizing: border-box }
+html { scroll-behavior: smooth; scroll-padding-top: 16px }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--sans); font-size: 16px; line-height: 1.6;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 0 64px }
+a { color: var(--gold) }
+h1, h2, h3 { margin: 0; font-weight: 600; letter-spacing: -0.02em; line-height: 1.15; text-wrap: balance }
+h2 { font-size: clamp(1.5rem, 3vw, 1.9rem) }
+h3 { font-size: 1.08rem }
+p { margin: 0 }
+code { font-family: var(--mono); font-size: .88em; background: var(--gold-soft); padding: 1px 6px; border-radius: 4px }
+.hero { background: var(--night); color: #ecebe6; margin-inline: calc(-1 * max(16px, env(safe-area-inset-left, 0px))); padding: clamp(40px, 7vw, 72px) max(16px, env(safe-area-inset-left, 0px)) }
+.hero .in { max-width: 1120px; margin: 0 auto; display: grid; gap: 14px }
+.hero h1 { font-size: clamp(2rem, 5vw, 3.2rem); max-width: 18ch }
+.hero p { color: #b8bdcb; max-width: 62ch; font-size: 1.08rem }
+.hero b { color: #d9b45a; font-weight: 500 }
+.wrap { max-width: 1120px; margin: 0 auto; display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 48px; padding-top: 40px }
+nav.toc { position: sticky; top: 24px; align-self: start; display: grid; gap: 4px; font-size: .92rem }
+nav.toc a { color: var(--ink-2); text-decoration: none; padding: 4px 0 4px 12px; border-left: 2px solid var(--line) }
+nav.toc a:hover { color: var(--ink); border-left-color: var(--gold) }
+main { display: grid; gap: 56px; min-width: 0 }
+section { display: grid; gap: 16px; min-width: 0 }
+.lead { color: var(--ink-2); max-width: 66ch }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr)); gap: 12px }
+.piece { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px; display: grid; gap: 6px; align-content: start }
+.piece .tag { font-family: var(--mono); font-size: .74rem; color: var(--gold); text-transform: uppercase; letter-spacing: .06em }
+.piece p { color: var(--ink-2); font-size: .94rem }
+.diagram { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px; overflow-x: auto }
+.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; counter-reset: s }
+.steps li { display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 12px; align-items: start; counter-increment: s }
+.steps li::before { content: counter(s); width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: var(--night); color: #d9b45a; font-family: var(--mono); font-size: .82rem }
+.steps b { display: block }
+.steps span { color: var(--ink-2); font-size: .95rem }
+.who { font-family: var(--mono); font-size: .72rem; padding: 1px 7px; border-radius: 99px; border: 1px solid var(--line); color: var(--ink-2); margin-left: 6px; white-space: nowrap }
+.who.h { border-color: var(--gold); color: var(--gold) }
+.tw { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--surface) }
+table { border-collapse: collapse; width: 100%; min-width: 560px; font-size: .94rem }
+th { text-align: left; font-weight: 500; font-size: .8rem; color: var(--ink-2); padding: 10px 14px; border-bottom: 1px solid var(--line) }
+td { padding: 10px 14px; border-top: 1px solid var(--line); vertical-align: top }
+td:first-child { white-space: nowrap }
+.cmd { display: flex; align-items: center; gap: 8px; background: var(--night); color: #ecebe6; border-radius: 8px; padding: 10px 12px; font-family: var(--mono); font-size: .86rem; overflow-x: auto }
+.cmd span { white-space: pre; flex: 1; min-width: 0 }
+.cmd button { all: unset; cursor: pointer; font-family: var(--sans); font-size: .76rem; color: #d9b45a; border: 1px solid #3a4560; border-radius: 6px; padding: 3px 9px; flex: none }
+.cmd button:focus-visible { outline: 2px solid #d9b45a; outline-offset: 2px }
+.rules { display: grid; gap: 8px; padding: 0; margin: 0; list-style: none }
+.rules li { padding: 12px 14px; border-radius: 8px; background: var(--surface); border: 1px solid var(--line); display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 10px }
+.rules li::before { content: "✓"; color: var(--ok); font-weight: 600 }
+.rules li.no::before { content: "✕"; color: var(--warn) }
+.risk { display: inline-block; font-family: var(--mono); font-size: .76rem; padding: 1px 8px; border-radius: 99px }
+.r1 { background: color-mix(in srgb, var(--ok) 15%, transparent); color: var(--ok) }
+.r2 { background: var(--gold-soft); color: var(--gold) }
+.r3 { background: color-mix(in srgb, var(--warn) 15%, transparent); color: var(--warn) }
+details { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px 16px }
+summary { cursor: pointer; font-weight: 500 }
+details p { color: var(--ink-2); margin-top: 8px }
+.tree { font-family: var(--mono); font-size: .86rem; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px; overflow-x: auto; white-space: pre; line-height: 1.7 }
+.tree i { font-style: normal; color: var(--ink-2) }
+@media (max-width: 860px) { .wrap { grid-template-columns: minmax(0, 1fr) } nav.toc { position: static; grid-template-columns: repeat(2, minmax(0, 1fr)) } }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto } }
+</style>
+
+<header class="hero"><div class="in">
+  <h1>Cómo trabajamos con Claude Code</h1>
+  <p>Guía para Adrián, Alex y el tercer socio. Explica para qué sirve cada pieza, el camino que sigue cualquier cambio y los comandos que vais a usar. <b>Idea clave: primero se acuerda qué hacer (OpenSpec), luego los agentes lo construyen y revisan (Factory), y al final siempre decide una persona.</b></p>
+</div></header>
+
+<div class="wrap">
+  <nav class="toc" aria-label="Índice">
+    <a href="#piezas">Las piezas</a>
+    <a href="#flujo">El camino de un cambio</a>
+    <a href="#ejemplo">Ejemplo completo</a>
+    <a href="#riesgo">Revisión según riesgo</a>
+    <a href="#comandos">Comandos</a>
+    <a href="#carpetas">Dónde está cada cosa</a>
+    <a href="#reglas">Reglas de oro</a>
+    <a href="#alex">Primeros pasos para Alex</a>
+    <a href="#dudas">Dudas frecuentes</a>
+  </nav>
+  <main>
+
+  <section id="piezas">
+    <h2>Las piezas y para qué sirve cada una</h2>
+    <p class="lead">Claude Code es el programa de la terminal donde se trabaja. Encima lleva estas herramientas, cada una con un trabajo distinto. Ninguna hace lo de otra.</p>
+    <div class="grid">
+      <div class="piece"><span class="tag">Cerebro</span><h3>CLAUDE.md, AGENTS.md, ESTADO.md</h3><p>La memoria del proyecto. Claude los lee al arrancar: normas, cómo probar las páginas y en qué punto estamos. Así no hay que explicarle todo cada vez.</p></div>
+      <div class="piece"><span class="tag">Qué hacer</span><h3>OpenSpec</h3><p>Antes de tocar nada se escribe una propuesta: por qué, qué cambia, cómo se comprueba y su riesgo. Es lo único que tenéis que leer y aprobar.</p></div>
+      <div class="piece"><span class="tag">Cómo hacerlo</span><h3>Software Factory</h3><p>Un equipo de agentes: uno construye en una copia aparte del proyecto y otros lo revisan (código, diseño, uso y seguridad). Si algo falla, lo corrigen ellos.</p></div>
+      <div class="piece"><span class="tag">Diseño</span><h3>Impeccable</h3><p>Para webs y pantallas: hace preguntas, propone estilos y revisa la calidad visual. Su detector avisa de fallos de diseño en cada edición.</p></div>
+      <div class="piece"><span class="tag">Presentaciones</span><h3>frontend-slides</h3><p>Crea presentaciones en una sola página web que funcionan sin internet.</p></div>
+      <div class="piece"><span class="tag">Ahorro</span><h3>Ponytail</h3><p>Pone a Claude en modo «lo mínimo que funciona»: menos código y respuestas cortas. Gasta menos. Se apaga al diseñar.</p></div>
+      <div class="piece"><span class="tag">Seguridad</span><h3>Semgrep, Gitleaks, Trivy</h3><p>Revisiones automáticas en los cambios de riesgo alto: fallos en el código, contraseñas olvidadas y librerías con agujeros conocidos.</p></div>
+      <div class="piece"><span class="tag">Publicar</span><h3>deploys/ y Cloudflare</h3><p>La copia privada que se ve en el móvil. La sube Adrián a mano. Ningún agente publica nunca.</p></div>
+    </div>
+  </section>
+
+  <section id="flujo">
+    <h2>El camino de un cambio</h2>
+    <p class="lead">Cualquier mejora, por pequeña que sea, sigue este recorrido. Las cajas doradas son las únicas donde actuáis vosotros; el resto lo hacen los agentes.</p>
+    <div class="diagram">
+<pre class="mermaid">
+flowchart TD
+  A[Idea] --> B["/opsx:explore<br/>pensarla con Claude"]
+  B --> C["/opsx:propose nombre<br/>propuesta + requisitos + tareas + riesgo"]
+  C --> D{{"Leéis y aprobáis la propuesta<br/>y hacéis commit"}}
+  D --> E["/factory nombre<br/>valida y crea una copia aparte"]
+  E --> F[Builder construye<br/>y marca las tareas]
+  F --> G[Revisores según el riesgo<br/>código · UI · UX · seguridad]
+  G -->|piden cambios| F
+  G -->|todo bien| H[Approver: último filtro]
+  H --> I{{"Esperando humano<br/>revisáis el resultado"}}
+  I -->|vale| J["/factory approve nombre<br/>se une al proyecto en local"]
+  I -->|no| K["/factory rework nombre nota<br/>vuelve al builder"]
+  K --> F
+  J --> L["/opsx:archive nombre<br/>queda documentado"]
+  L --> M{{"Si toca deploys/:<br/>Adrián lo sube a Cloudflare"}}
+  classDef h fill:#f3e8cf,stroke:#a9781f,color:#0b1222
+  class D,I,M h
+</pre>
+    </div>
+    <ol class="steps">
+      <li><div><b>Explorar</b> <span class="who h">vosotros + Claude</span><span>Habláis la idea con <code>/opsx:explore</code>. No escribe nada todavía.</span></div></li>
+      <li><div><b>Proponer</b> <span class="who">Claude</span><span><code>/opsx:propose</code> crea la carpeta del cambio en <code>openspec/changes/</code>: por qué, requisitos con escenarios, diseño y lista de tareas.</span></div></li>
+      <li><div><b>Aprobar la propuesta</b> <span class="who h">vosotros</span><span>La leéis, la corregís si hace falta y hacéis commit. Sin esto no empieza nada.</span></div></li>
+      <li><div><b>Construir y revisar</b> <span class="who">agentes</span><span><code>/factory</code> trabaja en una copia aparte, así vuestro proyecto no se toca mientras tanto. Se puede seguir en <code>factory/dashboard.html</code>.</span></div></li>
+      <li><div><b>Decidir</b> <span class="who h">vosotros</span><span>Al acabar, el trabajo queda «esperando humano». Lo aprobáis o lo devolvéis con una nota.</span></div></li>
+      <li><div><b>Archivar y, si toca, publicar</b> <span class="who h">vosotros</span><span><code>/opsx:archive</code> guarda los requisitos como documentación. Publicar en Cloudflare es siempre a mano.</span></div></li>
+    </ol>
+  </section>
+
+  <section id="ejemplo">
+    <h2>Ejemplo completo: corregir un texto de la web de Numa</h2>
+    <p class="lead">Lo que escribiríais en Claude Code, abierto en la raíz de <code>~/Desktop/automatization</code>. Los resultados que se describen son orientativos.</p>
+    <div class="cmd"><span>/opsx:propose corregir-titular-numa</span><button type="button">Copiar</button></div>
+    <p class="lead">Claude pregunta qué texto y por cuál, y crea la propuesta con <b>Riesgo: bajo</b> (es solo un texto). La leéis y, si está bien:</p>
+    <div class="cmd"><span>Haz commit de la propuesta corregir-titular-numa</span><button type="button">Copiar</button></div>
+    <div class="cmd"><span>/factory corregir-titular-numa</span><button type="button">Copiar</button></div>
+    <p class="lead">Como el riesgo es bajo, solo revisa el revisor de código y el builder usa un modelo barato. Cuando termina, avisa de que está esperando vuestra aprobación. Abrís <code>factory/dashboard.html</code>, miráis la página y:</p>
+    <div class="cmd"><span>/factory approve 001-corregir-titular-numa</span><button type="button">Copiar</button></div>
+    <div class="cmd"><span>/opsx:archive corregir-titular-numa</span><button type="button">Copiar</button></div>
+  </section>
+
+  <section id="riesgo">
+    <h2>Revisión según el riesgo</h2>
+    <p class="lead">Cada propuesta declara su riesgo. Así un cambio de texto no gasta lo mismo que uno que toca datos de clientes. Si no se declara, se trata como alto.</p>
+    <div class="tw"><table>
+      <thead><tr><th>Riesgo</th><th>Ejemplos</th><th>Quién revisa</th><th>Coste</th></tr></thead>
+      <tbody>
+        <tr><td><span class="risk r1">bajo</span></td><td>Textos, estilos, documentación</td><td>Solo el revisor de código</td><td>Bajo: modelo barato</td></tr>
+        <tr><td><span class="risk r2">medio</span></td><td>Pantallas nuevas, interacción</td><td>Código, interfaz y uso</td><td>Medio</td></tr>
+        <tr><td><span class="risk r3">alto</span></td><td>Formularios, datos personales, pagos, librerías nuevas, publicación, seguridad</td><td>Los cuatro, más Semgrep, Gitleaks y Trivy</td><td>Alto: modelos potentes</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section id="comandos">
+    <h2>Comandos</h2>
+    <h3>OpenSpec: qué hacer</h3>
+    <div class="tw"><table><thead><tr><th>Comando</th><th>Para qué</th></tr></thead><tbody>
+      <tr><td><code>/opsx:explore</code></td><td>Pensar una idea con Claude antes de comprometerse</td></tr>
+      <tr><td><code>/opsx:propose nombre</code></td><td>Crear la propuesta con requisitos, diseño, tareas y riesgo</td></tr>
+      <tr><td><code>/opsx:update nombre</code></td><td>Corregir una propuesta ya creada</td></tr>
+      <tr><td><code>/opsx:archive nombre</code></td><td>Cerrarla tras aprobarla; sus requisitos pasan a la documentación</td></tr>
+      <tr><td><code>/opsx:apply</code></td><td><b>No usar.</b> Aquí construye la Factory</td></tr>
+    </tbody></table></div>
+    <h3>Software Factory: construir y revisar</h3>
+    <div class="tw"><table><thead><tr><th>Comando</th><th>Para qué</th></tr></thead><tbody>
+      <tr><td><code>/factory nombre</code></td><td>Construir y revisar una propuesta ya aprobada</td></tr>
+      <tr><td><code>/factory next</code></td><td>Coger el siguiente elemento pendiente de <code>factory/backlog.md</code></td></tr>
+      <tr><td><code>/factory approve id</code></td><td>Aceptar el resultado y unirlo al proyecto en local (nunca publica)</td></tr>
+      <tr><td><code>/factory rework id nota</code></td><td>Devolverlo con instrucciones para corregir</td></tr>
+    </tbody></table></div>
+    <h3>Diseño, presentaciones y ahorro</h3>
+    <div class="tw"><table><thead><tr><th>Comando</th><th>Para qué</th></tr></thead><tbody>
+      <tr><td><code>/impeccable critique página</code></td><td>Revisión de diseño con puntuación y qué arreglar primero</td></tr>
+      <tr><td><code>/impeccable polish página</code></td><td>Repaso final antes de enseñar algo</td></tr>
+      <tr><td><code>/impeccable live</code></td><td>Elegir un elemento en el navegador y probar variantes</td></tr>
+      <tr><td><code>/frontend-slides tema</code></td><td>Crear una presentación</td></tr>
+      <tr><td><code>/ponytail lite | full | ultra</code></td><td>Ajustar el modo ahorro; «stop ponytail» lo apaga</td></tr>
+      <tr><td><code>/security-review</code> · <code>/code-review</code></td><td>Revisiones extra a mano antes de entregar</td></tr>
+    </tbody></table></div>
+    <h3>Del propio Claude Code</h3>
+    <div class="tw"><table><thead><tr><th>Comando</th><th>Para qué</th></tr></thead><tbody>
+      <tr><td><code>/model</code></td><td>Cambiar de modelo; Sonnet gasta menos que Opus</td></tr>
+      <tr><td><code>/compact</code></td><td>Resumir una conversación larga para que gaste menos</td></tr>
+      <tr><td><code>/clear</code></td><td>Empezar de cero en la misma sesión</td></tr>
+      <tr><td><code>claude --continue</code></td><td>Retomar la última conversación de esa carpeta (en la terminal)</td></tr>
+      <tr><td><code>/exit</code></td><td>Salir</td></tr>
+    </tbody></table></div>
+  </section>
+
+  <section id="carpetas">
+    <h2>Dónde está cada cosa</h2>
+<div class="tree">~/Desktop/automatization/       <i>abrir Claude siempre aquí</i>
+├── CLAUDE.md · AGENTS.md · ESTADO.md   <i>el cerebro</i>
+├── numa/        <i>web, presentación, marca y diseño de Numa</i>
+├── nodia/       <i>presentación, marca y documentos de Nodia</i>
+├── deploys/     <i>lo que se sube a mano a Cloudflare</i>
+├── datos/       <i>registro de candidatos (común)</i>
+├── openspec/    <i>propuestas (changes/) y requisitos vigentes (specs/)</i>
+├── factory/     <i>backlog.md, dashboard.html y trabajos en curso</i>
+├── scripts/     <i>comprobación automática de páginas</i>
+└── .claude/     <i>skills, agentes y comandos</i>
+
+~/Desktop/nodia/                <i>la web de Nodia, proyecto aparte</i></div>
+  </section>
+
+  <section id="reglas">
+    <h2>Reglas de oro</h2>
+    <ul class="rules">
+      <li>Abrir Claude siempre en la raíz de <code>~/Desktop/automatization</code>; desde una subcarpeta algunas herramientas no se activan.</li>
+      <li>Sin propuesta aprobada por los tres, no se construye nada.</li>
+      <li>Cada fin de sesión: «actualiza ESTADO.md y haz commit».</li>
+      <li class="no">Nadie publica automáticamente: Cloudflare solo a mano.</li>
+      <li class="no">Nada de cifras, clientes ni testimonios inventados.</li>
+      <li class="no">No usar <code>/opsx:apply</code> ni fusionar sin <code>/factory approve</code>.</li>
+    </ul>
+  </section>
+
+  <section id="alex">
+    <h2>Primeros pasos para Alex</h2>
+    <p class="lead">Una sola vez en su Mac. Necesita acceso al proyecto (repositorio o copia de la carpeta) y una cuenta de Claude.</p>
+    <div class="cmd"><span>curl -fsSL https://claude.ai/install.sh | bash</span><button type="button">Copiar</button></div>
+    <div class="cmd"><span>npm install -g @fission-ai/openspec@latest playwright</span><button type="button">Copiar</button></div>
+    <div class="cmd"><span>openspec config set telemetry.enabled false</span><button type="button">Copiar</button></div>
+    <div class="cmd"><span>brew install semgrep gitleaks trivy</span><button type="button">Copiar</button></div>
+    <div class="cmd"><span>npx playwright install chromium</span><button type="button">Copiar</button></div>
+    <div class="cmd"><span>cd ~/Desktop/automatization && claude</span><button type="button">Copiar</button></div>
+    <p class="lead">Ponytail y frontend-slides se instalan a nivel de usuario; Impeccable, OpenSpec y la Factory ya vienen dentro del proyecto. La primera orden útil: <code>Lee ESTADO.md y explícame en qué punto estamos</code>.</p>
+  </section>
+
+  <section id="dudas">
+    <h2>Dudas frecuentes</h2>
+    <details><summary>¿Y si un agente se atasca?</summary><p>El trabajo pasa a «esperando humano» con el motivo escrito. Lo leéis y usáis <code>/factory rework</code> con una nota, o descartáis la rama.</p></details>
+    <details><summary>¿Puedo romper el proyecto?</summary><p>Muy difícil: la Factory trabaja en una copia aparte y nada se une sin <code>/factory approve</code>. Y todo queda en git, se puede volver atrás.</p></details>
+    <details><summary>¿Para un cambio mínimo también hay que hacer todo esto?</summary><p>Sí, pero con riesgo bajo es rápido y barato. La ventaja es que todo queda documentado y revisado.</p></details>
+    <details><summary>¿Cómo veo cómo va un trabajo?</summary><p>Abre <code>factory/dashboard.html</code> en el navegador: muestra cada trabajo, su fase y qué dijo cada revisor.</p></details>
+    <details><summary>Se me acaban los tokens, ¿qué hago?</summary><p>Usa <code>/model</code> para pasar a Sonnet, <code>/compact</code> en conversaciones largas, y deja Ponytail activo para código.</p></details>
+  </section>
+
+  </main>
+</div>
+
+<script>
+document.querySelectorAll('.cmd button').forEach(b => b.addEventListener('click', () => {
+  const t = b.previousElementSibling.textContent;
+  const done = () => { b.textContent = 'Copiado'; setTimeout(() => b.textContent = 'Copiar', 1500); };
+  try { navigator.clipboard.writeText(t).then(done, () => { const r = document.createRange(); r.selectNodeContents(b.previousElementSibling); const s = getSelection(); s.removeAllRanges(); s.addRange(r); }); } catch (e) {}
+}));
+</script>
