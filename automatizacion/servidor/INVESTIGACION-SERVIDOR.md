@@ -1,94 +1,168 @@
-# Empieza con un VPS europeo y el Mac de reserva
+# El servidor de Factucoin: qué montar, cómo crecer y qué hay que cumplir
 
-La mejor opción para Factucoin/Numa es un **modelo híbrido**: el monolito Python (la web, la cola, las bases SQLite de cada gestoría y el OCR RapidOCR) vive en un **VPS europeo barato, como un Hetzner CX33 en Alemania, por unos 12-15 €/mes con copias incluidas**. El Mac mini de casa queda como **trabajador de rescate para Apple Vision**: no recibe conexiones de fuera, va a buscar los trabajos a la cola por un canal cifrado y no guarda ningún dato. El Mac no puede ser el servidor principal por tres motivos. Un contrato de fibra doméstica suele prohibir montar servidores. Una gestoría no puede auditar una casa. Y si se usa Cloudflare gratis como túnel, una empresa estadounidense ve las facturas sin cifrar. Las nubes grandes (AWS, Azure, Google) cuestan de 4 a 8 veces más hasta las 30 gestorías y solo compensan si un cliente exige ENS Alto o si hay créditos. El diseño no hay que rehacerlo al crecer, porque **cada gestoría ya es un fichero SQLite independiente**: para crecer basta con añadir servidores y repartir gestorías entre ellos, y añadir Macs alquilados en París solo en la semana del día 20. La IA al final de la cascada cuesta de **céntimos a unos 90 $ al mes incluso con 30 gestorías**, así que la decisión sobre la IA es legal (dónde se procesan los datos y si se guardan) y no de coste. Dos avisos. Casi todos los precios proceden de agregadores, porque en la investigación no se pudieron abrir las webs oficiales de Hetzner, Scaleway, AWS ni Apple. Y nada de esto es asesoría legal.
+> Investigación del 05-11-2026 para la tarea de Adrián. Casi todos los precios salen de agregadores, porque en la investigación no se pudieron abrir las webs oficiales; al final hay una lista de lo que hay que verificar. Nada de esto es asesoría legal.
 
-## Seis caminos, y solo uno sirve de 1 a 30 gestorías sin rehacer nada
+## 1. La recomendación
 
-La tabla resume las seis opciones. Las cifras son mensuales y sin IVA. Las sumas por escalón son **cálculo propio** con los precios citados debajo, y las marcadas con «≈» son estimaciones, no presupuestos.
+**Montamos el programa en contenedores sobre un VPS Hetzner CX33 en Alemania (Linux, sin Mac), por unos 10-13 €/mes más céntimos de IA, con HTTPS, una clave de cifrado por gestoría, doble factor, el servidor cerrado salvo el puerto 443, copias cifradas e imborrables en otro proveedor de la UE, un pentest antes del primer cliente real y un contrato de encargo con cada gestoría.**
 
-| Opción | 1 gestoría | 3 | 10 | 30 | Apple Vision | Confianza ante una gestoría | Pega principal |
-|---|---|---|---|---|---|---|---|
-| **A. Todo en Mac mini en casa + túnel** | ≈35-50 € (Mac, SAI y 4G amortizados a 3 años) | ≈35-50 € | Hace falta un segundo Mac | No viable | Sí | Baja | Contrato residencial, cortes, no auditable |
-| **B. VPS europeo (Hetzner/OVH)** | ≈9-13 € | ≈13 € | ≈30-35 € | ≈50-150 € | No | Media-alta | Más mantenimiento propio; sin Mac |
-| **C. Nube grande en región UE/España** | ≈45 $ | ≈45-90 $ | ≈100-150 $ | ≈200-350 $ | Solo con Mac de AWS (~1.000 $/mes) | Alta (ENS Alto) | Caro y con costes ocultos |
-| **D. Híbrida: nube UE + Mac en casa como trabajador** | ≈12-15 € | ≈13-27 € | ≈35-50 € | ≈60-230 € | Sí | Media-alta | El Mac de casa debe constar en el contrato con la gestoría |
-| **E. Mac alquilado en la UE** | 149 € | 149 € | 149-199 € | ≈300-400 € | Sí | Alta | Caro para empezar |
-| **F. PaaS/contenedores UE** | ≥36 € (web 24/7) | ≥36 € | Sube con el uso | Sube con el uso | No | Media-alta | La web siempre encendida sale cara |
+Por qué esta opción y no otra:
+- **Barato al empezar, sin rehacer nada al crecer.** Cada gestoría ya tiene su propio fichero de base de datos (SQLite). Para crecer se añaden servidores y se reparten gestorías, en vez de mudarse a otra plataforma.
+- **Las nubes grandes no compensan todavía.** AWS, Azure o Google cuestan de 4 a 8 veces más hasta las 30 gestorías. Solo merecen la pena si un cliente exige la certificación española ENS Alto o si conseguís créditos para startups.
+- **Un ordenador en casa no sirve de servidor principal.** Los contratos de fibra doméstica pueden prohibirlo, una gestoría no puede auditar una casa, y si se va la luz el día 19 no hay servicio.
+- **La IA no es un problema de dinero, sino de dónde se procesan los datos.** Cuesta entre céntimos y unos 90 $/mes incluso con 30 gestorías.
 
-En **Hetzner**, tras las dos subidas de 2026 (alrededor de +30-37 % el 1 de abril y otra el 15 de junio), los planes CX compartidos siguen siendo baratos. Según agregadores, el CX23 (2 vCPU/4 GB) cuesta **5,49 €**, el CX33 (4 vCPU/8 GB) **8,49 €** y el CX43 (8 vCPU/16 GB) **15,99 €** ([bitdoze](https://www.bitdoze.com/hetzner-cloud-review/); [stackvaluelab](https://stackvaluelab.com/hetzner-price-increase-2026/)). Otra fuente da 8,99 € para el CX33 ([bitdoze ES](https://www.bitdoze.com/es/hetzner-cloud-precios-2026/)). La IPv4 cuesta **0,50 €** aparte. En cambio, la vCPU dedicada ya no es una ganga: el CCX33 pasó de 62,49 € a **138,49 €** ([northflank](https://northflank.com/blog/hetzner-cloud-server-price-increases)). La subida de junio se aplica a pedidos nuevos y también a los cambios de tamaño de un servidor existente ([rscomputers-ks](https://rscomputers-ks.com/hetzner-price-increase-2026-move-servers/)). Por eso conviene crecer añadiendo servidores en lugar de ampliar el que ya existe. Además, hubo informes de **falta de stock de CX/CAX** en 2026 ([stackvaluelab](https://stackvaluelab.com/hetzner-cx-cax-unavailable/)). La alternativa natural es **OVHcloud**, con VPS-1 a unos **6,49 €** y VPS-2 a **9,99 €** según un agregador ([vpsledger](https://vpsledger.com/providers/ovhcloud/)). OVH figura con ENS Alto en un listado de terceros ([cloudlandscape](https://cloudlandscape.github.io/en/providers/ovhcloud/)), aunque su PostgreSQL gestionado empieza en unos **64 $/mes** ([OVH](https://www.ovhcloud.com/en/public-cloud/postgresql/)). IONOS tiene centro en Logroño, pero sus precios de entrada son de promoción y pueden doblarse al renovar ([comparevps](https://www.comparevps.com/hosting/ionos)). No se encontró certificación ENS de IONOS.
+## 2. Lo esencial del servidor
 
-La **nube grande** pierde por precio en estos escalones. Un mínimo en AWS con una máquina t4g.medium en la región de España (~27 $), una base de datos RDS micro (~14 $) y una IPv4 (3,65 $) ronda los **45 $/mes** antes de almacenamiento y balanceador ([aws-pricing.com](https://aws-pricing.com/t4g.medium.html); [bytebase](https://www.bytebase.com/dbcost/rds/instance/db.t4g.micro/); [AWS](https://aws.amazon.com/blogs/aws/new-aws-public-ipv4-address-charge-public-ip-insights)). Un «NAT Gateway» añadido por error suma unos **33 $/mes por zona** ([cloudburn](https://cloudburn.io/blog/aws-nat-gateway-pricing)). La nube grande tiene ventajas reales: AWS tiene **ENS Alto en 166 servicios** ([AWS](https://aws.amazon.com/blogs/security/aws-achieves-spains-ens-high-certification-across-166-services)) y ofrece créditos de 1.000-5.000 $ en autoservicio, que caducan a los 12 meses ([guptadeepak](https://guptadeepak.com/aws-activate-vs-microsoft-for-startups-vs-google-for-startups-2026-who-each-one-is-actually-for/)). Pero el ENS solo es obligatorio para el sector público y sus proveedores, no para una gestoría privada.
+### Las opciones comparadas
 
-El **Mac en casa como servidor principal** es barato de mantener. Consume unos **3 W en reposo** según ENERGY STAR ([ENERGY STAR](https://www.energystar.gov/productfinder/product/certified-computers/details/4513879)), lo que con el precio de la luz de octubre de 2026, unos 0,20 €/kWh ([Selectra](https://selectra.es/energia/noticias/precio-luz/2026-10-31)), da menos de unos 70 €/año. Pero exige comprar el Mac nuevo, desde **1.069 €** ([Hardmaniacos](https://www.hardmaniacos.com/mac-mini-m6-mac-studio-m5-ultra-disponibles-espana/)), y un SAI de **90-115 €** ([tiendasigloxxi](https://tiendasigloxxi.es/en/power-bank/129091-apc-back-ups-650va-230v-1usb-charging-0731304347194.html)). Los contratos de fibra residencial llegan a prohibir expresamente «la instalación de servidores» ([condiciones de ejemplo](https://www.marianoacosta.coop/wp-content/uploads/2019/10/Condiciones-Particulares-y-Generales-WEB.pdf)). Cada túnel tiene su problema. Cloudflare Tunnel es gratis, pero **descifra el tráfico en sus servidores** ([selfhosted-sh](https://selfhosted-sh.pages.dev/cloudflare-tunnels-zero-trust-access)), y mantener ese descifrado solo en la UE exige su plan Enterprise ([donneespersonnelles.fr](https://donneespersonnelles.fr/cloudflare-rgpd)). Tailscale Funnel no puede descifrar los datos ([Tailscale](https://tailscale.com/kb/1223/tailscale-funnel)), pero su plan gratuito es solo para uso no comercial ([SSD Nodes](https://www.ssdnodes.com/learn/lang/es/tailscale-pricing-explained)).
+Cifras mensuales sin IVA. Las sumas son **cálculo propio** con los precios citados; «≈» significa estimación, no presupuesto.
 
-El **Mac alquilado** en París (Scaleway) cuesta **149 €/mes por el M4 de 16 GB o 0,22 €/h**, con un **mínimo de 24 h** por la licencia de Apple ([Scaleway](https://scaleway.com/en/pricing/apple-silicon); [docs](https://www.scaleway.com/en/docs/apple-silicon/quickstart/)). Scaleway tiene ISO 27001 y HDS (la certificación francesa para datos de salud) ([BSI](https://www.bsigroup.com/en-GB/products-and-services/assessment-and-certification/validation-and-verification/client-directory-certificate/HDS%20809731)). vBoxx, en Países Bajos, alquila Macs desde **140 €/mes** con ISO 27001 declarado ([vBoxx](https://mac-hosting.vboxx.eu/)). AWS cobra **1,35 $/h** por un Mac en Irlanda, unos 990 $/mes ([macyou](https://macyou.co/blog/aws-ec2-mac-pricing-explained)). Para todo el año es caro, pero para la semana de cierre es ideal: **7 días a 0,22 €/h son unos 37 € por Mac y por trimestre** (cálculo propio).
+| Opción | 1 gestoría | 3 | 10 | 30 | Confianza ante una gestoría | Pega principal |
+|---|---|---|---|---|---|---|
+| **VPS europeo (Hetzner/OVH)** ✅ | ≈10-12 € | ≈13-16 € | ≈25-40 € | ≈50-90 € | Media-alta | Mantenimiento propio |
+| Nube grande en región UE/España | ≈45 $ | ≈45-90 $ | ≈100-150 $ | ≈200-350 $ | Alta (ENS Alto) | Cara y con costes ocultos |
+| PaaS / contenedores gestionados UE | ≥36 € | ≥36 € | Sube con el uso | Sube con el uso | Media-alta | La web siempre encendida sale cara |
+| Todo en un Mac en casa | ≈35-50 € | ≈35-50 € | No escala | No viable | Baja | Contrato doméstico, cortes, no auditable |
+| Mac alquilado en la UE | 149 € | 149 € | 149-199 € | ≈300-400 € | Alta | Caro para empezar |
 
-El **PaaS** (plataforma gestionada) sale caro para la web siempre encendida y barato para los picos. En Scaleway Serverless, la vCPU cuesta 0,00001 €/s y la memoria 0,000002 €/GB·s ([Scaleway](https://www.scaleway.com/en/pricing/serverless/)). Con esos precios, un contenedor de 1 vCPU y 2 GB encendido todo el mes cuesta unos **36 €**, varias veces más que un CX33. En cambio, un cierre trimestral con 320 horas de vCPU de OCR cuesta unos **11,5 €** (cálculos propios). El precio de Clever Cloud (unos 5 € de entrada) no está confirmado ([capterra](https://www.capterra.com/p/173415/Clever-cloud/)).
+**Precios de referencia:**
+- **Hetzner**, tras las dos subidas de 2026 (abril, +30-37 %, y 15 de junio): CX23 (2 vCPU/4 GB) a **5,49 €**, CX33 (4 vCPU/8 GB) a **8,49-8,99 €** y CX43 (8 vCPU/16 GB) a **15,99 €**, más **0,50 €** de IPv4 ([bitdoze](https://www.bitdoze.com/hetzner-cloud-review/); [stackvaluelab](https://stackvaluelab.com/hetzner-price-increase-2026/); [bitdoze ES](https://www.bitdoze.com/es/hetzner-cloud-precios-2026/)). La subida de junio también se aplica al **cambiar de tamaño** un servidor existente ([rscomputers-ks](https://rscomputers-ks.com/hetzner-price-increase-2026-move-servers/)), así que conviene crecer añadiendo servidores. Hubo informes de **falta de stock** de los planes CX ([stackvaluelab](https://stackvaluelab.com/hetzner-cx-cax-unavailable/)).
+- **Alternativa: OVHcloud.** VPS-1 a unos **6,49 €** y VPS-2 a **9,99 €** ([vpsledger](https://vpsledger.com/providers/ovhcloud/)), y figura con ENS Alto en un listado de terceros ([cloudlandscape](https://cloudlandscape.github.io/en/providers/ovhcloud/)).
+- **Nube grande:** el mínimo en AWS ronda los **45 $/mes** (máquina t4g.medium, base de datos RDS micro e IPv4) ([aws-pricing.com](https://aws-pricing.com/t4g.medium.html); [bytebase](https://www.bytebase.com/dbcost/rds/instance/db.t4g.micro/)). AWS tiene ENS Alto en 166 servicios ([AWS](https://aws.amazon.com/blogs/security/aws-achieves-spains-ens-high-certification-across-166-services)).
+- **Copias:** Scaleway Object Storage, unos **0,0146 €/GB al mes** ([Scaleway](https://www.scaleway.com/fr/tarifs/storage)), es decir, ≈1,5 € por 100 GB. Una segunda copia en Hetzner Storage Box (1 TB) cuesta **3,20 €** ([whtop](https://www.whtop.com/amp/plans/hetzner.com/128269)).
 
-## Se crece añadiendo piezas, no cambiando de casa
+### Cómo se crece sin rehacer nada
 
-La arquitectura que permite llegar a 30 gestorías sin rehacer nada se decide el primer día. Tiene tres reglas. Primera, todo va **en contenedores Docker**. Segunda, el OCR pesado y Apple Vision funcionan como **trabajadores que van a buscar trabajos a una cola**. Tercera, **cada gestoría tiene su propio fichero SQLite**. Con eso, crecer no es migrar, sino sumar piezas: más servidores, más trabajadores o un Mac alquilado.
+Tres reglas desde el primer día: **todo en contenedores Docker**, el **OCR pesado como trabajadores que cogen tareas de una cola** y **un fichero de base de datos por gestoría**.
 
-| Escalón | Qué hay | Coste mensual aprox. (sin IVA ni IA) | Cuándo subir |
+| Escalón | Qué hay | Coste al mes (sin IVA ni IA) | Cuándo subir |
 |---|---|---|---|
-| **0-1 gestorías** | 1 Hetzner CX33 + IPv4 (≈9 €) con web, cola, SQLite y RapidOCR; copia cifrada en Scaleway Object Storage (~1,5 €/100 GB); Mac de casa como trabajador de rescate (luz ≈2-4 €) | **≈12-15 €** | Cuando el OCR del cierre sature la CPU o firme la 2.ª-3.ª gestoría |
-| **3** | Igual, más un SAI y un 4G de respaldo para el Mac (~12 €/mes); segunda copia en Storage Box (3,20 €) | **≈16-30 €** | Cuando la cola de un día 20 tarde horas |
-| **10** | Servidor de la aplicación CX43 (≈16,5 €) + trabajadores de OCR que se encienden por horas en la semana de cierre + Mac Scaleway alquilado 24 h a 7 días en cada cierre (~37 € por trimestre, ≈12 €/mes de media) | **≈35-50 €** | Cuando un cliente pida un proveedor certificado para Apple Vision o falle el Mac de casa |
-| **30** | 2-3 servidores CX43 con las gestorías repartidas por servidor (≈33-50 €) + trabajadores en pico + Mac Scaleway M4-S fijo (149 €); el Mac de casa como respaldo | **≈60-230 €** | Valorar PostgreSQL gestionado (Scaleway u OVH) solo si hace falta consultar varias gestorías a la vez |
+| **0-1 gestorías** | 1 Hetzner CX33 + IPv4 con la web, la cola, las bases y el OCR; copia cifrada en Scaleway | **≈10-12 €** | Cuando el cierre sature la CPU o firme la 2.ª-3.ª gestoría |
+| **3** | Igual, más una segunda copia en Storage Box | **≈13-16 €** | Cuando la cola de un día 20 tarde horas |
+| **10** | Servidor CX43 para la aplicación + trabajadores de OCR que se encienden por horas en la semana de cierre | **≈25-40 €** | Cuando un servidor no aguante el pico |
+| **30** | 2-3 servidores CX43 con las gestorías repartidas + trabajadores en el pico | **≈50-90 €** | Valorar PostgreSQL gestionado solo si hace falta consultar varias gestorías a la vez |
 
-Las cifras de copias salen de la página de Scaleway: unos **0,0146 €/GB al mes** y 75 GB de descarga gratis ([Scaleway](https://www.scaleway.com/fr/tarifs/storage)). La Storage Box de 1 TB cuesta **3,20 €** según agregadores ([whtop](https://www.whtop.com/amp/plans/hetzner.com/128269)). La copia principal debe ir a **otro proveedor** distinto del servidor: si el servidor está en Hetzner y la copia también, un problema con Hetzner se lleva las dos. Scaleway y OVH permiten «Object Lock», un bloqueo que impide borrar las copias durante un plazo, incluso con contraseñas robadas. La Storage Box no lo tiene ([OVH FAQ](https://docs.ovhcloud.com/en/guides/storage-and-backup/object-storage/s3-faq)). Que Hetzner cobre los servidores por horas, lo que permite encender trabajadores solo en los cierres, es conocimiento previo de la investigación y está por verificar.
+El coste está en los **picos de la semana del día 20** de enero, abril, julio y octubre, no en el día a día. Por eso conviene un servidor pequeño que sume trabajadores por horas. Que Hetzner cobre por horas está por verificar.
 
-El Mac de casa trabaja de una forma muy concreta. Abre una conexión hacia el servidor por WireGuard (un túnel cifrado gratuito que se gestiona uno mismo, sin terceros estadounidenses). Pide un trabajo, descarga la factura con un enlace temporal, la procesa en memoria con Apple Vision, devuelve el resultado y la borra. El disco va cifrado con FileVault. Si el Mac se cae, la cola espera y RapidOCR sigue funcionando en el servidor: se pierde algo de calidad en algunos documentos, pero no datos. Este patrón evita los puertos abiertos, el CG-NAT (la IP compartida que ponen algunos operadores) y la exposición del domicilio. Sigue siendo uso comercial de la línea, así que al crecer conviene una fibra de empresa.
+### La IA en el servidor
 
-## La IA cuesta céntimos; lo que importa es dónde se procesa
+Supuestos: cada factura que llega a la IA consume **3.000 tokens de entrada y 500 de salida**. A modo ilustrativo, 1 gestoría ≈ 1.000 facturas al mes, 10 ≈ 10.000 y 30 ≈ 50.000, y el 30 % llega a la IA. Alex debe sustituir estas cifras por las reales.
 
-Para comparar, se toman estos **supuestos explícitos**: cada factura que llega a la IA consume **3.000 tokens de entrada y 500 de salida**. Una foto de 3 MP consume por sí sola unos **3.888 tokens**, así que conviene reducirla a unos 1.500 px de lado largo ([Anthropic Vision](https://platform.claude.com/docs/en/build-with-claude/vision)). Sobre el volumen, la tabla supone, a modo ilustrativo y no como dato, que **1 gestoría ≈ 1.000 facturas/mes, 10 ≈ 10.000 y 30 ≈ 50.000**, y que **el 30 % llega a la IA**. Alex debe sustituir estas cifras por las reales.
-
-| Modelo y vía | $/factura | 1 gestoría | 10 | 30 | ¿Se procesa en la UE? |
+| Modelo y vía | $/factura | 1 gestoría | 10 | 30 | ¿Procesa en la UE? |
 |---|---|---|---|---|---|
-| Claude Haiku 5.5, API directa de Anthropic | 0,00055 | 0,16 $ | 1,65 $ | 8,25 $ | No (solo «global» o «us») |
-| Claude Haiku 4.5 en AWS Bedrock con perfil UE (+10 %, a verificar) | 0,00605 | 1,81 $ | 18,15 $ | 90,75 $ | Sí (incluye España) |
-| Mistral Small 4 (agregador) | 0,00075 | 0,22 $ | 2,25 $ | 11,25 $ | Sí, por defecto |
-| GPT-5.4 nano, proyecto con región Europa (agregador) | 0,00122 | 0,37 $ | 3,67 $ | 18,38 $ | Sí |
-| Claude Sonnet 5.5, API directa | 0,011 | 3,30 $ | 33 $ | 165 $ | No |
+| Claude Haiku 5.5, API directa | 0,00055 | 0,16 $ | 1,65 $ | 8,25 $ | **No** (solo «global» o «us») |
+| Claude Haiku 4.5 en AWS Bedrock UE | 0,00605 | 1,81 $ | 18,15 $ | 90,75 $ | Sí, incluye España |
+| Mistral Small 4 | 0,00075 | 0,22 $ | 2,25 $ | 11,25 $ | Sí, por defecto |
+| GPT-5.4 nano, proyecto Europa | 0,00122 | 0,37 $ | 3,67 $ | 18,38 $ | Sí |
 
-Las cifras proceden de las notas de investigación ([precios Claude](https://platform.claude.com/docs/en/about-claude/pricing); [Mistral](https://pricepertoken.com/pricing-page/model/mistral-ai-mistral-small); [GPT nano](https://costbench.com/software/llm-api-providers/openai-api/)). La API directa de Anthropic es la más barata, y su modo por lotes rebaja un 50 % más. Además, no guarda las conversaciones por defecto y ofrece **retención cero (ZDR) bajo petición** ([Anthropic](https://platform.claude.com/docs/en/manage-claude/api-and-data-retention)). Pero hoy su parámetro de región **solo admite «us» y «global»** ([Anthropic](https://platform.claude.com/docs/en/manage-claude/data-residency)), así que usarla supone una transferencia de datos a EE. UU. Esa transferencia se ampara en el marco UE-EE. UU. (DPF) y en cláusulas contractuales tipo. El DPF sigue vigente, pero hay un recurso pendiente ante el Tribunal de Justicia de la UE (C-703/25 P) ([WilmerHale](https://www.wilmerhale.com/insights/blogs/wilmerhale-privacy-and-cybersecurity-law/20251201-european-court-of-justice-to-review-challenge-to-eu-us-data-privacy-framework)), y la autoridad noruega recomienda tener una estrategia de salida ([streamlex](https://streamlex.eu/resources/dpf-developments-tracker/)).
+Fuentes: [precios Claude](https://platform.claude.com/docs/en/about-claude/pricing); [residencia de datos de Anthropic](https://platform.claude.com/docs/en/manage-claude/data-residency); [Bedrock UE](https://docs.aws.eu/bedrock/latest/userguide/model-card-anthropic-claude-opus-4-6.html); [Mistral](https://pricepertoken.com/pricing-page/model/mistral-ai-mistral-small); [GPT nano](https://costbench.com/software/llm-api-providers/openai-api/).
 
-Con **Bedrock y su perfil «EU»**, la IA se ejecuta solo en regiones de la UE, España incluida ([AWS](https://docs.aws.eu/bedrock/latest/userguide/model-card-anthropic-claude-opus-4-6.html)), y el encargado pasa a ser AWS. **Mistral** es una empresa francesa y aloja en la UE por defecto. Pero por defecto guarda las peticiones 30 días para vigilar abusos, y la retención cero hay que pedirla y justificarla ([anarlog](https://anarlog.so/blog/mistral-data-retention-policy)). **OpenAI** ofrece proyectos con región Europa y retención cero ([OpenAI](https://openai.com/index/introducing-data-residency-in-europe/)), aunque sigue sometida a la ley estadounidense. Montar un modelo propio en una GPU no compensa: la más barata citada, una Hetzner GEX44, cuesta **184 €/mes** ([Hetzner](https://www.hetzner.com/gpu)) y además podría no estar disponible. La recomendación es empezar con **Bedrock con perfil UE**, con Mistral como alternativa, porque en el peor caso la diferencia son unos 80 $/mes con 30 gestorías.
+**Recomendación:** empezar con **Claude en Bedrock con perfil UE**, o con Mistral como alternativa, porque los datos se quedan en la UE. Es más caro que la API directa, pero la diferencia en el peor caso son unos 80 $/mes con 30 gestorías. Hay que verificar si Haiku 5.5 ya está disponible en Bedrock UE: es más barato y mejor que el 4.5. Un modelo propio en una GPU no compensa: la más barata cuesta unos **184 €/mes** ([Hetzner](https://www.hetzner.com/gpu)).
 
-## Seguridad mínima: casi todo gratis salvo copias, pentest y abogado
-
-La seguridad mínima tiene coste recurrente bajo. Estas son las medidas, en el orden en que conviene montarlas:
+### Seguridad mínima
 
 | Medida | Cómo | Coste |
 |---|---|---|
 | HTTPS | Caddy con certificados automáticos | 0 € |
-| Cifrado | Disco cifrado y una clave por gestoría guardada con sops + age; al dar de baja una gestoría, se borra su clave | 0 € |
-| Acceso | Doble factor y roles por gestoría (administrador, usuario, solo lectura); administración interna por WireGuard o con Cloudflare Access (gratis hasta 50 usuarios) | 0 € |
-| Aislamiento | Un fichero SQLite por gestoría y pruebas automáticas de acceso cruzado entre gestorías | 0 € |
+| Cifrado | Disco cifrado y una clave por gestoría (sops + age); al dar de baja una gestoría, se borra su clave | 0 € |
+| Acceso | Doble factor y roles por gestoría; administración interna solo por WireGuard | 0 € |
+| Aislamiento | Una base por gestoría y pruebas automáticas de acceso cruzado | 0 € |
 | Exposición mínima | Cortafuegos con todo cerrado salvo el puerto 443 | 0 € |
-| Subidas | Validación del tipo real de fichero, antivirus ClamAV y OCR en un contenedor sin red | 0 € |
+| Subidas de ficheros | Comprobar el tipo real del fichero, antivirus ClamAV y OCR en un contenedor sin red | 0 € |
 | Mantenimiento | Parches automáticos, Trivy y Dependabot | 0 € |
-| Avisos | Monitorización con Uptime Kuma o el plan gratuito de Better Stack | 0 € |
-| Copias | Copias cifradas con restic a otro proveedor de la UE, con bloqueo de borrado y una prueba de restauración cada trimestre | ≈1,5-5 €/mes |
-| Registro de auditoría | Registro que no se pueda borrar, guardado fuera del servidor | 0 a pocos €/mes |
+| Avisos | Uptime Kuma o el plan gratuito de Better Stack | 0 € |
+| Copias | restic cifrado a otro proveedor de la UE, con bloqueo de borrado (Object Lock) y una restauración de prueba cada trimestre | ≈1,5-5 €/mes |
+| Registro de accesos | Registro que no se pueda borrar, guardado fuera del servidor | 0 a pocos €/mes |
 
-Las fuentes de herramientas y precios están en las notas de investigación ([Cloudflare Zero Trust](https://www.cloudflare.com/plans/sase-zero-trust.md); [OWASP subidas](https://cheatsheetseries.owasp.org/cheatsheets/File_Upload_Cheat_Sheet.html); [restic](https://restic.readthedocs.io/)). Cloudflare Pro, con cortafuegos de aplicaciones (WAF), cuesta **20-25 $/mes** ([activepieces](https://www.activepieces.com/blog/cloudflare-pricing-2026-plans-and-what-you-pay)). Es opcional y tiene un coste de privacidad: Cloudflare vería las facturas sin cifrar y pasaría a ser un subencargado más. Hay tres gastos puntuales. Un pentest acotado, que debe incluir pruebas de acceso cruzado entre gestorías, cuesta **desde 1.490 €** y lo habitual es **2.000-6.000 €** ([Hard2bit](https://hard2bit.com/blog/cuanto-cuesta-un-pentesting-en-espana/)). La adecuación RGPD empieza en unos **800 €** ([Legiscope](https://www.legiscope.com/blog/cuanto-cuesta-cumplir-rgpd.html)). Un ciberseguro, **desde unos 350 €/año** según una fuente comercial ([blogthinkbig](https://blogthinkbig.com/ciberseguro-empresas)).
+Fuentes: [OWASP subidas](https://cheatsheetseries.owasp.org/cheatsheets/File_Upload_Cheat_Sheet.html); [restic](https://restic.readthedocs.io/); [OVH Object Lock](https://docs.ovhcloud.com/en/guides/storage-and-backup/object-storage/s3-faq).
 
-En lo legal, las gestorías son las responsables de los datos y Factucoin es la encargada. Lo mínimo es esto. Primero, un **contrato de encargo (art. 28) adaptado a cada gestoría**: la AEPD ha sancionado contratos genéricos ([Fieldfisher](https://www.fieldfisher.com/es-es/locations/spain/insights/mala-gestion-multa)), y hay directrices oficiales para redactarlo ([AEPD](https://aepd.es/guias/guia-directrices-contratos.pdf)). Segundo, un **anexo con todos los subencargados**: Hetzner, el proveedor de copias, el de IA y Cloudflare si se usa. El Comité Europeo de Protección de Datos pide la cadena completa, con nombre, dirección y descripción del tratamiento ([IAPP](https://iapp.org/news/a/controllers-processors-and-subprocessors-in-chains)). El domicilio donde está el Mac también debe declararse. Tercero, un **registro de actividades como encargado** (art. 30.2). Cuarto, un **plan de brechas**: la gestoría tiene **72 horas, festivos incluidos,** para notificar a la AEPD, y la encargada debe avisarla «sin dilación» ([AEPD](https://www.aepd.es/derechos-y-deberes/cumple-tus-deberes/medidas-de-cumplimiento/brechas-de-datos-personales-notificacion)); fijar en el contrato un aviso en 24-48 horas es práctica de mercado. Las herramientas gratuitas Facilita RGPD y Facilita EMPRENDE de la AEPD generan borradores ([AEPD](https://www.aepd.es/guias-y-herramientas/herramientas/facilita-emprende)). Probablemente no hace falta nombrar un delegado de protección de datos, y la evaluación de impacto corresponde a cada gestoría, a la que la encargada debe ayudar. Ambos puntos están por confirmar con un profesional.
+Cloudflare Pro (WAF, 20-25 $/mes) es opcional y tiene un coste de privacidad: Cloudflare vería las facturas sin cifrar y pasaría a ser un subencargado más ([selfhosted-sh](https://selfhosted-sh.pages.dev/cloudflare-tunnels-zero-trust-access)).
 
-## Conclusión
+## 3. El pentest: punto de control, no un precio más
 
-La recomendación en una frase: **montamos el monolito en contenedores sobre un VPS Hetzner CX33 en Alemania, con el Mac mini de casa solo como trabajador de Apple Vision conectado por WireGuard y sin guardar datos, por unos 12-15 €/mes más céntimos de IA en Bedrock UE, con HTTPS, una clave de cifrado por gestoría, doble factor, el servidor cerrado salvo el puerto 443, copias cifradas e imborrables en Scaleway con prueba trimestral, y un contrato de encargo con anexo de subencargados para cada gestoría.** Lo más llamativo de la investigación es que el coste está en los picos del día 20 y no en el día a día. Por eso el modelo más barato y escalable no es el servidor más grande, sino uno pequeño que puede sumar trabajadores por horas y Macs por 24 horas. El riesgo que más pesa no es técnico: es que una gestoría pregunte dónde están sus datos. El escalón de 10 gestorías está pensado para responder a esa pregunta sin cambiar de arquitectura.
+El pentest es una **puerta**. **Ninguna factura real entra en el servidor hasta que se haya hecho y se hayan arreglado los fallos graves.** Es lo que permite decirle a una gestoría «lo ha revisado un tercero» en vez de «confía en nosotros», y lo que más pesa si algún día hay una brecha.
 
-Antes de contratar hay que verificar en las webs oficiales estos precios y condiciones:
+**Qué debe probar, como mínimo:**
+1. **Que una gestoría no pueda ver los datos de otra**, ni por la web, ni por la API, ni adivinando enlaces de ficheros. Es el fallo más grave posible en este negocio.
+2. **El inicio de sesión:** doble factor, robo de sesión, fuerza bruta y recuperación de contraseña.
+3. **Las subidas de ficheros:** PDFs maliciosos, ficheros que no son lo que dicen y tamaños enormes.
+4. **La API:** permisos de cada petición y datos personales en los mensajes de error.
+5. **El servidor por fuera:** puertos abiertos, versiones con fallos conocidos y configuración de HTTPS.
+6. **Las copias:** que no se puedan leer ni borrar con las credenciales del servidor.
+
+**Cuándo:**
+- **Antes:** revisión propia con herramientas gratuitas (OWASP ZAP, Trivy, Semgrep y Gitleaks, que la Factory ya tiene). Aquí tu perfil de ciberseguridad aporta mucho y abarata el pentest, porque se llega con lo fácil ya arreglado.
+- **Pentest externo:** con el servidor montado, **antes del primer cliente real**. No antes del servidor de juguete.
+- **Repetirlo:** tras cambios grandes, como una API nueva o una nueva forma de subir facturas, y como mínimo una vez al año.
+- **Comprobar los arreglos:** que el proveedor vuelva a probar los fallos que encontró (retest).
+
+**Coste orientativo:** desde 1.490 € con un alcance muy acotado; lo habitual en una web sencilla, **2.000-6.000 €** ([Hard2bit](https://hard2bit.com/blog/cuanto-cuesta-un-pentesting-en-espana/)). Desconfiad de los precios muy bajos: suelen ser solo un escaneo automático. Pedid tres presupuestos con el alcance de arriba por escrito.
+
+## 4. Objeción: ¿hace falta un Mac?
+
+El programa de Alex tiene dos lectores de imagen (OCR). **RapidOCR**, el principal, funciona en Linux. **Apple Vision**, el de rescate, solo existe en macOS. Por eso salía un Mac en el montaje. **No es imprescindible**, y empezar sin él es más simple, barato y fácil de explicar a una gestoría.
+
+**Alternativas en Linux para el rescate:**
+- **Un segundo OCR gratuito** en el mismo servidor: PaddleOCR, Surya, docTR o Tesseract.
+- **La IA con imagen** (Haiku o Mistral) para lo que el OCR no lea bien. Ya está en la cascada y cuesta céntimos.
+- **OCR de pago en la nube con región UE**, como Azure Document Intelligence, AWS Textract, Google Document AI o Mistral OCR, por céntimos por página. Añade un subencargado.
+
+**Cómo decidirlo:** Alex puede apagar Apple Vision con `FAC_VISION=0` y medir cuánto empeora la lectura con las mismas facturas. Si la diferencia es pequeña, el Mac sobra. Si es grande, se añade después sin cambiar nada más:
+- **Un Mac alquilado en París (Scaleway)** solo en la semana de cierre: 0,22 €/h con un mínimo de 24 h, unos **37 € por trimestre** ([Scaleway](https://scaleway.com/en/pricing/apple-silicon)). O fijo desde **149 €/mes**.
+- **El Mac de casa como trabajador**: sale a buscar tareas por WireGuard, procesa en memoria y no guarda nada. Es la opción más barata, pero el domicilio pasa a ser un lugar de tratamiento que hay que declarar a la gestoría, y la línea doméstica puede no permitir uso comercial ([condiciones de ejemplo](https://www.marianoacosta.coop/wp-content/uploads/2019/10/Condiciones-Particulares-y-Generales-WEB.pdf)).
+
+## 5. Lo legal: qué hay que tener antes de tratar facturas reales
+
+**¿Lo hemos revisado todo?** Los puntos de abajo cubren lo que pide el RGPD a un encargado del tratamiento. Pero en la investigación no se pudieron abrir los documentos de la AEPD (su web está bloqueada en la sesión), y varias cosas están marcadas «a confirmar». Antes de abrir el servidor a gestorías que no conocéis, **un profesional de protección de datos debe revisar esta lista**. Para el piloto por Drive basta con la plantilla bien hecha (punto 2).
+
+**1. Quién es quién.** La **gestoría es la responsable** de los datos de sus clientes; **vosotros sois sus encargados** (art. 28 del RGPD). Solo podéis hacer con los datos lo que ella os encargue.
+
+**2. Contrato de encargo con cada gestoría** (art. 28.3). Adaptado a cada caso: la AEPD ha sancionado contratos genéricos ([Fieldfisher](https://www.fieldfisher.com/es-es/locations/spain/insights/mala-gestion-multa)). Debe decir:
+- qué datos, para qué, cuánto tiempo y dónde se tratan;
+- que solo seguís sus instrucciones y guardáis confidencialidad;
+- las medidas de seguridad (la tabla del apartado 2);
+- quiénes son los subencargados (punto 3);
+- que les ayudáis con los derechos de sus clientes y con las brechas;
+- qué pasa al terminar: **devolver o borrar** todos los datos, también los de las copias;
+- que pueden auditaros.
+
+Hay directrices oficiales para redactarlo ([AEPD](https://aepd.es/guias/guia-directrices-contratos.pdf)) y la herramienta gratuita **Facilita RGPD / Facilita EMPRENDE** genera borradores ([AEPD](https://www.aepd.es/guias-y-herramientas/herramientas/facilita-emprende)).
+
+**3. Subencargados, con autorización por escrito.** Todos los que tocan datos: el servidor (Hetzner), las copias (Scaleway), la IA (AWS o Mistral) y Cloudflare si se usa. **Para el piloto, Google Drive también lo es.** Hay que listarlos con nombre, domicilio y qué hacen, y avisar a la gestoría antes de cambiar o añadir uno ([IAPP sobre el CEPD](https://iapp.org/news/a/controllers-processors-and-subprocessors-in-chains)). Si algún día se usa el Mac de casa, ese domicilio también se declara.
+
+**4. Transferencias fuera de la UE.** Si la IA procesa en EE. UU. (la API directa de Anthropic, por ejemplo), es una transferencia internacional. Se ampara en el marco UE-EE. UU. (DPF) y en cláusulas tipo, pero el DPF tiene un recurso pendiente ante el Tribunal de Justicia de la UE ([WilmerHale](https://www.wilmerhale.com/insights/blogs/wilmerhale-privacy-and-cybersecurity-law/20251201-european-court-of-justice-to-review-challenge-to-eu-us-data-privacy-framework)). **Por eso se recomienda IA con procesamiento en la UE**, y pedir siempre que no se guarden los datos (retención cero) y que no se usen para entrenar.
+
+**5. Registro de actividades como encargados** (art. 30.2). Un documento corto con qué tratamientos hacéis para cada gestoría, los subencargados, las transferencias y las medidas de seguridad. Facilita RGPD ayuda a hacerlo.
+
+**6. Plan de brechas.** Si se filtra algo, **avisáis a la gestoría sin dilación** (fijad en el contrato 24-48 horas) y ella tiene **72 horas, festivos incluidos,** para notificar a la AEPD ([AEPD](https://www.aepd.es/derechos-y-deberes/cumple-tus-deberes/medidas-de-cumplimiento/brechas-de-datos-personales-notificacion)). El plan, en una página: quién decide, cómo se corta el acceso, cómo se avisa y qué se apunta. Conviene ensayarlo una vez.
+
+**7. Evaluación de impacto (EIPD).** Le corresponde a cada gestoría, y vosotros debéis ayudarla con la información técnica. Para facturas sin datos especiales, probablemente no sea obligatoria, pero **hay que confirmarlo** con la lista oficial de la AEPD.
+
+**8. Delegado de protección de datos.** Probablemente no es obligatorio para vosotros. **A confirmar** con el art. 34 de la LOPDGDD.
+
+**9. Qué saben los clientes de la gestoría.** Es la gestoría quien les informa de que usa proveedores. Conviene darle un texto breve que pueda añadir a su información de privacidad.
+
+**10. Usar lo aprendido para mejorar el sistema.** Que lo que aprende una gestoría mejore el núcleo común necesita una **cláusula en el contrato**, y solo con reglas **sin datos personales** (sin NIF ni nombres).
+
+**11. Responsabilidad por errores.** Si el sistema propone una cuenta mala y la gestoría la importa, ¿quién responde? Las condiciones del servicio deben dejar claro que **siempre revisa una persona antes de importar en Sage**, y limitar vuestra responsabilidad. Un **ciberseguro** (desde unos 350 €/año, fuente comercial: [blogthinkbig](https://blogthinkbig.com/ciberseguro-empresas)) cubre brechas y reclamaciones.
+
+**12. Datos de prueba.** En el servidor de juguete, en preproducción, en las demos y en los chats con Claude, **solo datos inventados**. Nunca facturas reales de clientes del despacho.
+
+**Abogado o plantillas:**
+- **Piloto por Drive (Toro, padre de Alfredo):** basta con la plantilla de contrato hecha con las directrices de la AEPD, adaptada a cada gestoría, más la lista de subencargados.
+- **Servidor abierto a gestorías desconocidas:** revisión por un profesional antes. La adecuación cuesta desde unos 800 € ([Legiscope](https://www.legiscope.com/blog/cuanto-cuesta-cumplir-rgpd.html)).
+
+**Lo que no hace falta:** el ENS solo es obligatorio para el sector público y sus proveedores, no para trabajar con gestorías privadas.
+
+## 6. Qué verificar en las webs oficiales antes de contratar
 
 | Qué verificar | Dónde |
 |---|---|
 | Precio actual y stock de CX33/CX43, IPv4, cobro por horas y Storage Box | Hetzner |
-| VPS-1/2/3 en euros y certificación ENS | OVHcloud |
-| Object Storage, Object Lock y Mac M4-S (precio, mínimo de 24 h, alcance de ISO 27001) | Scaleway |
-| Disponibilidad de Haiku 5.5 en Bedrock UE, su precio y que AWS no guarda las peticiones | AWS |
+| VPS en euros y certificación ENS | OVHcloud |
+| Object Storage y Object Lock; Mac M4-S (precio, mínimo de 24 h, ISO 27001) | Scaleway |
+| Si Haiku 5.5 está en Bedrock UE, su precio y que AWS no guarda las peticiones | AWS |
 | Retención cero y no entrenamiento con los datos | Mistral |
-| Precio de Cloudflare Pro y uso comercial de Tailscale | Cloudflare y Tailscale |
-| Precio oficial del Mac mini actual | Apple España |
+| Directrices de contratos, lista de EIPD obligatorias y Facilita RGPD | AEPD |
+| Art. 34 LOPDGDD (delegado de protección de datos) | BOE |
