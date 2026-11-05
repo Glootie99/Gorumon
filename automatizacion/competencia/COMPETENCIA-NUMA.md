@@ -84,7 +84,7 @@
 
 **Dónde podemos ganar (hipótesis, no hechos probados):**
 - **Criterio propio de cada gestoría.** Ninguna web oficial dice que aprenda por gestoría o por cliente más allá del proveedor, ni que use el histórico de Sage de la gestoría. Si lo hacemos de verdad, es nuestro hueco. **Hay que demostrarlo con una prueba, no solo decirlo.**
-- **Datos en el negocio y no en la nube de un tercero.** Casi nadie lo dice: Esphera y Dijit hablan de servidores europeos, Copilot de UE, Inmatic no lo indica. «Local, en vuestra oficina» es distinto y puede pesar con gestorías prudentes.
+- **Transparencia con los datos.** Casi nadie lo explica: Esphera y Dijit hablan de servidores europeos, Copilot de UE, Inmatic no lo indica. Nosotros podemos decir exactamente dónde está cada dato (servidor nuestro en la UE, IA procesada en la UE, lista de subencargados en el contrato). Ojo: **no prometer «local, en vuestra oficina»**, porque el plan es un servidor nuestro en la UE (y Drive en el piloto).
 - **Revisión humana siempre, con trazabilidad.** Copilot y Holded ya lo dicen. No es diferenciador por sí solo; lo es si se enseña el registro de cambios.
 - **Sentarnos con la gestoría.** Dijit configura «por empresa» con su equipo, pero no es el cliente de Toro: es cada empresa cliente. Aprender las reglas de la gestoría entera es otro nivel.
 
@@ -109,7 +109,7 @@ Criterio: los más peligrosos que se pueden **probar hoy gratis**. Con **factura
 *(Los tres más peligrosos: el incumbente, el que ya está en las asesorías y el barato con prueba.)*
 
 **¿Y por qué no Inmatic?**
-«Inmatic es bueno y conecta con muchos programas; nos lo tomamos en serio. Lo que hace es aplicar una IA general a todas las gestorías. Lo nuestro es sentarnos con vosotros, aprender cómo decidís vosotros la cuenta de cada proveedor y de cada cliente, y que el sistema lo aplique y mejore con vuestras correcciones. Pregúntale a Inmatic si aprende por gestoría o solo por proveedor; nosotros os lo dejamos probar con vuestras reglas antes de comprometeros. Además, vuestros datos se quedan en vuestra oficina.»
+«Inmatic es bueno y conecta con muchos programas; nos lo tomamos en serio. Lo que hace es aplicar una IA general a todas las gestorías. Lo nuestro es sentarnos con vosotros, aprender cómo decidís vosotros la cuenta de cada proveedor y de cada cliente, y que el sistema lo aplique y mejore con vuestras correcciones. Pregúntale a Inmatic si aprende por gestoría o solo por proveedor; nosotros os lo dejamos probar con vuestras reglas antes de comprometeros. Y os decimos por escrito dónde está cada dato: en la UE, con contrato de encargo y lista de proveedores.»
 *No decir:* que Inmatic no aprende (su web no lo dice, y no lo hemos probado a fondo) ni que es «solo OCR».
 
 **¿Y por qué no Holded?**
