@@ -89,4 +89,4 @@ Un mensaje corto con: qué se hizo, dónde está (rutas), cómo verlo y **el sig
 - `~/Desktop/gorumon-informe/automatizacion/competencia/COMPETENCIA-NUMA.md`
 - Google Drive, carpeta «Factucoin - documentos 04-11-2026» (de Alex): `PARA-IA/0-CONTEXTO-COMUN.md`, `FOCO.md`, `HOJA-DE-RUTA.md`, `VENTA-EN-PERSONA.md`, `PARA-LEER/4B-ADRI-VENTA-MARKETING-NUMEROS.md`.
 - Google Drive, carpeta «Tareas Adri»: los resúmenes del servidor y de la competencia.
-- Las marcas de Numa: `automatizacion/assets/marca/` del repo Gorumon (logo NUMA con la N de cuenta en T).
+- Las marcas de Numa: `automatizacion/assets/marca/` de la rama `claude/youthful-bell-o90t45` del repo Gorumon (`git fetch origin claude/youthful-bell-o90t45`) (logo NUMA con la N de cuenta en T).
