@@ -58,7 +58,7 @@ Supuestos: cada factura que llega a la IA consume **3.000 tokens de entrada y 50
 
 Fuentes: [precios Claude](https://platform.claude.com/docs/en/about-claude/pricing); [residencia de datos de Anthropic](https://platform.claude.com/docs/en/manage-claude/data-residency); [Bedrock UE](https://docs.aws.eu/bedrock/latest/userguide/model-card-anthropic-claude-opus-4-6.html); [Mistral](https://pricepertoken.com/pricing-page/model/mistral-ai-mistral-small); [GPT nano](https://costbench.com/software/llm-api-providers/openai-api/).
 
-**Recomendación:** empezar con **Claude en Bedrock con perfil UE**, o con Mistral como alternativa, porque los datos se quedan en la UE. Es más caro que la API directa, pero la diferencia en el peor caso son unos 80 $/mes con 30 gestorías. Hay que verificar si Haiku 5.5 ya está disponible en Bedrock UE: es más barato y mejor que el 4.5. Un modelo propio en una GPU no compensa: la más barata cuesta unos **184 €/mes** ([Hetzner](https://www.hetzner.com/gpu)).
+**Recomendación:** empezar con **Claude en Bedrock con perfil UE**, o con Mistral como alternativa, porque los datos se quedan en la UE. Con Haiku 4.5 es más caro que la API directa, pero la diferencia en el peor caso son unos 80 $/mes con 30 gestorías. **Si se confirma Haiku 5.5 en Bedrock UE**, el coste con 30 gestorías bajaría a unos **9 $/mes** (verificación del 05-11-2026). Está pendiente de confirmar el precio en la página oficial de Bedrock, si el perfil UE lleva el +10 % y si la cuenta tiene acceso al modelo. Mistral aloja en la UE por defecto, pero algunas funciones se procesan fuera: hay que revisar su lista de subencargados. Un modelo propio en una GPU no compensa: la más barata cuesta unos **184 €/mes** ([Hetzner](https://www.hetzner.com/gpu)).
 
 ### Seguridad mínima
 
@@ -127,19 +127,19 @@ El programa de Alex tiene dos lectores de imagen (OCR). **RapidOCR**, el princip
 - qué pasa al terminar: **devolver o borrar** todos los datos, también los de las copias;
 - que pueden auditaros.
 
-Hay directrices oficiales para redactarlo ([AEPD](https://aepd.es/guias/guia-directrices-contratos.pdf)) y la herramienta gratuita **Facilita RGPD / Facilita EMPRENDE** genera borradores ([AEPD](https://www.aepd.es/guias-y-herramientas/herramientas/facilita-emprende)).
+Hay directrices oficiales para redactarlo ([AEPD](https://aepd.es/guias/guia-directrices-contratos.pdf)) y la herramienta gratuita **Facilita RGPD / Facilita EMPRENDE** genera borradores ([AEPD](https://www.aepd.es/guias-y-herramientas/herramientas/facilita-emprende)). Ojo: Facilita es solo para tratamientos de **riesgo bajo** y excluye los tratamientos masivos. Sirve para el piloto; con muchas gestorías, el contrato debe revisarlo un profesional. Que la AEPD haya sancionado contratos genéricos lo dice un despacho de abogados, no la AEPD: está sin confirmar.
 
-**3. Subencargados, con autorización por escrito.** Todos los que tocan datos: el servidor (Hetzner), las copias (Scaleway), la IA (AWS o Mistral) y Cloudflare si se usa. **Para el piloto, Google Drive también lo es.** Hay que listarlos con nombre, domicilio y qué hacen, y avisar a la gestoría antes de cambiar o añadir uno ([IAPP sobre el CEPD](https://iapp.org/news/a/controllers-processors-and-subprocessors-in-chains)). Si algún día se usa el Mac de casa, ese domicilio también se declara.
+**3. Subencargados, con autorización por escrito.** Todos los que tocan datos: el servidor (Hetzner), las copias (Scaleway), la IA (AWS o Mistral) y Cloudflare si se usa. **Para el piloto, Google Drive también lo es.** La guía de la AEPD pide **autorización previa por escrito**, que puede ser específica (proveedor a proveedor) o general. Si es general, hay que **avisar de cada cambio y dar un plazo para oponerse**. Hay que listarlos con nombre, domicilio y qué hacen ([IAPP sobre el CEPD](https://iapp.org/news/a/controllers-processors-and-subprocessors-in-chains)). Si algún día se usa el Mac de casa, ese domicilio también se declara.
 
 **4. Transferencias fuera de la UE.** Si la IA procesa en EE. UU. (la API directa de Anthropic, por ejemplo), es una transferencia internacional. Se ampara en el marco UE-EE. UU. (DPF) y en cláusulas tipo, pero el DPF tiene un recurso pendiente ante el Tribunal de Justicia de la UE ([WilmerHale](https://www.wilmerhale.com/insights/blogs/wilmerhale-privacy-and-cybersecurity-law/20251201-european-court-of-justice-to-review-challenge-to-eu-us-data-privacy-framework)). **Por eso se recomienda IA con procesamiento en la UE**, y pedir siempre que no se guarden los datos (retención cero) y que no se usen para entrenar.
 
 **5. Registro de actividades como encargados** (art. 30.2). Un documento corto con qué tratamientos hacéis para cada gestoría, los subencargados, las transferencias y las medidas de seguridad. Facilita RGPD ayuda a hacerlo.
 
-**6. Plan de brechas.** Si se filtra algo, **avisáis a la gestoría sin dilación** (fijad en el contrato 24-48 horas) y ella tiene **72 horas, festivos incluidos,** para notificar a la AEPD ([AEPD](https://www.aepd.es/derechos-y-deberes/cumple-tus-deberes/medidas-de-cumplimiento/brechas-de-datos-personales-notificacion)). El plan, en una página: quién decide, cómo se corta el acceso, cómo se avisa y qué se apunta. Conviene ensayarlo una vez.
+**6. Plan de brechas.** Si se filtra algo, **avisáis a la gestoría sin dilación**. Según la guía de la AEPD, el plazo de aviso que fije el contrato «debe ser inferior a 72 horas en cualquier caso»; 24-48 horas es lo práctico. Ella tiene **72 horas** para notificar a la AEPD ([AEPD](https://www.aepd.es/derechos-y-deberes/cumple-tus-deberes/medidas-de-cumplimiento/brechas-de-datos-personales-notificacion)). El plan, en una página: quién decide, cómo se corta el acceso, cómo se avisa y qué se apunta. Conviene ensayarlo una vez.
 
-**7. Evaluación de impacto (EIPD).** Le corresponde a cada gestoría, y vosotros debéis ayudarla con la información técnica. Para facturas sin datos especiales, probablemente no sea obligatoria, pero **hay que confirmarlo** con la lista oficial de la AEPD.
+**7. Evaluación de impacto (EIPD).** ✅ Verificado el 05-11-2026: la hace **el responsable, es decir, la gestoría**. El modelo de contrato de la AEPD solo os pide ayudarla con la información técnica. La lista de la AEPD usa criterios como gran escala o uso de IA, y con dos o más lo habitual es hacerla. Con unas pocas gestorías probablemente no aplica, pero conviene revisarlo al crecer, porque la IA ya es uno de esos criterios.
 
-**8. Delegado de protección de datos.** Probablemente no es obligatorio para vosotros. **A confirmar** con el art. 34 de la LOPDGDD.
+**8. Delegado de protección de datos.** ✅ Verificado el 05-11-2026: el art. 34 de la LOPDGDD **no incluye gestorías ni proveedores de software**. Queda por leer el art. 37.1 del RGPD, que es el criterio general, para descartarlo del todo.
 
 **9. Qué saben los clientes de la gestoría.** Es la gestoría quien les informa de que usa proveedores. Conviene darle un texto breve que pueda añadir a su información de privacidad.
 
@@ -155,14 +155,16 @@ Hay directrices oficiales para redactarlo ([AEPD](https://aepd.es/guias/guia-dir
 
 **Lo que no hace falta:** el ENS solo es obligatorio para el sector público y sus proveedores, no para trabajar con gestorías privadas.
 
-## 6. Qué verificar en las webs oficiales antes de contratar
+## 6. Qué queda por verificar (actualizado el 05-11-2026)
 
-| Qué verificar | Dónde |
-|---|---|
-| Precio actual y stock de CX33/CX43, IPv4, cobro por horas y Storage Box | Hetzner |
-| VPS en euros y certificación ENS | OVHcloud |
-| Object Storage y Object Lock; Mac M4-S (precio, mínimo de 24 h, ISO 27001) | Scaleway |
-| Si Haiku 5.5 está en Bedrock UE, su precio y que AWS no guarda las peticiones | AWS |
-| Retención cero y no entrenamiento con los datos | Mistral |
-| Directrices de contratos, lista de EIPD obligatorias y Facilita RGPD | AEPD |
-| Art. 34 LOPDGDD (delegado de protección de datos) | BOE |
+Verificado desde el Mac el 05-11-2026: la autorización de subencargados, el plazo de aviso de brechas, los límites de Facilita, el delegado de protección de datos (art. 34 LOPDGDD) y quién hace la EIPD. Ya están en el apartado 5. **La recomendación sigue en pie.**
+
+| Qué falta | Dónde | Estado |
+|---|---|---|
+| Stock real de los CX33/CX43: una lectura de la web los da como «no disponibles» | Consola de Hetzner | ⚠️ Comprobar antes de contar con ellos. **Plan B: OVH VPS-2, 7,21 € sin IVA** |
+| Si el ENS Alto de OVH cubre los VPS | OVHcloud | Pedir el certificado |
+| Precio de Haiku 5.5 en Bedrock UE, el +10 % regional y el acceso de la cuenta | AWS | Sin confirmar (la web dio error) |
+| Lista de subencargados de Mistral: algunas funciones se procesan fuera de la UE | Mistral | Revisar |
+| Object Lock de Scaleway; si su ISO 27001 cubre los Mac (solo si algún día hace falta Mac) | Scaleway | Sin confirmar (la web dio error) |
+| Art. 37.1 del RGPD (criterio general del delegado) | EUR-Lex | Leer |
+| Si las 72 horas de la AEPD cuentan festivos | AEPD | Sin confirmar |
