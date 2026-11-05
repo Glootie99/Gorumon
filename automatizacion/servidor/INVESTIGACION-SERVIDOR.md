@@ -1,6 +1,6 @@
 # El servidor de Factucoin: qué montar, cómo crecer y qué hay que cumplir
 
-> Investigación del 05-11-2026 para la tarea de Adrián. Casi todos los precios salen de agregadores, porque en la investigación no se pudieron abrir las webs oficiales; al final hay una lista de lo que hay que verificar. Nada de esto es asesoría legal.
+> Investigación del 05-11-2026 para la tarea de Adrián. Los precios de Hetzner, OVH, Scaleway y Cloudflare se contrastaron con las webs oficiales el 05-11-2026 (fuentes en el apartado 6); el resto sale de agregadores y lo pendiente está marcado. Nada de esto es asesoría legal.
 
 ## 1. La recomendación
 
@@ -27,10 +27,10 @@ Cifras mensuales sin IVA. Las sumas son **cálculo propio** con los precios cita
 | Mac alquilado en la UE | 149 € | 149 € | 149-199 € | ≈300-400 € | Alta | Caro para empezar |
 
 **Precios de referencia:**
-- **Hetzner**, tras las dos subidas de 2026 (abril, +30-37 %, y 15 de junio): CX23 (2 vCPU/4 GB) a **5,49 €**, CX33 (4 vCPU/8 GB) a **8,49-8,99 €** y CX43 (8 vCPU/16 GB) a **15,99 €**, más **0,50 €** de IPv4 ([bitdoze](https://www.bitdoze.com/hetzner-cloud-review/); [stackvaluelab](https://stackvaluelab.com/hetzner-price-increase-2026/); [bitdoze ES](https://www.bitdoze.com/es/hetzner-cloud-precios-2026/)). La subida de junio también se aplica al **cambiar de tamaño** un servidor existente ([rscomputers-ks](https://rscomputers-ks.com/hetzner-price-increase-2026-move-servers/)), así que conviene crecer añadiendo servidores. Hubo informes de **falta de stock** de los planes CX ([stackvaluelab](https://stackvaluelab.com/hetzner-cx-cax-unavailable/)).
-- **Alternativa: OVHcloud.** VPS-1 a unos **6,49 €** y VPS-2 a **9,99 €** ([vpsledger](https://vpsledger.com/providers/ovhcloud/)), y figura con ENS Alto en un listado de terceros ([cloudlandscape](https://cloudlandscape.github.io/en/providers/ovhcloud/)).
+- **Hetzner**, tras las dos subidas de 2026 (abril, +30-37 %, y 15 de junio): CX23 (2 vCPU/4 GB) a **5,49 €**, CX33 (4 vCPU/8 GB) a **8,49-8,99 €** y CX43 (8 vCPU/16 GB) a **15,99 €**, más **0,50 €** de IPv4 ([bitdoze](https://www.bitdoze.com/hetzner-cloud-review/); [stackvaluelab](https://stackvaluelab.com/hetzner-price-increase-2026/); [bitdoze ES](https://www.bitdoze.com/es/hetzner-cloud-precios-2026/)). La subida de junio también se aplica al **cambiar de tamaño** un servidor existente ([rscomputers-ks](https://rscomputers-ks.com/hetzner-price-increase-2026-move-servers/)), así que conviene crecer añadiendo servidores. Hubo informes de **falta de stock** de los planes CX ([stackvaluelab](https://stackvaluelab.com/hetzner-cx-cax-unavailable/)). **Web oficial (05-11-2026, sin IVA):** CX23 5,99 €, CX33 8,99 €, CX43 16,49 €, ya con la IPv4 incluida, así que los totales de los agregadores coinciden ([Hetzner](https://www.hetzner.com/cloud/cost-optimized)); esa misma página marca los tres como «no disponibles».
+- **Alternativa: OVHcloud.** VPS-1 a **3,81 €**, VPS-2 a **7,21 €** y VPS-3 a **10,40 €** sin IVA (4,61 / 8,72 / 12,58 € con IVA), con copia diaria y tráfico ilimitado ([OVHcloud](https://www.ovhcloud.com/es-es/vps/), 05-11-2026; los agregadores daban 6,49 y 9,99 €). Figura con ENS Alto en un listado de terceros ([cloudlandscape](https://cloudlandscape.github.io/en/providers/ovhcloud/)), pero su página oficial del VPS no lo menciona.
 - **Nube grande:** el mínimo en AWS ronda los **45 $/mes** (máquina t4g.medium, base de datos RDS micro e IPv4) ([aws-pricing.com](https://aws-pricing.com/t4g.medium.html); [bytebase](https://www.bytebase.com/dbcost/rds/instance/db.t4g.micro/)). AWS tiene ENS Alto en 166 servicios ([AWS](https://aws.amazon.com/blogs/security/aws-achieves-spains-ens-high-certification-across-166-services)).
-- **Copias:** Scaleway Object Storage, unos **0,0146 €/GB al mes** ([Scaleway](https://www.scaleway.com/fr/tarifs/storage)), es decir, ≈1,5 € por 100 GB. Una segunda copia en Hetzner Storage Box (1 TB) cuesta **3,20 €** ([whtop](https://www.whtop.com/amp/plans/hetzner.com/128269)).
+- **Copias:** Scaleway Object Storage, **0,01606 €/GB al mes** (Multi-AZ), con 75 GB de salida gratis al mes y luego 0,01 €/GB ([Scaleway](https://www.scaleway.com/en/pricing/storage/), 05-11-2026), es decir, ≈1,6 € por 100 GB; Object Lock figura como función, sin recargo indicado. Una segunda copia en Hetzner Storage Box BX11 (1 TB) cuesta **3,20 €** sin IVA ([Hetzner](https://www.hetzner.com/storage/storage-box/), 05-11-2026).
 
 ### Cómo se crece sin rehacer nada
 
@@ -43,7 +43,7 @@ Tres reglas desde el primer día: **todo en contenedores Docker**, el **OCR pesa
 | **10** | Servidor CX43 para la aplicación + trabajadores de OCR que se encienden por horas en la semana de cierre | **≈25-40 €** | Cuando un servidor no aguante el pico |
 | **30** | 2-3 servidores CX43 con las gestorías repartidas + trabajadores en el pico | **≈50-90 €** | Valorar PostgreSQL gestionado solo si hace falta consultar varias gestorías a la vez |
 
-El coste está en los **picos de la semana del día 20** de enero, abril, julio y octubre, no en el día a día. Por eso conviene un servidor pequeño que sume trabajadores por horas. Que Hetzner cobre por horas está por verificar.
+El coste está en los **picos de la semana del día 20** de enero, abril, julio y octubre, no en el día a día. Por eso conviene un servidor pequeño que sume trabajadores por horas. Hetzner cobra por horas: CX33 0,0144 €/h y CX43 0,0264 €/h sin IVA ([Hetzner](https://www.hetzner.com/cloud/cost-optimized), 05-11-2026).
 
 ### La IA en el servidor
 
@@ -52,13 +52,14 @@ Supuestos: cada factura que llega a la IA consume **3.000 tokens de entrada y 50
 | Modelo y vía | $/factura | 1 gestoría | 10 | 30 | ¿Procesa en la UE? |
 |---|---|---|---|---|---|
 | Claude Haiku 5.5, API directa | 0,00055 | 0,16 $ | 1,65 $ | 8,25 $ | **No** (solo «global» o «us») |
+| Claude Haiku 5.5 en AWS Bedrock UE (+10 % sin confirmar) | 0,000605 | 0,18 $ | 1,82 $ | 9,08 $ | Sí, incluye España |
 | Claude Haiku 4.5 en AWS Bedrock UE | 0,00605 | 1,81 $ | 18,15 $ | 90,75 $ | Sí, incluye España |
 | Mistral Small 4 | 0,00075 | 0,22 $ | 2,25 $ | 11,25 $ | Sí, por defecto |
 | GPT-5.4 nano, proyecto Europa | 0,00122 | 0,37 $ | 3,67 $ | 18,38 $ | Sí |
 
 Fuentes: [precios Claude](https://platform.claude.com/docs/en/about-claude/pricing); [residencia de datos de Anthropic](https://platform.claude.com/docs/en/manage-claude/data-residency); [Bedrock UE](https://docs.aws.eu/bedrock/latest/userguide/model-card-anthropic-claude-opus-4-6.html); [Mistral](https://pricepertoken.com/pricing-page/model/mistral-ai-mistral-small); [GPT nano](https://costbench.com/software/llm-api-providers/openai-api/).
 
-**Recomendación:** empezar con **Claude en Bedrock con perfil UE**, o con Mistral como alternativa, porque los datos se quedan en la UE. Con Haiku 4.5 es más caro que la API directa, pero la diferencia en el peor caso son unos 80 $/mes con 30 gestorías. **Si se confirma Haiku 5.5 en Bedrock UE**, el coste con 30 gestorías bajaría a unos **9 $/mes** (verificación del 05-11-2026). Está pendiente de confirmar el precio en la página oficial de Bedrock, si el perfil UE lleva el +10 % y si la cuenta tiene acceso al modelo. Mistral aloja en la UE por defecto, pero algunas funciones se procesan fuera: hay que revisar su lista de subencargados. Un modelo propio en una GPU no compensa: la más barata cuesta unos **184 €/mes** ([Hetzner](https://www.hetzner.com/gpu)).
+**Recomendación:** empezar con **Claude en Bedrock con perfil UE**, o con Mistral como alternativa, porque los datos se quedan en la UE. Con Haiku 4.5 es más caro que la API directa, pero la diferencia en el peor caso son unos 80 $/mes con 30 gestorías. **Haiku 5.5 ya está en Bedrock con el perfil UE** (`eu.anthropic.claude-haiku-5-5`, con destinos que incluyen España; [AWS](https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-anthropic-claude-haiku-5-5.html), 05-11-2026), así que el coste con 30 gestorías bajaría a unos **9 $/mes**. Anthropic indica que el endpoint global no tiene recargo y el regional +10 % ([Anthropic](https://platform.claude.com/docs/en/build-with-claude/claude-in-amazon-bedrock)); sigue sin confirmarse el precio en la página de Bedrock, si el perfil UE lleva ese +10 % y si la cuenta tiene acceso al modelo. **Retención en Bedrock:** AWS no comparte los datos con Anthropic y la retención se configura por región (`none` = cero); por defecto puede retener para detectar abusos, así que hay que fijarla y comprobarla ([AWS](https://docs.aws.amazon.com/bedrock/latest/userguide/data-retention.html), 05-11-2026). **Mistral** aloja en la UE por defecto, pero algunas funciones se procesan fuera (revisar su lista de subencargados); guarda 30 días rodantes por defecto, y la retención cero se pide, solo con pago por uso y en llamadas sin estado, a criterio de Mistral ([Mistral](https://help.mistral.ai/en/articles/347612-can-i-activate-zero-data-retention-zdr); [datos](https://help.mistral.ai/en/articles/347629-where-do-you-store-my-data-or-my-organization-s-data), 05-11-2026). Un modelo propio en una GPU no compensa: la más barata cuesta unos **184 €/mes** ([Hetzner](https://www.hetzner.com/gpu)).
 
 ### Seguridad mínima
 
@@ -77,7 +78,7 @@ Fuentes: [precios Claude](https://platform.claude.com/docs/en/about-claude/prici
 
 Fuentes: [OWASP subidas](https://cheatsheetseries.owasp.org/cheatsheets/File_Upload_Cheat_Sheet.html); [restic](https://restic.readthedocs.io/); [OVH Object Lock](https://docs.ovhcloud.com/en/guides/storage-and-backup/object-storage/s3-faq).
 
-Cloudflare Pro (WAF, 20-25 $/mes) es opcional y tiene un coste de privacidad: Cloudflare vería las facturas sin cifrar y pasaría a ser un subencargado más ([selfhosted-sh](https://selfhosted-sh.pages.dev/cloudflare-tunnels-zero-trust-access)).
+Cloudflare Pro (WAF, 20 $/mes con pago anual o 25 $ mensual; [Cloudflare](https://www.cloudflare.com/plans/network-cdn.md), 05-11-2026) es opcional y tiene un coste de privacidad: Cloudflare vería las facturas sin cifrar y pasaría a ser un subencargado más ([selfhosted-sh](https://selfhosted-sh.pages.dev/cloudflare-tunnels-zero-trust-access)).
 
 ## 3. El pentest: punto de control, no un precio más
 
@@ -109,7 +110,7 @@ El programa de Alex tiene dos lectores de imagen (OCR). **RapidOCR**, el princip
 - **OCR de pago en la nube con región UE**, como Azure Document Intelligence, AWS Textract, Google Document AI o Mistral OCR, por céntimos por página. Añade un subencargado.
 
 **Cómo decidirlo:** Alex puede apagar Apple Vision con `FAC_VISION=0` y medir cuánto empeora la lectura con las mismas facturas. Si la diferencia es pequeña, el Mac sobra. Si es grande, se añade después sin cambiar nada más:
-- **Un Mac alquilado en París (Scaleway)** solo en la semana de cierre: 0,22 €/h con un mínimo de 24 h, unos **37 € por trimestre** ([Scaleway](https://scaleway.com/en/pricing/apple-silicon)). O fijo desde **149 €/mes**.
+- **Un Mac alquilado en París (Scaleway)** solo en la semana de cierre: 0,22 €/h con un mínimo de 24 h, unos **37 € por trimestre** ([Scaleway](https://www.scaleway.com/en/pricing/apple-silicon/), verificado el 05-11-2026). O fijo desde **149 €/mes**.
 - **El Mac de casa como trabajador**: sale a buscar tareas por WireGuard, procesa en memoria y no guarda nada. Es la opción más barata, pero el domicilio pasa a ser un lugar de tratamiento que hay que declarar a la gestoría, y la línea doméstica puede no permitir uso comercial ([condiciones de ejemplo](https://www.marianoacosta.coop/wp-content/uploads/2019/10/Condiciones-Particulares-y-Generales-WEB.pdf)).
 
 ## 5. Lo legal: qué hay que tener antes de tratar facturas reales
@@ -127,19 +128,19 @@ El programa de Alex tiene dos lectores de imagen (OCR). **RapidOCR**, el princip
 - qué pasa al terminar: **devolver o borrar** todos los datos, también los de las copias;
 - que pueden auditaros.
 
-Hay directrices oficiales para redactarlo ([AEPD](https://aepd.es/guias/guia-directrices-contratos.pdf)) y la herramienta gratuita **Facilita RGPD / Facilita EMPRENDE** genera borradores ([AEPD](https://www.aepd.es/guias-y-herramientas/herramientas/facilita-emprende)). Ojo: Facilita es solo para tratamientos de **riesgo bajo** y excluye los tratamientos masivos. Sirve para el piloto; con muchas gestorías, el contrato debe revisarlo un profesional. Que la AEPD haya sancionado contratos genéricos lo dice un despacho de abogados, no la AEPD: está sin confirmar.
+Hay directrices oficiales para redactarlo ([AEPD](https://aepd.es/guias/guia-directrices-contratos.pdf)) y la herramienta gratuita **Facilita RGPD / Facilita EMPRENDE** genera borradores ([AEPD](https://www.aepd.es/guias-y-herramientas/herramientas/facilita-emprende)). Ojo: Facilita RGPD es gratuita y genera cláusulas de encargo y el registro de actividades, pero es solo para tratamientos de **riesgo bajo** y excluye los de alto riesgo y los masivos; los documentos hay que adaptarlos ([AEPD](https://www.aepd.es/guias-y-herramientas/herramientas/facilita-rgpd), 05-11-2026). Facilita EMPRENDE no se ha vuelto a comprobar. Sirve para el piloto; con muchas gestorías, el contrato debe revisarlo un profesional. Que la AEPD haya sancionado contratos genéricos lo dice un despacho de abogados, no la AEPD: está sin confirmar.
 
-**3. Subencargados, con autorización por escrito.** Todos los que tocan datos: el servidor (Hetzner), las copias (Scaleway), la IA (AWS o Mistral) y Cloudflare si se usa. **Para el piloto, Google Drive también lo es.** La guía de la AEPD pide **autorización previa por escrito**, que puede ser específica (proveedor a proveedor) o general. Si es general, hay que **avisar de cada cambio y dar un plazo para oponerse**. Hay que listarlos con nombre, domicilio y qué hacen ([IAPP sobre el CEPD](https://iapp.org/news/a/controllers-processors-and-subprocessors-in-chains)). Si algún día se usa el Mac de casa, ese domicilio también se declara.
+**3. Subencargados, con autorización por escrito.** Todos los que tocan datos: el servidor (Hetzner), las copias (Scaleway), la IA (AWS o Mistral) y Cloudflare si se usa. **Para el piloto, Google Drive también lo es.** La guía de la AEPD pide **autorización previa por escrito**, que puede ser específica (proveedor a proveedor) o general. Si es general, hay que **avisar de cada cambio y dar un plazo para oponerse**. El subencargado queda sujeto a las mismas condiciones y vosotros seguís siendo plenamente responsables ante la gestoría ([AEPD](https://www.aepd.es/guias/guia-directrices-contratos.pdf), leída el 05-11-2026). Hay que listarlos con nombre, domicilio y qué hacen ([IAPP sobre el CEPD](https://iapp.org/news/a/controllers-processors-and-subprocessors-in-chains)). Si algún día se usa el Mac de casa, ese domicilio también se declara.
 
 **4. Transferencias fuera de la UE.** Si la IA procesa en EE. UU. (la API directa de Anthropic, por ejemplo), es una transferencia internacional. Se ampara en el marco UE-EE. UU. (DPF) y en cláusulas tipo, pero el DPF tiene un recurso pendiente ante el Tribunal de Justicia de la UE ([WilmerHale](https://www.wilmerhale.com/insights/blogs/wilmerhale-privacy-and-cybersecurity-law/20251201-european-court-of-justice-to-review-challenge-to-eu-us-data-privacy-framework)). **Por eso se recomienda IA con procesamiento en la UE**, y pedir siempre que no se guarden los datos (retención cero) y que no se usen para entrenar.
 
 **5. Registro de actividades como encargados** (art. 30.2). Un documento corto con qué tratamientos hacéis para cada gestoría, los subencargados, las transferencias y las medidas de seguridad. Facilita RGPD ayuda a hacerlo.
 
-**6. Plan de brechas.** Si se filtra algo, **avisáis a la gestoría sin dilación**. Según la guía de la AEPD, el plazo de aviso que fije el contrato «debe ser inferior a 72 horas en cualquier caso»; 24-48 horas es lo práctico. Ella tiene **72 horas** para notificar a la AEPD ([AEPD](https://www.aepd.es/derechos-y-deberes/cumple-tus-deberes/medidas-de-cumplimiento/brechas-de-datos-personales-notificacion)). El plan, en una página: quién decide, cómo se corta el acceso, cómo se avisa y qué se apunta. Conviene ensayarlo una vez.
+**6. Plan de brechas.** Si se filtra algo, **avisáis a la gestoría sin dilación**. Según la guía de la AEPD, el plazo de aviso que fije el contrato «debe ser inferior a 72 horas en cualquier caso»; 24-48 horas es lo práctico. Ella tiene **72 horas** para notificar a la AEPD; esa página no dice si cuentan festivos, así que está sin confirmar ([AEPD](https://www.aepd.es/derechos-y-deberes/cumple-tus-deberes/medidas-de-cumplimiento/brechas-de-datos-personales-notificacion), 05-11-2026). El plan, en una página: quién decide, cómo se corta el acceso, cómo se avisa y qué se apunta. Conviene ensayarlo una vez.
 
-**7. Evaluación de impacto (EIPD).** ✅ Verificado el 05-11-2026: la hace **el responsable, es decir, la gestoría**. El modelo de contrato de la AEPD solo os pide ayudarla con la información técnica. La lista de la AEPD usa criterios como gran escala o uso de IA, y con dos o más lo habitual es hacerla. Con unas pocas gestorías probablemente no aplica, pero conviene revisarlo al crecer, porque la IA ya es uno de esos criterios.
+**7. Evaluación de impacto (EIPD).** ✅ Verificado el 05-11-2026: la hace **el responsable, es decir, la gestoría**. El modelo de contrato de la AEPD solo os pide ayudarla con la información técnica. La lista de la AEPD tiene 11 criterios (entre ellos datos que revelan la situación financiera, gran escala, combinar bases de datos y nuevas tecnologías como la IA) y con dos o más lo habitual es hacerla ([AEPD](https://www.aepd.es/documento/listas-dpia-es-35-4.pdf), 05-11-2026). Con unas pocas gestorías probablemente no aplica, pero conviene revisarlo al crecer, porque la IA ya es uno de esos criterios.
 
-**8. Delegado de protección de datos.** ✅ Verificado el 05-11-2026: el art. 34 de la LOPDGDD **no incluye gestorías ni proveedores de software**. Queda por leer el art. 37.1 del RGPD, que es el criterio general, para descartarlo del todo.
+**8. Delegado de protección de datos.** ✅ Verificado el 05-11-2026: el art. 34.1 de la LOPDGDD, que lista las entidades obligadas, **no incluye gestorías ni proveedores de software**, y remite además al art. 37.1 del RGPD. Si se designa uno, se comunica a la AEPD en 10 días ([BOE](https://www.boe.es/buscar/act.php?id=BOE-A-2018-16673), 05-11-2026). Queda por leer el art. 37.1 del RGPD, que es el criterio general, para descartarlo del todo.
 
 **9. Qué saben los clientes de la gestoría.** Es la gestoría quien les informa de que usa proveedores. Conviene darle un texto breve que pueda añadir a su información de privacidad.
 
@@ -161,10 +162,29 @@ Verificado desde el Mac el 05-11-2026: la autorización de subencargados, el pla
 
 | Qué falta | Dónde | Estado |
 |---|---|---|
-| Stock real de los CX33/CX43: una lectura de la web los da como «no disponibles» | Consola de Hetzner | ⚠️ Comprobar antes de contar con ellos. **Plan B: OVH VPS-2, 7,21 € sin IVA** |
-| Si el ENS Alto de OVH cubre los VPS | OVHcloud | Pedir el certificado |
-| Precio de Haiku 5.5 en Bedrock UE, el +10 % regional y el acceso de la cuenta | AWS | Sin confirmar (la web dio error) |
-| Lista de subencargados de Mistral: algunas funciones se procesan fuera de la UE | Mistral | Revisar |
-| Object Lock de Scaleway; si su ISO 27001 cubre los Mac (solo si algún día hace falta Mac) | Scaleway | Sin confirmar (la web dio error) |
+| Stock real de los CX33/CX43: dos lecturas de la web los dan como «no disponibles», sin indicar la causa | Consola de Hetzner ([web](https://www.hetzner.com/cloud/cost-optimized)) | ⚠️ Comprobar antes de contar con ellos. **Plan B: OVH VPS-2, 7,21 € sin IVA** |
+| Si el ENS Alto de OVH cubre los VPS: la empresa dice tenerlo, pero no hay producto concreto y el VPS no sale en su tabla ISO 27k | OVHcloud ([certificaciones](https://ovhcloud.com/en/enterprise/certification-conformity); [ISO 27k](https://docs.ovhcloud.com/en/guides/account-and-service-management/account-information/security-certifications)) | Pedir el certificado y su alcance |
+| Precio de Haiku 5.5 en la página de Bedrock, el +10 % del perfil UE y el acceso de la cuenta (la disponibilidad en el perfil UE sí está confirmada) | AWS ([precios](https://aws.amazon.com/bedrock/pricing/)) | Sin confirmar (la página no mostraba el modelo) |
+| Lista de subencargados de Mistral: algunas funciones se procesan fuera de la UE | Mistral ([ayuda](https://help.mistral.ai/en/articles/347629-where-do-you-store-my-data-or-my-organization-s-data)) | Revisar |
+| Si la ISO 27001 de Scaleway cubre los Mac: el certificado IS 787020 cubre la nube pública y el centro DC4 de París, pero no nombra Apple silicon (solo si algún día hace falta Mac) | Scaleway ([certificado](https://www-uploads.scaleway.com/IS_787020_EN_46136c6c21.pdf)) | Preguntar a Scaleway |
 | Art. 37.1 del RGPD (criterio general del delegado) | EUR-Lex | Leer |
-| Si las 72 horas de la AEPD cuentan festivos | AEPD | Sin confirmar |
+| Si las 72 horas de la AEPD cuentan festivos | AEPD ([brechas](https://www.aepd.es/derechos-y-deberes/cumple-tus-deberes/medidas-de-cumplimiento/brechas-de-datos-personales-notificacion)) | Sin confirmar |
+
+**Verificado el 05-11-2026 en webs oficiales** (precios sin IVA salvo indicación):
+
+| Dato | Resultado | Fuente |
+|---|---|---|
+| Hetzner CX23/CX33/CX43 | 5,99 / 8,99 / 16,49 €, IPv4 incluida; cobro por horas (CX33 0,0144 €/h, CX43 0,0264 €/h) | [hetzner.com/cloud/cost-optimized](https://www.hetzner.com/cloud/cost-optimized) |
+| Hetzner Storage Box BX11 (1 TB) | 3,20 €/mes | [hetzner.com/storage/storage-box](https://www.hetzner.com/storage/storage-box/) |
+| OVH VPS-1/2/3 | 3,81 / 7,21 / 10,40 € (con IVA 4,61 / 8,72 / 12,58 €) | [ovhcloud.com/es-es/vps](https://www.ovhcloud.com/es-es/vps/) |
+| Scaleway Object Storage | 0,01606 €/GB·mes; 75 GB de salida gratis, luego 0,01 €/GB; Object Lock listado como función | [scaleway.com/en/pricing/storage](https://www.scaleway.com/en/pricing/storage/) (vía buscador; la página dio 403) |
+| Scaleway Mac M4 | 149 €/mes o 0,22 €/h, mínimo 24 h | [scaleway.com/en/pricing/apple-silicon](https://www.scaleway.com/en/pricing/apple-silicon/) (vía buscador; la página dio 403) |
+| Bedrock UE, Haiku 5.5 | Perfil `eu.anthropic.claude-haiku-5-5`, destinos con España (eu-south-2) | [model card](https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-anthropic-claude-haiku-5-5.html) |
+| Haiku 5.5, precio y recargo | 0,10 $ entrada / 0,50 $ salida por millón de tokens (Anthropic); endpoint global sin recargo, regional +10 % | [platform.claude.com](https://platform.claude.com/docs/en/about-claude/pricing); [Claude en Bedrock](https://platform.claude.com/docs/en/build-with-claude/claude-in-amazon-bedrock) |
+| Retención en Bedrock | Sin compartir con el proveedor del modelo; modo configurable por región, `none` = cero; por defecto puede retener para detectar abusos | [data-retention](https://docs.aws.amazon.com/bedrock/latest/userguide/data-retention.html); [data-protection](https://docs.aws.amazon.com/bedrock/latest/userguide/data-protection.html) |
+| Mistral | UE por defecto; 30 días rodantes de retención; retención cero a petición, solo pago por uso y llamadas sin estado, discrecional; entrenamiento: opt-out aparte | [ZDR](https://help.mistral.ai/en/articles/347612-can-i-activate-zero-data-retention-zdr); [docs](https://docs.mistral.ai/admin/monitor-comply/zero-data-retention) |
+| Cloudflare Pro | 20 $/mes anual, 25 $/mes mensual, WAF incluido | [cloudflare.com/plans/network-cdn.md](https://www.cloudflare.com/plans/network-cdn.md) |
+| Guía de contratos de encargo | Subencargados: autorización previa escrita, específica o general; brechas: plazo contractual inferior a 72 h. La guía no lleva fecha legible | [aepd.es](https://www.aepd.es/guias/guia-directrices-contratos.pdf) |
+| Lista de EIPD (art. 35.4) | 11 criterios; EIPD habitual con dos o más | [aepd.es](https://www.aepd.es/documento/listas-dpia-es-35-4.pdf) |
+| Facilita RGPD | Gratuita, solo riesgo bajo, genera cláusulas de encargo y registro de actividades | [aepd.es](https://www.aepd.es/guias-y-herramientas/herramientas/facilita-rgpd) |
+| Art. 34 LOPDGDD | Lista de entidades obligadas a designar delegado; no figuran gestorías ni software; comunicación a la AEPD en 10 días | [BOE-A-2018-16673](https://www.boe.es/buscar/act.php?id=BOE-A-2018-16673) |
